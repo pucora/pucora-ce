@@ -7,8 +7,8 @@
 BIN_NAME :=velonetics
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/velonetics/velonetics-ce/v2
-VERSION := 2.13.7
-SCHEMA_VERSION := $(shell echo "${VERSION}" | cut -d '.' -f 1,2)
+VERSION := 2.0.0
+SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := velonetics
 LICENSE := Apache 2.0

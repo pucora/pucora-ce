@@ -9,35 +9,35 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/velonetics/bloomfilter/v2 v2.1.0
 	github.com/velonetics/lura/v2 v2.14.2-0.20260316170719-6d79b4ef723b
-	github.com/velonetics/velonetics-amqp/v2 v2.3.1-0.20260317155713-585835a83dca
-	github.com/velonetics/velonetics-audit v0.9.3
-	github.com/velonetics/velonetics-botdetector/v2 v2.3.1
-	github.com/velonetics/velonetics-cel/v2 v2.4.1
+	github.com/velonetics/velonetics-amqp/v2 v2.0.0
+	github.com/velonetics/velonetics-audit v1.0.0
+	github.com/velonetics/velonetics-botdetector/v2 v2.3.0
+	github.com/velonetics/velonetics-cel/v2 v2.0.0
 	github.com/velonetics/velonetics-circuitbreaker/v3 v3.0.0
-	github.com/velonetics/velonetics-cobra/v2 v2.8.2
-	github.com/velonetics/velonetics-cors/v2 v2.2.1
-	github.com/velonetics/velonetics-flexibleconfig/v2 v2.3.1
+	github.com/velonetics/velonetics-cobra/v2 v2.0.0
+	github.com/velonetics/velonetics-cors/v2 v2.2.0
+	github.com/velonetics/velonetics-flexibleconfig/v2 v2.0.0
 	github.com/velonetics/velonetics-gelf/v2 v2.1.0
 	github.com/velonetics/velonetics-gologging/v2 v2.1.1
 	github.com/velonetics/velonetics-httpcache/v2 v2.2.0
-	github.com/velonetics/velonetics-httpsecure/v2 v2.2.1
+	github.com/velonetics/velonetics-httpsecure/v2 v2.2.0
 	github.com/velonetics/velonetics-influx/v2 v2.2.0
-	github.com/velonetics/velonetics-jose/v2 v2.12.3
-	github.com/velonetics/velonetics-jsonschema/v2 v2.2.1
-	github.com/velonetics/velonetics-koanf v0.0.0-20251111142508-ab36eebbcf9b
-	github.com/velonetics/velonetics-lambda/v2 v2.1.0
+	github.com/velonetics/velonetics-jose/v2 v2.12.2
+	github.com/velonetics/velonetics-jsonschema/v2 v2.0.0
+	github.com/velonetics/velonetics-koanf v1.0.0
+	github.com/velonetics/velonetics-lambda/v2 v2.0.0
 	github.com/velonetics/velonetics-logstash/v2 v2.1.0
-	github.com/velonetics/velonetics-lua/v2 v2.9.1
-	github.com/velonetics/velonetics-martian/v2 v2.3.0
-	github.com/velonetics/velonetics-metrics/v2 v2.2.0
-	github.com/velonetics/velonetics-oauth2-clientcredentials/v2 v2.2.0
-	github.com/velonetics/velonetics-opencensus/v2 v2.2.1
-	github.com/velonetics/velonetics-otel v0.14.4
-	github.com/velonetics/velonetics-pubsub/v2 v2.3.1
-	github.com/velonetics/velonetics-ratelimit/v3 v3.3.1
+	github.com/velonetics/velonetics-lua/v2 v2.9.0
+	github.com/velonetics/velonetics-martian/v2 v2.0.0
+	github.com/velonetics/velonetics-metrics/v2 v2.1.0
+	github.com/velonetics/velonetics-oauth2-clientcredentials/v2 v2.0.0
+	github.com/velonetics/velonetics-opencensus/v2 v2.2.0
+	github.com/velonetics/velonetics-otel v1.0.0
+	github.com/velonetics/velonetics-pubsub/v2 v2.0.0
+	github.com/velonetics/velonetics-ratelimit/v3 v3.3.0
 	github.com/velonetics/velonetics-rss/v2 v2.1.1
-	github.com/velonetics/velonetics-usage/v2 v2.1.0
-	github.com/velonetics/velonetics-xml/v2 v2.2.2
+	github.com/velonetics/velonetics-usage/v2 v2.0.0
+	github.com/velonetics/velonetics-xml/v2 v2.2.0
 	golang.org/x/sync v0.20.0
 )
 

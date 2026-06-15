@@ -56,7 +56,7 @@ make docker
 Run it:
 
 ```
-docker run -it -p "8080:8080" -v $(pwd)/velonetics.json:/etc/velonetics/velonetics.json velonetics/velonetics:2.13.7 run -c /etc/velonetics/velonetics.json
+docker run -it -p "8080:8080" -v $(pwd)/velonetics.json:/etc/velonetics/velonetics.json velonetics/velonetics:2.0.0 run -c /etc/velonetics/velonetics.json
 ```
 
 ## Build
