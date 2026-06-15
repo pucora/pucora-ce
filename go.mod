@@ -7,37 +7,37 @@ require (
 	github.com/go-contrib/uuid v1.2.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
 	github.com/spf13/cobra v1.8.1
-	github.com/velonetics/bloomfilter/v2 v2.1.0
-	github.com/velonetics/lura/v2 v2.14.2-0.20260316170719-6d79b4ef723b
+	github.com/velonetics/bloomfilter/v2 v2.0.0
+	github.com/velonetics/lura/v2 v2.0.0
 	github.com/velonetics/velonetics-amqp/v2 v2.0.0
 	github.com/velonetics/velonetics-audit v1.0.0
-	github.com/velonetics/velonetics-botdetector/v2 v2.3.0
+	github.com/velonetics/velonetics-botdetector/v2 v2.0.0
 	github.com/velonetics/velonetics-cel/v2 v2.0.0
 	github.com/velonetics/velonetics-circuitbreaker/v3 v3.0.0
 	github.com/velonetics/velonetics-cobra/v2 v2.0.0
-	github.com/velonetics/velonetics-cors/v2 v2.2.0
+	github.com/velonetics/velonetics-cors/v2 v2.0.0
 	github.com/velonetics/velonetics-flexibleconfig/v2 v2.0.0
-	github.com/velonetics/velonetics-gelf/v2 v2.1.0
-	github.com/velonetics/velonetics-gologging/v2 v2.1.1
-	github.com/velonetics/velonetics-httpcache/v2 v2.2.0
-	github.com/velonetics/velonetics-httpsecure/v2 v2.2.0
-	github.com/velonetics/velonetics-influx/v2 v2.2.0
-	github.com/velonetics/velonetics-jose/v2 v2.12.2
+	github.com/velonetics/velonetics-gelf/v2 v2.0.0
+	github.com/velonetics/velonetics-gologging/v2 v2.0.0
+	github.com/velonetics/velonetics-httpcache/v2 v2.0.0
+	github.com/velonetics/velonetics-httpsecure/v2 v2.0.0
+	github.com/velonetics/velonetics-influx/v2 v2.0.0
+	github.com/velonetics/velonetics-jose/v2 v2.0.0
 	github.com/velonetics/velonetics-jsonschema/v2 v2.0.0
 	github.com/velonetics/velonetics-koanf v1.0.0
 	github.com/velonetics/velonetics-lambda/v2 v2.0.0
-	github.com/velonetics/velonetics-logstash/v2 v2.1.0
-	github.com/velonetics/velonetics-lua/v2 v2.9.0
+	github.com/velonetics/velonetics-logstash/v2 v2.0.0
+	github.com/velonetics/velonetics-lua/v2 v2.0.0
 	github.com/velonetics/velonetics-martian/v2 v2.0.0
-	github.com/velonetics/velonetics-metrics/v2 v2.1.0
+	github.com/velonetics/velonetics-metrics/v2 v2.0.0
 	github.com/velonetics/velonetics-oauth2-clientcredentials/v2 v2.0.0
-	github.com/velonetics/velonetics-opencensus/v2 v2.2.0
+	github.com/velonetics/velonetics-opencensus/v2 v2.0.0
 	github.com/velonetics/velonetics-otel v1.0.0
 	github.com/velonetics/velonetics-pubsub/v2 v2.0.0
-	github.com/velonetics/velonetics-ratelimit/v3 v3.3.0
-	github.com/velonetics/velonetics-rss/v2 v2.1.1
+	github.com/velonetics/velonetics-ratelimit/v3 v3.0.0
+	github.com/velonetics/velonetics-rss/v2 v2.0.0
 	github.com/velonetics/velonetics-usage/v2 v2.0.0
-	github.com/velonetics/velonetics-xml/v2 v2.2.0
+	github.com/velonetics/velonetics-xml/v2 v2.0.0
 	golang.org/x/sync v0.20.0
 )
 
@@ -230,11 +230,11 @@ require (
 	github.com/ugorji/go/codec v1.3.1 // indirect
 	github.com/unrolled/secure v1.15.0 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
-	github.com/velonetics/binder v0.0.0-20250826131726-e91a8a754ef8 // indirect
+	github.com/velonetics/binder v1.0.0 // indirect
 	github.com/velonetics/flatmap v1.2.0 // indirect
 	github.com/velonetics/go-auth0/v2 v2.0.4 // indirect
 	github.com/velonetics/httpcache v1.1.1 // indirect
-	github.com/velonetics/lru v0.0.0-20250121172718-0e3a6eab620d // indirect
+	github.com/velonetics/lru v1.0.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.5.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
