@@ -1,0 +1,92 @@
+package velonetics
+
+import (
+	"context"
+	"fmt"
+
+	amqp "github.com/velonetics/velonetics-amqp/v2"
+	cel "github.com/velonetics/velonetics-cel/v2"
+	cb "github.com/velonetics/velonetics-circuitbreaker/v3/gobreaker/proxy"
+	httpcache "github.com/velonetics/velonetics-httpcache/v2"
+	lambda "github.com/velonetics/velonetics-lambda/v2"
+	lua "github.com/velonetics/velonetics-lua/v2/proxy"
+	martian "github.com/velonetics/velonetics-martian/v2"
+	metrics "github.com/velonetics/velonetics-metrics/v2/gin"
+	oauth2client "github.com/velonetics/velonetics-oauth2-clientcredentials/v2"
+	opencensus "github.com/velonetics/velonetics-opencensus/v2"
+	otellura "github.com/velonetics/velonetics-otel/lura"
+	pubsub "github.com/velonetics/velonetics-pubsub/v2"
+	ratelimit "github.com/velonetics/velonetics-ratelimit/v3/proxy"
+	"github.com/velonetics/lura/v2/config"
+	"github.com/velonetics/lura/v2/logging"
+	"github.com/velonetics/lura/v2/proxy"
+	"github.com/velonetics/lura/v2/transport/http/client"
+	httprequestexecutor "github.com/velonetics/lura/v2/transport/http/client/plugin"
+)
+
+// NewBackendFactory creates a BackendFactory by stacking all the available middlewares:
+// - oauth2 client credentials
+// - http cache
+// - martian
+// - pubsub
+// - amqp
+// - cel
+// - lua
+// - rate-limit
+// - circuit breaker
+// - metrics collector
+// - opencensus collector
+func NewBackendFactory(logger logging.Logger, metricCollector *metrics.Metrics) proxy.BackendFactory {
+	return NewBackendFactoryWithContext(context.Background(), logger, metricCollector)
+}
+
+func newRequestExecutorFactory(ctx context.Context, logger logging.Logger) func(*config.Backend) client.HTTPRequestExecutor {
+	requestExecutorFactory := func(cfg *config.Backend) client.HTTPRequestExecutor {
+		clientFactory := client.NewHTTPClient
+		if _, ok := cfg.ExtraConfig[oauth2client.Namespace]; ok {
+			clientFactory = oauth2client.NewHTTPClient(cfg)
+		}
+
+		clientFactory = httpcache.NewHTTPClient(cfg, clientFactory)
+		clientFactory = otellura.InstrumentedHTTPClientFactory(clientFactory, cfg)
+		// TODO: check what happens if we have both, opencensus and otel enabled ?
+		return opencensus.HTTPRequestExecutorFromConfig(clientFactory, cfg)
+	}
+	return httprequestexecutor.HTTPRequestExecutorWithContext(ctx, logger, requestExecutorFactory)
+}
+
+func internalNewBackendFactory(
+	ctx context.Context,
+	requestExecutorFactory func(*config.Backend) client.HTTPRequestExecutor,
+	logger logging.Logger,
+	metricCollector *metrics.Metrics,
+) proxy.BackendFactory {
+	backendFactory := martian.NewConfiguredBackendFactory(logger, requestExecutorFactory)
+	bf := pubsub.NewBackendFactory(ctx, logger, backendFactory)
+	backendFactory = bf.New
+	backendFactory = amqp.NewBackendFactory(ctx, logger, backendFactory)
+	backendFactory = lambda.BackendFactory(logger, backendFactory)
+	backendFactory = cel.BackendFactory(logger, backendFactory)
+	backendFactory = lua.BackendFactory(logger, backendFactory)
+	backendFactory = ratelimit.BackendFactory(logger, backendFactory)
+	backendFactory = cb.BackendFactory(backendFactory, logger)
+	backendFactory = metricCollector.BackendFactory("backend", backendFactory)
+	backendFactory = opencensus.BackendFactory(backendFactory)
+	backendFactory = otellura.BackendFactory(backendFactory)
+	return func(remote *config.Backend) proxy.Proxy {
+		logger.Debug(fmt.Sprintf("[BACKEND: %s] Building the backend pipe", remote.URLPattern))
+		return backendFactory(remote)
+	}
+}
+
+// NewBackendFactoryWithContext creates a BackendFactory by stacking all the available middlewares and injecting the received context
+func NewBackendFactoryWithContext(ctx context.Context, logger logging.Logger, metricCollector *metrics.Metrics) proxy.BackendFactory {
+	requestExecutorFactory := newRequestExecutorFactory(ctx, logger)
+	return internalNewBackendFactory(ctx, requestExecutorFactory, logger, metricCollector)
+}
+
+type backendFactory struct{}
+
+func (backendFactory) NewBackendFactory(ctx context.Context, l logging.Logger, m *metrics.Metrics) proxy.BackendFactory {
+	return NewBackendFactoryWithContext(ctx, l, m)
+}

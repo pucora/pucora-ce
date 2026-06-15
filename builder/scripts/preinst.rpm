@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ "$1" = "1" ]; then
+	getent passwd velonetics > /dev/null || \
+		useradd -r -M -s /sbin/nologin -c "velonetics service account" velonetics
+fi

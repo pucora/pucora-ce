@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+USER=velonetics
+
+if ! getent passwd $USER >/dev/null ; then
+  adduser --system --disabled-login --gecos "Velonetics" --shell /bin/false --no-create-home $USER > /dev/null
+fi
+
+if [ -x "/etc/init.d/velonetics" ] || [ -e "/etc/init/velonetics.conf" ]; then
+	service velonetics stop || exit $?
+fi
