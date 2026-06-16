@@ -7,4 +7,3 @@ velonetics-alpine
 cmd/velonetics-integration/velonetics-integration
 tests/fixtures/velonetics.json.final
 .vscode
-forks/

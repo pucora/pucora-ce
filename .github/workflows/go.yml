@@ -22,11 +22,8 @@ jobs:
           git clone --depth 1 --branch v2.0.1 https://github.com/velonetics/velonetics-websocket.git /tmp/velonetics-websocket
           cd /tmp/velonetics-websocket && go test -count=1 .
 
-      - name: Use published Velonetics modules (drop local replace)
-        run: |
-          awk '/^replace \(/,/^\)/{next} 1' go.mod > go.mod.ci
-          mv go.mod.ci go.mod
-          GOPROXY=direct go mod tidy
+      - name: Download modules
+        run: GOPROXY=direct go mod tidy
 
       - name: Fetch JSON schema
         run: |

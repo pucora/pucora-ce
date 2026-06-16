@@ -8,7 +8,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
 	github.com/spf13/cobra v1.8.1
 	github.com/velonetics/bloomfilter/v2 v2.0.0
-	github.com/velonetics/lura/v2 v2.0.0
+	github.com/velonetics/lura/v2 v2.0.1
 	github.com/velonetics/velonetics-amqp/v2 v2.0.0
 	github.com/velonetics/velonetics-audit v1.0.0
 	github.com/velonetics/velonetics-botdetector/v2 v2.0.0
@@ -287,44 +287,4 @@ require (
 	gopkg.in/DataDog/dd-trace-go.v1 v1.62.0 // indirect
 	gopkg.in/Graylog2/go-gelf.v2 v2.0.0-20191017102106-1550ee647df0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-)
-
-replace (
-	github.com/velonetics/binder => ./forks/binder
-	github.com/velonetics/bloomfilter/v2 => ./forks/bloomfilter
-	github.com/velonetics/flatmap => ./forks/flatmap
-	github.com/velonetics/go-auth0/v2 => ./forks/go-auth0
-	github.com/velonetics/httpcache => ./forks/httpcache
-	github.com/velonetics/lru => ./forks/lru
-	github.com/velonetics/lura/v2 => ./forks/velonetics-lura
-	github.com/velonetics/velonetics-amqp/v2 => ./forks/velonetics-amqp
-	github.com/velonetics/velonetics-audit => ./forks/velonetics-audit
-	github.com/velonetics/velonetics-botdetector/v2 => ./forks/velonetics-botdetector
-	github.com/velonetics/velonetics-cel/v2 => ./forks/velonetics-cel
-	github.com/velonetics/velonetics-circuitbreaker/v3 => ./forks/velonetics-circuitbreaker
-	github.com/velonetics/velonetics-cobra/v2 => ./forks/velonetics-cobra
-	github.com/velonetics/velonetics-cors/v2 => ./forks/velonetics-cors
-	github.com/velonetics/velonetics-flexibleconfig/v2 => ./forks/velonetics-flexibleconfig
-	github.com/velonetics/velonetics-gelf/v2 => ./forks/velonetics-gelf
-	github.com/velonetics/velonetics-gologging/v2 => ./forks/velonetics-gologging
-	github.com/velonetics/velonetics-httpcache/v2 => ./forks/velonetics-httpcache
-	github.com/velonetics/velonetics-httpsecure/v2 => ./forks/velonetics-httpsecure
-	github.com/velonetics/velonetics-influx/v2 => ./forks/velonetics-influx
-	github.com/velonetics/velonetics-jose/v2 => ./forks/velonetics-jose
-	github.com/velonetics/velonetics-jsonschema/v2 => ./forks/velonetics-jsonschema
-	github.com/velonetics/velonetics-koanf => ./forks/velonetics-koanf
-	github.com/velonetics/velonetics-lambda/v2 => ./forks/velonetics-lambda
-	github.com/velonetics/velonetics-logstash/v2 => ./forks/velonetics-logstash
-	github.com/velonetics/velonetics-lua/v2 => ./forks/velonetics-lua
-	github.com/velonetics/velonetics-martian/v2 => ./forks/velonetics-martian
-	github.com/velonetics/velonetics-metrics/v2 => ./forks/velonetics-metrics
-	github.com/velonetics/velonetics-oauth2-clientcredentials/v2 => ./forks/velonetics-oauth2-clientcredentials
-	github.com/velonetics/velonetics-opencensus/v2 => ./forks/velonetics-opencensus
-	github.com/velonetics/velonetics-otel => ./forks/velonetics-otel
-	github.com/velonetics/velonetics-pubsub/v2 => ./forks/velonetics-pubsub
-	github.com/velonetics/velonetics-ratelimit/v3 => ./forks/velonetics-ratelimit
-	github.com/velonetics/velonetics-rss/v2 => ./forks/velonetics-rss
-	github.com/velonetics/velonetics-usage/v2 => ./forks/velonetics-usage
-	github.com/velonetics/velonetics-websocket/v2 => ./forks/velonetics-websocket
-	github.com/velonetics/velonetics-xml/v2 => ./forks/velonetics-xml
 )

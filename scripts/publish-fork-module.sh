@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-# Publish a forked Go module from forks/<name>/ to github.com/velonetics/<name>
+# Publish a Go module from a sibling repo to github.com/velonetics/<name>
 #
 # Usage:
 #   ./scripts/publish-fork-module.sh velonetics-websocket v2.0.1
 #   ./scripts/publish-fork-module.sh velonetics-websocket v2.0.1 --dry-run
+#   ./scripts/publish-fork-module.sh lura v2.0.1   # publishes ../velonetics-lura
 #
 set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
-  echo "usage: $0 <fork-dir-name> <tag> [--dry-run]" >&2
+  echo "usage: $0 <module-dir-name> <tag> [--dry-run]" >&2
   echo "example: $0 velonetics-websocket v2.0.1" >&2
   exit 2
 fi
 
-FORK_NAME="$1"
+MODULE_NAME="$1"
 TAG="$2"
 DRY_RUN=false
 if [[ "${3:-}" == "--dry-run" ]]; then
@@ -21,11 +22,28 @@ if [[ "${3:-}" == "--dry-run" ]]; then
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SRC="${ROOT}/forks/${FORK_NAME}"
-REMOTE="git@github.com:velonetics/${FORK_NAME}.git"
+WORKSPACE="$(cd "${ROOT}/.." && pwd)"
+
+# GitHub repo name (lura vs velonetics-lura).
+case "${MODULE_NAME}" in
+  lura) GH_NAME="lura" ;;
+  binder|bloomfilter|flatmap|go-auth0|httpcache|lru) GH_NAME="${MODULE_NAME}" ;;
+  velonetics-*) GH_NAME="${MODULE_NAME}" ;;
+  *) GH_NAME="${MODULE_NAME}" ;;
+esac
+
+# Local directory (velonetics-lura for lura).
+case "${MODULE_NAME}" in
+  lura) LOCAL_NAME="velonetics-lura" ;;
+  *) LOCAL_NAME="${MODULE_NAME}" ;;
+esac
+
+SRC="${WORKSPACE}/${LOCAL_NAME}"
+REMOTE="git@github.com:velonetics/${GH_NAME}.git"
 
 if [[ ! -d "$SRC" ]]; then
-  echo "fork not found: $SRC" >&2
+  echo "module not found: $SRC" >&2
+  echo "Clone sibling repos under ${WORKSPACE} or pass an existing module dir name." >&2
   exit 1
 fi
 
@@ -41,7 +59,7 @@ cleanup() { rm -rf "$BASE"; }
 trap cleanup EXIT
 
 mkdir -p "$STAGE"
-echo "==> Staging ${FORK_NAME}"
+echo "==> Staging ${LOCAL_NAME} -> velonetics/${GH_NAME}"
 rsync -a --exclude '.git' "$SRC/" "$STAGE/"
 
 if [[ -f "$ROOT/LICENSE" ]]; then
@@ -60,10 +78,10 @@ if $DRY_RUN; then
   exit 0
 fi
 
-if ! gh repo view "velonetics/${FORK_NAME}" >/dev/null 2>&1; then
-  echo "==> Creating github.com/velonetics/${FORK_NAME}"
-  gh repo create "velonetics/${FORK_NAME}" --public \
-    --description "Velonetics CE module: ${FORK_NAME}"
+if ! gh repo view "velonetics/${GH_NAME}" >/dev/null 2>&1; then
+  echo "==> Creating github.com/velonetics/${GH_NAME}"
+  gh repo create "velonetics/${GH_NAME}" --public \
+    --description "Velonetics CE module: ${GH_NAME}"
 fi
 
 echo "==> Syncing with ${REMOTE}"
@@ -76,7 +94,7 @@ git add -A
 if git diff --cached --quiet; then
   echo "==> No file changes since last publish"
 else
-  git commit -m "Release ${FORK_NAME} ${TAG}"
+  git commit -m "Release ${GH_NAME} ${TAG}"
 fi
 
 echo "==> Pushing main"
@@ -86,8 +104,8 @@ if git rev-parse "$TAG" >/dev/null 2>&1; then
   echo "==> Tag ${TAG} already exists locally, updating"
   git tag -d "$TAG" >/dev/null 2>&1 || true
 fi
-git tag -a "$TAG" -m "${FORK_NAME} ${TAG}"
+git tag -a "$TAG" -m "${GH_NAME} ${TAG}"
 git push origin "$TAG" --force
 
 echo "==> Published ${REMOTE} @ ${TAG}"
-echo "Next: bump github.com/velonetics/${FORK_NAME}/v2 in velonetics-ce go.mod if needed."
+echo "Next: bump github.com/velonetics/${GH_NAME}/v2 in velonetics-ce go.mod if needed."

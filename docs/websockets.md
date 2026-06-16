@@ -2,7 +2,7 @@
 
 Velonetics supports bidirectional communication using the [WebSocket protocol (RFC-6455)](https://datatracker.ietf.org/doc/html/rfc6455). Clients connect to the gateway over WebSocket; the gateway connects to one or more backend hosts using `ws://` or `wss://`.
 
-This feature is implemented by the [`velonetics-websocket`](../forks/velonetics-websocket) module and is configured per endpoint via `extra_config.websocket`.
+This feature is implemented by the [`velonetics-websocket`](https://github.com/velonetics/velonetics-websocket) module and is configured per endpoint via `extra_config.websocket`.
 
 ## Operating modes
 
@@ -289,14 +289,14 @@ Unless `disable_otel_metrics` is set:
 
 ## Testing
 
-Module tests:
+Module tests (sibling repo or `go.work` workspace):
 
 ```bash
-cd forks/velonetics-websocket
+cd ../velonetics-websocket
 go test ./...
 ```
 
-Or from the repository root:
+Or from the repository root (with `go.work` at the workspace parent, see `scripts/init-workspace.sh`):
 
 ```bash
 make test-websocket
@@ -349,10 +349,10 @@ Ensure the container can reach backend `ws://` hosts (use host networking or ser
 
 | Path | Purpose |
 |------|---------|
-| [`forks/velonetics-websocket/`](../forks/velonetics-websocket/) | Implementation module |
-| [`forks/velonetics-schema/v2.13/websocket.json`](../forks/velonetics-schema/v2.13/websocket.json) | JSON Schema |
+| [`velonetics-websocket`](https://github.com/velonetics/velonetics-websocket) | Implementation module (`../velonetics-websocket` in workspace) |
+| [`velonetics-schema` v2.13 websocket.json](https://github.com/velonetics/velonetics-schema/blob/v2.0.0/v2.13/websocket.json) | JSON Schema |
 | [`handler_factory.go`](../handler_factory.go) | Gateway wiring (WebSocket → JWT handler chain) |
-| [`forks/velonetics-lura/router/gin/router.go`](../forks/velonetics-lura/router/gin/router.go) | GET-only registration for WS endpoints |
+| [`lura` router/gin/router.go](https://github.com/velonetics/lura/blob/v2.0.1/router/gin/router.go) | GET-only registration for WS endpoints |
 | [`tests/fixtures/ws_direct.json`](../tests/fixtures/ws_direct.json) | Direct mode sample |
 | [`tests/fixtures/ws_multiplex.json`](../tests/fixtures/ws_multiplex.json) | Multiplex sample |
 | [`tests/fixtures/ws_jwt.json`](../tests/fixtures/ws_jwt.json) | JWT + direct mode sample |

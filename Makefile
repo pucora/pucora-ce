@@ -66,7 +66,7 @@ test: build
 	go test -v ./tests
 
 test-websocket:
-	cd forks/velonetics-websocket && go test ./...
+	cd ../velonetics-websocket && go test ./...
 
 check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/ws_direct.json
@@ -85,13 +85,8 @@ ws-compose-smoke:
 	./examples/websocket/scripts/smoke.sh
 
 ws-compose-test: cmd/velonetics-ce/schema/schema.json
-	@if [ ! -d vendor ]; then \
-		cp go.mod go.mod.bak && cp go.sum go.sum.bak; \
-		awk '/^replace \(/,/^\)/{next} 1' go.mod > go.mod.ci && mv go.mod.ci go.mod; \
-		GOPROXY=direct go mod tidy && go mod vendor; \
-		mv go.mod.bak go.mod && mv go.sum.bak go.sum; \
-	fi
-	cd examples/websocket/mock-backend && go mod vendor
+	@test -d vendor || GOWORK=off go mod vendor
+	cd examples/websocket/mock-backend && GOWORK=off go mod vendor
 	cd examples/websocket && docker compose up --build -d
 	chmod +x examples/websocket/scripts/smoke.sh
 	./examples/websocket/scripts/smoke.sh
@@ -102,7 +97,7 @@ SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.
 cmd/velonetics-ce/schema/schema.json:
 	@echo "Fetching v${SCHEMA_VERSION} schema"
 	@mkdir -p $(dir $@)
-	@cp forks/velonetics-schema/v${SCHEMA_VERSION}/velonetics.json $@ 2>/dev/null || \
+	@cp ../velonetics-schema/v${SCHEMA_VERSION}/velonetics.json $@ 2>/dev/null || \
 		curl -fsSL -o $@ $(SCHEMA_URL)
 
 # Build Velonetics using docker (defaults to whatever the golang container uses)
@@ -111,7 +106,7 @@ build_on_docker: docker-builder-linux
 
 # Build the container using the Dockerfile (alpine)
 docker: cmd/velonetics-ce/schema/schema.json
-	@test -d vendor || go mod vendor
+	@test -d vendor || GOWORK=off go mod vendor
 	docker build --pull \
 		--build-arg GOLANG_VERSION=${GOLANG_VERSION} \
 		--build-arg ALPINE_VERSION=${ALPINE_VERSION} \
