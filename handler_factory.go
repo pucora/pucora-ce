@@ -10,6 +10,7 @@ import (
 	metrics "github.com/velonetics/velonetics-metrics/v2/gin"
 	opencensus "github.com/velonetics/velonetics-opencensus/v2/router/gin"
 	ratelimit "github.com/velonetics/velonetics-ratelimit/v3/router/gin"
+	wsgin "github.com/velonetics/velonetics-websocket/v2/router/gin"
 	"github.com/velonetics/lura/v2/config"
 	"github.com/velonetics/lura/v2/logging"
 	"github.com/velonetics/lura/v2/proxy"
@@ -24,6 +25,7 @@ func NewHandlerFactory(logger logging.Logger, metricCollector *metrics.Metrics, 
 	handlerFactory := router.CustomErrorEndpointHandler(logger, server.DefaultToHTTPError)
 	handlerFactory = ratelimit.NewRateLimiterMw(logger, handlerFactory)
 	handlerFactory = lua.HandlerFactory(logger, handlerFactory)
+	handlerFactory = wsgin.HandlerFactory(logger, handlerFactory)
 	handlerFactory = ginjose.HandlerFactory(handlerFactory, logger, rejecter)
 	handlerFactory = metricCollector.NewHTTPHandlerFactory(handlerFactory)
 	handlerFactory = opencensus.New(handlerFactory)

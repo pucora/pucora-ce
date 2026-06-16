@@ -420,13 +420,33 @@ func (m *MetricsAndTraces) Close() {
 }
 
 const (
-	usageDisable = "USAGE_DISABLE"
-	usageDelay   = 5 * time.Second
+	usageDisableEnv = "USAGE_DISABLE"
+	usageConfigNS   = "telemetry/usage"
+	usageDelay      = 5 * time.Second
 )
+
+func usageReportingDisabled(cfg config.ServiceConfig) bool {
+	switch os.Getenv(usageDisableEnv) {
+	case "1", "true", "TRUE":
+		return true
+	}
+
+	usageCfg, ok := cfg.ExtraConfig[usageConfigNS].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	if enabled, ok := usageCfg["enabled"].(bool); ok && !enabled {
+		return true
+	}
+	if disabled, ok := usageCfg["disabled"].(bool); ok && disabled {
+		return true
+	}
+	return false
+}
 
 func startReporter(ctx context.Context, logger logging.Logger, cfg config.ServiceConfig) {
 	logPrefix := "[SERVICE: Telemetry]"
-	if os.Getenv(usageDisable) == "1" {
+	if usageReportingDisabled(cfg) {
 		return
 	}
 

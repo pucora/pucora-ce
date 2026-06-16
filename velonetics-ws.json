@@ -1,0 +1,33 @@
+{
+  "version": 3,
+  "port": 8080,
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[VELONETICS]",
+      "stdout": true
+    },
+    "telemetry/usage": {
+      "enabled": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/ws/echo",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["ws://127.0.0.1:8081"],
+          "url_pattern": "/echo",
+          "disable_host_sanitize": true
+        }
+      ],
+      "extra_config": {
+        "websocket": {
+          "enable_direct_communication": true,
+          "max_message_size": 4096
+        }
+      }
+    }
+  ]
+}

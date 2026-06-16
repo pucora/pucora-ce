@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "port": 8080,
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[VELONETICS]",
+      "stdout": true
+    },
+    "telemetry/usage": {
+      "enabled": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/ws/{room}",
+      "method": "GET",
+      "input_query_strings": ["*"],
+      "backend": [
+        {
+          "host": ["ws://127.0.0.1:8081"],
+          "url_pattern": "/ws",
+          "disable_host_sanitize": true
+        }
+      ],
+      "extra_config": {
+        "websocket": {
+          "connect_event": true,
+          "disconnect_event": true,
+          "max_message_size": 3200000,
+          "message_buffer_size": 256,
+          "max_retries": 0,
+          "backoff_strategy": "exponential",
+          "input_headers": ["Authorization", "Cookie"]
+        }
+      }
+    }
+  ]
+}

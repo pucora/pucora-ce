@@ -17,6 +17,9 @@ jobs:
         with:
           go-version-file: go.mod
 
+      - name: WebSocket module tests
+        run: cd forks/velonetics-websocket && go test ./...
+
       - name: Use published Velonetics modules (drop local replace)
         run: |
           awk '/^replace \(/,/^\)/{next} 1' go.mod > go.mod.ci
@@ -33,6 +36,13 @@ jobs:
           VERSION=$(grep '^VERSION :=' Makefile | awk '{print $3}')
           go build -ldflags="-X github.com/velonetics/lura/v2/core.VeloneticsVersion=${VERSION}" \
             -o velonetics ./cmd/velonetics-ce
+
+      - name: Validate WebSocket fixtures
+        run: |
+          ./velonetics check -c tests/fixtures/ws_direct.json
+          ./velonetics check -c tests/fixtures/ws_multiplex.json
+          ./velonetics check -c tests/fixtures/ws_jwt.json
+          ./velonetics check -c velonetics-ws.json
 
       - name: Unit tests
         run: go test $(go list ./... | grep -vE '/tests$|/cmd/velonetics-integration')

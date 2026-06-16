@@ -37,6 +37,7 @@ require (
 	github.com/velonetics/velonetics-ratelimit/v3 v3.0.0
 	github.com/velonetics/velonetics-rss/v2 v2.0.0
 	github.com/velonetics/velonetics-usage/v2 v2.0.0
+	github.com/velonetics/velonetics-websocket/v2 v2.0.1
 	github.com/velonetics/velonetics-xml/v2 v2.0.0
 	golang.org/x/sync v0.20.0
 )
@@ -109,6 +110,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
+	github.com/coder/websocket v1.8.13 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
@@ -323,5 +325,6 @@ replace (
 	github.com/velonetics/velonetics-ratelimit/v3 => ./forks/velonetics-ratelimit
 	github.com/velonetics/velonetics-rss/v2 => ./forks/velonetics-rss
 	github.com/velonetics/velonetics-usage/v2 => ./forks/velonetics-usage
+	github.com/velonetics/velonetics-websocket/v2 => ./forks/velonetics-websocket
 	github.com/velonetics/velonetics-xml/v2 => ./forks/velonetics-xml
 )

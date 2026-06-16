@@ -1,0 +1,12 @@
+.git
+.github
+velonetics
+velonetics-alpine
+tests
+builder/skel
+*.tar.gz
+*.deb
+*.rpm
+.DS_Store
+**/.DS_Store
+forks

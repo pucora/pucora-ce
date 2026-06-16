@@ -27,6 +27,7 @@ Velonetics is an extensible, ultra-high performance API Gateway that helps you e
 - **Throttling**: Limits of usage in the router and proxy layers
 - **Multi-layer rate-limiting** for the end-user and between Velonetics and your services, including bursting, load balancing, and circuit breaker.
 - **Telemetry** and dashboards of all sorts: Datadog, Zipkin, Jaeger, Prometheus, Grafana...
+- **WebSockets** (RFC-6455): multiplexed or direct proxy to `ws://` / `wss://` backends — see [docs/websockets.md](docs/websockets.md) and the standalone module [velonetics/velonetics-websocket](https://github.com/velonetics/velonetics-websocket)
 - **Extensible** with Go plugins, Lua scripts, Martian, or Google CEL spec.
 
 ## Run
@@ -43,9 +44,28 @@ Run with the sample configuration:
 ./velonetics run -c velonetics.json
 ```
 
+For WebSocket-only local testing (requires a `ws://` backend on port 8081):
+
+```
+./velonetics run -c velonetics-ws.json
+# or: make ws-compose-test
+```
+
 Now see [http://localhost:8080/__health](http://localhost:8080/__health). The gateway is listening.
 
 ## Docker
+
+### WebSocket local stack
+
+Gateway + mock backend (direct, multiplex, JWT):
+
+```bash
+make ws-compose-test   # build, smoke test, tear down
+```
+
+See [examples/websocket/README.md](examples/websocket/README.md).
+
+### Single image
 
 Build the Docker image:
 
@@ -78,6 +98,10 @@ make build_on_docker
 Velonetics uses a JSON configuration format compatible with Velonetics configs. Configuration files are named `velonetics.json` and placed in `/etc/velonetics/`.
 
 Legacy Velonetics namespace keys in `extra_config` are still accepted for backward compatibility.
+
+### WebSockets
+
+See [docs/websockets.md](docs/websockets.md) for configuration, multiplex envelope protocol, JWT on upgrade, and sample configs under `tests/fixtures/ws_*.json`.
 
 ## License
 

@@ -1,0 +1,83 @@
+{
+  "version": 3,
+  "port": 8080,
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[VELONETICS]",
+      "stdout": true
+    },
+    "telemetry/usage": {
+      "enabled": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/ws/echo",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["ws://mock-backend:8081"],
+          "url_pattern": "/echo",
+          "disable_host_sanitize": true
+        }
+      ],
+      "extra_config": {
+        "websocket": {
+          "enable_direct_communication": true,
+          "max_message_size": 4096
+        }
+      }
+    },
+    {
+      "endpoint": "/ws/chat/{room}",
+      "method": "GET",
+      "input_query_strings": ["*"],
+      "backend": [
+        {
+          "host": ["ws://mock-backend:8081"],
+          "url_pattern": "/ws",
+          "disable_host_sanitize": true
+        }
+      ],
+      "extra_config": {
+        "websocket": {
+          "connect_event": true,
+          "disconnect_event": true,
+          "max_message_size": 1048576,
+          "message_buffer_size": 256,
+          "max_retries": 0,
+          "backoff_strategy": "fallback"
+        }
+      }
+    },
+    {
+      "endpoint": "/ws/secure",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["ws://mock-backend:8081"],
+          "url_pattern": "/echo",
+          "disable_host_sanitize": true
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "HS256",
+          "audience": ["http://api.example.com"],
+          "roles_key": "roles",
+          "issuer": "http://example.com",
+          "roles": ["role_a", "role_b"],
+          "jwk_url": "http://mock-backend:8081/jwk/symmetric",
+          "disable_jwk_security": true,
+          "cache": true
+        },
+        "websocket": {
+          "enable_direct_communication": true,
+          "max_message_size": 4096,
+          "input_headers": ["Authorization"]
+        }
+      }
+    }
+  ]
+}

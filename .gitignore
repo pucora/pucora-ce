@@ -1,4 +1,5 @@
 /vendor
+examples/websocket/mock-backend/vendor
 bench_res
 sec_scan
 velonetics
