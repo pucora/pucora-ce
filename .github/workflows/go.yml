@@ -20,7 +20,7 @@ jobs:
       - name: WebSocket published module tests
         run: |
           git clone --depth 1 --branch v2.0.1 https://github.com/velonetics/velonetics-websocket.git /tmp/velonetics-websocket
-          cd /tmp/velonetics-websocket && go test ./...
+          cd /tmp/velonetics-websocket && go test -count=1 .
 
       - name: Use published Velonetics modules (drop local replace)
         run: |

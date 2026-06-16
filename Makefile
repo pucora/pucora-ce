@@ -85,7 +85,12 @@ ws-compose-smoke:
 	./examples/websocket/scripts/smoke.sh
 
 ws-compose-test: cmd/velonetics-ce/schema/schema.json
-	@test -d vendor || go mod vendor
+	@if [ ! -d vendor ]; then \
+		cp go.mod go.mod.bak && cp go.sum go.sum.bak; \
+		awk '/^replace \(/,/^\)/{next} 1' go.mod > go.mod.ci && mv go.mod.ci go.mod; \
+		GOPROXY=direct go mod tidy && go mod vendor; \
+		mv go.mod.bak go.mod && mv go.sum.bak go.sum; \
+	fi
 	cd examples/websocket/mock-backend && go mod vendor
 	cd examples/websocket && docker compose up --build -d
 	chmod +x examples/websocket/scripts/smoke.sh
