@@ -22,6 +22,11 @@ jobs:
           git clone --depth 1 --branch v2.0.1 https://github.com/velonetics/velonetics-websocket.git /tmp/velonetics-websocket
           cd /tmp/velonetics-websocket && go test -count=1 .
 
+      - name: SOAP published module tests
+        run: |
+          git clone --depth 1 --branch v2.1.0 https://github.com/velonetics/velonetics-soap.git /tmp/velonetics-soap
+          cd /tmp/velonetics-soap && go test -count=1 .
+
       - name: Fetch JSON schema
         run: |
           curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
@@ -39,6 +44,7 @@ jobs:
           ./velonetics check -c tests/fixtures/ws_multiplex.json
           ./velonetics check -c tests/fixtures/ws_jwt.json
           ./velonetics check -c velonetics-ws.json
+          ./velonetics check -c tests/fixtures/soap_country.json
 
       - name: WebSocket integration test
         run: cd tests && go test -count=1 -run TestWebSocket -timeout 2m

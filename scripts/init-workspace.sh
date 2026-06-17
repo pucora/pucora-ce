@@ -53,6 +53,7 @@ MODULE_DIRS=(
 	velonetics-pubsub
 	velonetics-ratelimit
 	velonetics-rss
+	velonetics-soap
 	velonetics-usage
 	velonetics-websocket
 	velonetics-xml

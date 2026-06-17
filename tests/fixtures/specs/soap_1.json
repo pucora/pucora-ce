@@ -1,0 +1,14 @@
+{
+  "in": {
+    "method": "GET",
+    "url": "http://localhost:8080/country/US"
+  },
+  "out": {
+    "status_code": 200,
+    "body": "{\"flag_url\":\"http://www.example.com/flags/US.jpg\"}",
+    "header": {
+      "content-type": ["application/json; charset=utf-8"],
+      "X-Velonetics-Completed": ["true"]
+    }
+  }
+}

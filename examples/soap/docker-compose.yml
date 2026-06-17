@@ -1,0 +1,27 @@
+services:
+  mock-backend:
+    build: ./mock-backend
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/mock-soap-backend", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  velonetics:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      args:
+        VERSION: "2.0.0"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./${VELO_CONFIG:-velonetics.json}:/etc/velonetics/velonetics.json:ro
+      - ./soap_flag_request.xml:/etc/velonetics/soap_flag_request.xml:ro
+    depends_on:
+      mock-backend:
+        condition: service_healthy
+    command: ["run", "-c", "/etc/velonetics/velonetics.json"]

@@ -17,6 +17,7 @@ import (
 	otellura "github.com/velonetics/velonetics-otel/lura"
 	pubsub "github.com/velonetics/velonetics-pubsub/v2"
 	ratelimit "github.com/velonetics/velonetics-ratelimit/v3/proxy"
+	soap "github.com/velonetics/velonetics-soap/v2"
 	"github.com/velonetics/lura/v2/config"
 	"github.com/velonetics/lura/v2/logging"
 	"github.com/velonetics/lura/v2/proxy"
@@ -66,6 +67,7 @@ func internalNewBackendFactory(
 	backendFactory = bf.New
 	backendFactory = amqp.NewBackendFactory(ctx, logger, backendFactory)
 	backendFactory = lambda.BackendFactory(logger, backendFactory)
+	backendFactory = soap.BackendFactory(logger, backendFactory)
 	backendFactory = cel.BackendFactory(logger, backendFactory)
 	backendFactory = lua.BackendFactory(logger, backendFactory)
 	backendFactory = ratelimit.BackendFactory(logger, backendFactory)

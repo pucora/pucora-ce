@@ -3,6 +3,7 @@ module github.com/velonetics/velonetics-ce/v2
 go 1.25.3
 
 require (
+	github.com/coder/websocket v1.8.13
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-contrib/uuid v1.2.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
@@ -36,6 +37,7 @@ require (
 	github.com/velonetics/velonetics-pubsub/v2 v2.0.0
 	github.com/velonetics/velonetics-ratelimit/v3 v3.0.0
 	github.com/velonetics/velonetics-rss/v2 v2.0.0
+	github.com/velonetics/velonetics-soap/v2 v2.1.0
 	github.com/velonetics/velonetics-usage/v2 v2.0.0
 	github.com/velonetics/velonetics-websocket/v2 v2.0.1
 	github.com/velonetics/velonetics-xml/v2 v2.0.0
@@ -99,6 +101,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.41.9 // indirect
 	github.com/aws/smithy-go v1.24.2 // indirect
+	github.com/beevik/etree v1.6.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect
@@ -110,7 +113,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
-	github.com/coder/websocket v1.8.13 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
@@ -167,6 +169,7 @@ require (
 	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.5 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
@@ -213,6 +216,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/rs/cors/wrapper/gin v0.0.0-20240830163046-1084d89a1692 // indirect
+	github.com/russellhaering/goxmldsig v1.5.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/sony/gobreaker/v2 v2.4.0 // indirect

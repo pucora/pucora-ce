@@ -1,0 +1,29 @@
+{
+  "$schema": "https://velonetics.io/schema/v2.13/velonetics.json",
+  "version": 3,
+  "port": 8080,
+  "endpoints": [
+    {
+      "endpoint": "/country/{country}",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/CountryInfoService.wso",
+          "method": "POST",
+          "encoding": "xml",
+          "extra_config": {
+            "backend/soap": {
+              "path": "./tests/fixtures/soap_flag_request.xml"
+            }
+          },
+          "target": "Envelope.Body.CountryFlagResponse",
+          "mapping": {
+            "CountryFlagResult": "flag_url"
+          },
+          "deny": ["-m"]
+        }
+      ]
+    }
+  ]
+}

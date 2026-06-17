@@ -7,7 +7,7 @@
 BIN_NAME :=velonetics
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/velonetics/velonetics-ce/v2
-VERSION := 2.0.0
+VERSION := 2.0.1
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := velonetics
@@ -52,7 +52,7 @@ RPM_OPTS =--rpm-user $(USER) \
 	--before-remove builder/scripts/prerm.rpm \
   --after-remove builder/scripts/postrm.rpm
 
-all: test test-websocket
+all: test test-websocket test-soap
 
 build: cmd/velonetics-ce/schema/schema.json
 	@echo "Building the binary..."
@@ -68,11 +68,15 @@ test: build
 test-websocket:
 	cd ../velonetics-websocket && go test ./...
 
+test-soap:
+	cd ../velonetics-soap && go test ./...
+
 check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/ws_direct.json
 	./${BIN_NAME} check -c tests/fixtures/ws_multiplex.json
 	./${BIN_NAME} check -c tests/fixtures/ws_jwt.json
 	./${BIN_NAME} check -c velonetics-ws.json
+	./${BIN_NAME} check -c tests/fixtures/soap_country.json
 
 ws-compose-up:
 	cd examples/websocket && docker compose up --build -d
@@ -91,6 +95,30 @@ ws-compose-test: cmd/velonetics-ce/schema/schema.json
 	chmod +x examples/websocket/scripts/smoke.sh
 	./examples/websocket/scripts/smoke.sh
 	cd examples/websocket && docker compose down -v
+
+soap-compose-up:
+	cd examples/soap && docker compose up --build -d
+
+soap-compose-down:
+	cd examples/soap && docker compose down
+
+soap-compose-smoke:
+	chmod +x examples/soap/scripts/smoke.sh
+	./examples/soap/scripts/smoke.sh
+
+soap-compose-test: cmd/velonetics-ce/schema/schema.json
+	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/velonetics/* GOSUMDB=off go mod vendor
+	cd examples/soap && docker compose up --build -d
+	chmod +x examples/soap/scripts/smoke.sh
+	./examples/soap/scripts/smoke.sh
+	cd examples/soap && docker compose down -v
+
+soap-compose-wssec-test: cmd/velonetics-ce/schema/schema.json
+	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/velonetics/* GOSUMDB=off go mod vendor
+	cd examples/soap && VELO_CONFIG=velonetics-wssec.json docker compose up --build -d
+	chmod +x examples/soap/scripts/smoke-wssec.sh
+	./examples/soap/scripts/smoke-wssec.sh
+	cd examples/soap && docker compose down -v
 
 SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json
 
