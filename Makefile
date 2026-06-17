@@ -7,7 +7,7 @@
 BIN_NAME :=velonetics
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/velonetics/velonetics-ce/v2
-VERSION := 2.1.0
+VERSION := 2.1.1
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := velonetics
