@@ -222,7 +222,7 @@ func (e *ExecutorBuilder) NewCmdExecutor(ctx context.Context) cmd.Executor {
 
 		runServerChain := serverhttp.RunServerWithLoggerFactory(logger)
 		runServerChain = otellura.GlobalRunServer(logger, runServerChain)
-		runServerChain = grpcserver.RunServer(logger, grpcRegistry, grpcSvcCfg, pf, runServerChain)
+		runServerChain = grpcserver.RunServer(logger, grpcRegistry, grpcSvcCfg, pf, tokenRejecterFactory, runServerChain)
 		runServerChain = router.RunServerFunc(e.RunServerFactory.NewRunServer(logger, runServerChain))
 
 		// setup the velonetics router

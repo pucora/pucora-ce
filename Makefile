@@ -7,7 +7,7 @@
 BIN_NAME :=velonetics
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/velonetics/velonetics-ce/v2
-VERSION := 2.0.1
+VERSION := 2.0.2
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := velonetics
@@ -86,11 +86,15 @@ check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/grpc_client.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_client_mapping.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_server.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server_mixed.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server_jwt.json
 
 check-grpc-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/grpc_client.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_client_mapping.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_server.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server_mixed.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server_jwt.json
 
 ws-compose-up:
 	cd examples/websocket && docker compose up --build -d
@@ -141,15 +145,39 @@ grpc-compose-down:
 	cd examples/grpc && docker compose down
 
 grpc-compose-smoke:
-	chmod +x examples/grpc/scripts/smoke.sh
-	./examples/grpc/scripts/smoke.sh
+	chmod +x examples/grpc/scripts/*.sh
+	./examples/grpc/scripts/smoke-client.sh
+
+grpc-compose-server-smoke:
+	chmod +x examples/grpc/scripts/*.sh
+	./examples/grpc/scripts/smoke-server.sh
+
+grpc-compose-mixed-smoke:
+	chmod +x examples/grpc/scripts/*.sh
+	./examples/grpc/scripts/smoke-mixed.sh
+
+grpc-compose-jwt-smoke:
+	chmod +x examples/grpc/scripts/*.sh
+	./examples/grpc/scripts/smoke-jwt.sh
 
 grpc-compose-test: cmd/velonetics-ce/schema/schema.json
+	@command -v grpcurl >/dev/null 2>&1 || GOPROXY=direct go install github.com/fullstorydev/grpcurl/cmd/grpcurl@v1.9.3
 	GOWORK=off GOPROXY=direct GOPRIVATE=github.com/velonetics/* GOSUMDB=off go mod vendor
 	cd examples/grpc/mock-backend && GOWORK=off go mod tidy && GOWORK=off go mod vendor
+	cd examples/grpc/mock-jwt && GOWORK=off go mod tidy && GOWORK=off go mod vendor
+	cd examples/grpc && docker compose down -v 2>/dev/null || true
 	cd examples/grpc && docker compose up --build -d
-	chmod +x examples/grpc/scripts/smoke.sh
-	./examples/grpc/scripts/smoke.sh
+	chmod +x examples/grpc/scripts/*.sh
+	./examples/grpc/scripts/smoke-client.sh
+	cd examples/grpc && docker compose down -v
+	cd examples/grpc && VELO_CONFIG=velonetics-server.json docker compose up --build -d
+	./examples/grpc/scripts/smoke-server.sh
+	cd examples/grpc && docker compose down -v
+	cd examples/grpc && VELO_CONFIG=velonetics-mixed.json docker compose up --build -d
+	./examples/grpc/scripts/smoke-mixed.sh
+	cd examples/grpc && docker compose down -v
+	cd examples/grpc && VELO_CONFIG=velonetics-jwt.json docker compose up --build -d
+	./examples/grpc/scripts/smoke-jwt.sh
 	cd examples/grpc && docker compose down -v
 
 SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json

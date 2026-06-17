@@ -1,0 +1,47 @@
+{
+  "$schema": "https://velonetics.io/schema/v2.13/velonetics.json",
+  "version": 3,
+  "port": 8080,
+  "extra_config": {
+    "grpc": {
+      "catalog": ["./tests/fixtures/grpcatalog/flights.pb"],
+      "server": {
+        "services": [
+          {
+            "name": "flight_finder.Flights",
+            "methods": [
+              {
+                "name": "FindFlight",
+                "input_headers": ["authorization"],
+                "extra_config": {
+                  "auth/validator": {
+                    "alg": "HS256",
+                    "audience": ["http://api.example.com"],
+                    "roles_key": "roles",
+                    "issuer": "http://example.com",
+                    "roles": ["role_a", "role_b"],
+                    "jwk_url": "http://127.0.0.1:8081/jwk/symmetric",
+                    "disable_jwk_security": true,
+                    "cache": true
+                  }
+                },
+                "backend": [
+                  {
+                    "host": ["localhost:4242"],
+                    "url_pattern": "/flight_finder.Flights/FindFlight",
+                    "extra_config": {
+                      "backend/grpc": {
+                        "use_request_body": true
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "endpoints": []
+}

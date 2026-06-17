@@ -1,0 +1,48 @@
+name: gRPC Compose
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/grpc/**'
+      - 'backend_factory.go'
+      - 'executor.go'
+      - 'Dockerfile'
+      - 'go.mod'
+      - 'go.sum'
+      - 'Makefile'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'examples/grpc/**'
+      - 'backend_factory.go'
+      - 'executor.go'
+      - 'Dockerfile'
+      - 'go.mod'
+      - 'go.sum'
+      - 'Makefile'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install grpcurl
+        run: GOPROXY=direct go install github.com/fullstorydev/grpcurl/cmd/grpcurl@v1.9.3
+
+      - name: Fetch JSON schema
+        run: |
+          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
+            https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json
+
+      - name: gRPC Docker Compose smoke
+        run: make grpc-compose-test

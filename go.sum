@@ -747,8 +747,8 @@ github.com/velonetics/velonetics-gelf/v2 v2.0.0 h1:ZgOkB5nW9s3sJHOVulKeVCbgs5TIs
 github.com/velonetics/velonetics-gelf/v2 v2.0.0/go.mod h1:Tn6xB38bioFks0aalRbAqhrAHIal9r9Y/dy3EvTe9wc=
 github.com/velonetics/velonetics-gologging/v2 v2.0.0 h1:qqMre9oXQrAsWbW7cSF3Yx8H/QmWlBgmviAg8DHCx24=
 github.com/velonetics/velonetics-gologging/v2 v2.0.0/go.mod h1:TrcYpzaBoMFxIqI4QhFnsMb1UHsbaekEFdY9p0mJFwo=
-github.com/velonetics/velonetics-grpc/v2 v2.0.0 h1:QUwIA3gEGfkrSKjwoPQ7PZ+8HDVYIjkpGqg/1WeEVik=
-github.com/velonetics/velonetics-grpc/v2 v2.0.0/go.mod h1:TIULya/dNByentRP8Jnk2GqzCQpGNyd43Af+Obx3B9o=
+github.com/velonetics/velonetics-grpc/v2 v2.0.1 h1:cwIx/Yrmh0DyhoxC/d4IIho4vgKPBeBxSpIs09vt9kA=
+github.com/velonetics/velonetics-grpc/v2 v2.0.1/go.mod h1:Ampu/KGiYTCgkpfjzyeVYpWgrMpKPNJnHhR+z0OckWY=
 github.com/velonetics/velonetics-httpcache/v2 v2.0.0 h1:d4GSYTBmHK82eUzWDRxBxcL2B5gv2kscj9WwseqeWp8=
 github.com/velonetics/velonetics-httpcache/v2 v2.0.0/go.mod h1:45hLrmS7fnM5ayWDKfefT86FC55t1lBI7xBluc+oIOQ=
 github.com/velonetics/velonetics-httpsecure/v2 v2.0.0 h1:+MYPhLxFIgsvaejW61rQxehWiHVy1vPornad6yWTdgY=

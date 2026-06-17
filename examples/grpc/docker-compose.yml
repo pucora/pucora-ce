@@ -10,18 +10,31 @@ services:
       retries: 10
       start_period: 5s
 
+  mock-jwt:
+    build: ./mock-jwt
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/mock-jwt", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
   velonetics:
     build:
       context: ../..
       dockerfile: Dockerfile
       args:
-        VERSION: "2.0.1"
+        VERSION: "2.0.2"
     ports:
       - "8080:8080"
     volumes:
-      - ./velonetics.json:/etc/velonetics/velonetics.json:ro
+      - ./${VELO_CONFIG:-velonetics.json}:/etc/velonetics/velonetics.json:ro
       - ./mock-backend/flights.pb:/etc/velonetics/grpcatalog/flights.pb:ro
     depends_on:
       mock-backend:
+        condition: service_healthy
+      mock-jwt:
         condition: service_healthy
     command: ["run", "-c", "/etc/velonetics/velonetics.json"]

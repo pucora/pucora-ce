@@ -1,6 +1,7 @@
 /vendor
 examples/websocket/mock-backend/vendor
 examples/grpc/mock-backend/vendor
+examples/grpc/mock-jwt/vendor
 bench_res
 sec_scan
 velonetics

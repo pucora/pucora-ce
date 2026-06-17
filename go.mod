@@ -20,7 +20,7 @@ require (
 	github.com/velonetics/velonetics-flexibleconfig/v2 v2.0.0
 	github.com/velonetics/velonetics-gelf/v2 v2.0.0
 	github.com/velonetics/velonetics-gologging/v2 v2.0.0
-	github.com/velonetics/velonetics-grpc/v2 v2.0.0
+	github.com/velonetics/velonetics-grpc/v2 v2.0.1
 	github.com/velonetics/velonetics-httpcache/v2 v2.0.0
 	github.com/velonetics/velonetics-httpsecure/v2 v2.0.0
 	github.com/velonetics/velonetics-influx/v2 v2.0.0

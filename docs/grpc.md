@@ -62,7 +62,8 @@ Service-level config:
 | `request_naming_convention` | `snake_case` (default) or `camelCase` |
 | `response_naming_convention` | `snake_case` (default) or `camelCase` |
 | `client_tls` | TLS client settings |
-| `use_alternate_host_on_error` | Retry on alternate hosts |
+| `read_buffer_size` | gRPC client read buffer (bytes); `0` = default, negative = disable |
+| `use_alternate_host_on_error` | Skip bad connections and retry alternate hosts |
 
 ## gRPC server (same port as HTTP)
 
@@ -87,7 +88,49 @@ Service-level config:
 }
 ```
 
-gRPC reflection is enabled automatically. Use `grpcurl -plaintext localhost:8080 list` to discover services.
+gRPC reflection is enabled automatically. Use `grpcurl -protoset flights.pb -plaintext localhost:8080 list` to discover services when reflection metadata is limited.
+
+### Per-method JWT
+
+```json
+{
+  "name": "FindFlight",
+  "input_headers": ["authorization"],
+  "extra_config": {
+    "auth/validator": {
+      "alg": "HS256",
+      "audience": ["http://api.example.com"],
+      "roles_key": "roles",
+      "roles": ["role_a", "role_b"],
+      "jwk_url": "http://identity:8081/jwk/symmetric",
+      "disable_jwk_security": true
+    }
+  },
+  "backend": [...]
+}
+```
+
+### Server OpenTelemetry overrides
+
+Under `grpc.server.opentelemetry`:
+
+| Field | Description |
+|-------|-------------|
+| `disable_metrics` | Disable gRPC server metrics |
+| `disable_traces` | Disable gRPC server traces |
+
+### gRPC-to-gRPC passthrough
+
+When a published method has a single `backend/grpc` backend, the gateway forwards protobuf directly without JSON conversion.
+
+## Compose examples
+
+| Config | `make` target | Smoke |
+|--------|---------------|-------|
+| `velonetics.json` | `grpc-compose-test` (client) | REST `/flights` |
+| `velonetics-server.json` | server variant | `grpcurl` FindFlight |
+| `velonetics-mixed.json` | mixed variant | REST + `grpcurl` |
+| `velonetics-jwt.json` | JWT variant | auth required |
 
 ## Local development
 
