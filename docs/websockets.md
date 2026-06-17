@@ -340,7 +340,7 @@ See [examples/websocket/README.md](../examples/websocket/README.md).
 make docker
 docker run -p 8080:8080 \
   -v $(pwd)/velonetics-ws.json:/etc/velonetics/velonetics.json \
-  velonetics/velonetics:2.0.0 run -c /etc/velonetics/velonetics.json
+  niteesh20/velonetics:2.0.0 run -c /etc/velonetics/velonetics.json
 ```
 
 Ensure the container can reach backend `ws://` hosts (use host networking or service names in Docker Compose).

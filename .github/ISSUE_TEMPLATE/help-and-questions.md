@@ -52,7 +52,7 @@ docker run --rm -it -v $PWD:/etc/velonetics \
         -e FC_SETTINGS="/etc/velonetics/config/settings" \
         -e FC_PARTIALS="/etc/velonetics/config/partials" \
         -e FC_OUT=out.json \
-        velonetics/velonetics:2.0.0 \
+        niteesh20/velonetics:2.0.0 \
         run -c /etc/velonetics/config/velonetics.json -d
 ```
 

@@ -2,6 +2,8 @@ on:
   release:
     types: [created, published]
 name: Handle Release
+env:
+  DOCKER_HUB_USER: niteesh20
 jobs:
   gate:
     name: Check release credentials
@@ -50,23 +52,25 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            velonetics/builder
+            ${{ env.DOCKER_HUB_USER }}/builder
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=raw,value=latest
       - name: Docker meta
         id: meta-linux-generic
         uses: docker/metadata-action@v4
         with:
           images: |
-            velonetics/builder
+            ${{ env.DOCKER_HUB_USER }}/builder
           flavor: |
             suffix=-linux-generic,onlatest=true
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=raw,value=latest-linux-generic
       - name: Build and push Velonetics plugin builder (Alpine)
         id: container-build
         uses: docker/build-push-action@v2
@@ -99,6 +103,10 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
+      - name: Set release version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: echo "RELEASE_VERSION=${TAG#v}" >> "$GITHUB_ENV"
       - name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v5
@@ -108,7 +116,7 @@ jobs:
       - name: List keys
         run: gpg -K
       - name: Generate the artifacts for Debian/Ubuntu/Redhat/Centos (AMD64/ARM64)
-        uses: docker://velonetics/builder:latest-linux-generic
+        uses: docker://${{ env.DOCKER_HUB_USER }}/builder:${{ env.RELEASE_VERSION }}-linux-generic
         with:
           args: sh -c "git config --global --add safe.directory /github/workspace;
            export CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc ARCH=arm64 OS_TAG=_generic-linux GOARCH=arm64 GOHOSTARCH=amd64 EXTRA_LDFLAGS='-extld=aarch64-linux-gnu-gcc';
@@ -117,12 +125,12 @@ jobs:
            export CC= GOARCH=amd64 ARCH=amd64 OS_TAG=_generic-linux EXTRA_LDFLAGS=;
            make -e build && make -e tgz;"
       - name: Build DEB package (AMD64)
-        uses: docker://velonetics/fpm:deb
+        uses: docker://${{ env.DOCKER_HUB_USER }}/fpm:deb
         with:
           entrypoint: /bin/bash
           args: -c "make -e deb-release"
       - name: Build RPM package (AMD64)
-        uses: docker://velonetics/fpm:rpm
+        uses: docker://${{ env.DOCKER_HUB_USER }}/fpm:rpm
         with:
           entrypoint: /bin/bash
           args: -c "echo '${{ secrets.PGP_SIGNING_KEY }}' > pgp.key;
@@ -131,7 +139,7 @@ jobs:
            make -e rpm-release &&
            rpmsign --addsign *rpm"
       - name: Generate the artifacts for Alpine (AMD64/ARM64)
-        uses: docker://velonetics/builder:latest
+        uses: docker://${{ env.DOCKER_HUB_USER }}/builder:${{ env.RELEASE_VERSION }}
         with:
           args: sh -c "export GOARCH=amd64 ARCH=amd64 OS_TAG=_alpine;
            make -e build && make -e tgz;
@@ -222,8 +230,8 @@ jobs:
             --build-arg GOLANG_VERSION=$(grep -m 1 GOLANG_VERSION Makefile | sed 's/^.*= //g') \
             --build-arg ALPINE_VERSION=$(grep -m 1 ALPINE_VERSION Makefile | sed 's/^.*= //g') \
             --build-arg VERSION=${IMAGE_TAG#v} \
-            -t "niteesh20/velonetics:${IMAGE_TAG}" \
-            -t "niteesh20/velonetics:${IMAGE_TAG#v}" \
+            -t "${{ env.DOCKER_HUB_USER }}/velonetics:${IMAGE_TAG}" \
+            -t "${{ env.DOCKER_HUB_USER }}/velonetics:${IMAGE_TAG#v}" \
             .
-          docker push "niteesh20/velonetics:${IMAGE_TAG}"
-          docker push "niteesh20/velonetics:${IMAGE_TAG#v}"
+          docker push "${{ env.DOCKER_HUB_USER }}/velonetics:${IMAGE_TAG}"
+          docker push "${{ env.DOCKER_HUB_USER }}/velonetics:${IMAGE_TAG#v}"

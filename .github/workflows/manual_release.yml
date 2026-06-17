@@ -6,6 +6,8 @@ on:
         description: release id destination
         required: true
 name: Handle Release
+env:
+  DOCKER_HUB_USER: niteesh20
 jobs:
   generate:
     name: Create release-artifacts
@@ -22,7 +24,7 @@ jobs:
       - name: List keys
         run: gpg -K
       - name: Generate the artifacts for Debian/Ubuntu/Redhat/Centos (AMD64/ARM64)
-        uses: docker://velonetics/builder:latest-linux-generic
+        uses: docker://${{ env.DOCKER_HUB_USER }}/builder:latest-linux-generic
         with:
           args: sh -c "git config --global --add safe.directory /github/workspace;
            export CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc ARCH=arm64 OS_TAG=_generic-linux GOARCH=arm64 GOHOSTARCH=amd64 EXTRA_LDFLAGS='-extld=aarch64-linux-gnu-gcc';
@@ -31,12 +33,12 @@ jobs:
            export CC= GOARCH=amd64 ARCH=amd64 OS_TAG=_generic-linux EXTRA_LDFLAGS=;
            make -e build && make -e tgz;"
       - name: Build DEB package (AMD64)
-        uses: docker://velonetics/fpm:deb
+        uses: docker://${{ env.DOCKER_HUB_USER }}/fpm:deb
         with:
           entrypoint: /bin/bash
           args: -c "make -e deb-release"
       - name: Build RPM package (AMD64)
-        uses: docker://velonetics/fpm:rpm
+        uses: docker://${{ env.DOCKER_HUB_USER }}/fpm:rpm
         with:
           entrypoint: /bin/bash
           args: -c "echo '${{ secrets.PGP_SIGNING_KEY }}' > pgp.key;
@@ -45,7 +47,7 @@ jobs:
            make -e rpm-release &&
            rpmsign --addsign *rpm"
       - name: Generate the artifacts for Alpine (AMD64/ARM64)
-        uses: docker://velonetics/builder:latest
+        uses: docker://${{ env.DOCKER_HUB_USER }}/builder:latest
         with:
           args: sh -c "export GOARCH=amd64 ARCH=amd64 OS_TAG=_alpine;
            make -e build && make -e tgz;

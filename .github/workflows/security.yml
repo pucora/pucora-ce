@@ -50,7 +50,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - image: velonetics/velonetics
+          - image: niteesh20/velonetics
             dockerfile: Dockerfile
     runs-on: ubuntu-latest
     steps:

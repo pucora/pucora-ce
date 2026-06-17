@@ -19,8 +19,11 @@ USER := velonetics
 ARCH := amd64
 DESC := High performance API gateway. Aggregate, filter, manipulate and add middlewares
 MAINTAINER := Velonetics Team <community@velonetics.io>
+DOCKER_USER := niteesh20
 DOCKER_WDIR := /tmp/fpm
-DOCKER_FPM := velonetics/fpm
+DOCKER_FPM := $(DOCKER_USER)/fpm
+DOCKER_BUILDER := $(DOCKER_USER)/builder
+DOCKER_CE := $(DOCKER_USER)/velonetics
 GOLANG_VERSION := 1.25.11
 GLIBC_VERSION := $(shell sh find_glibc.sh)
 ALPINE_VERSION := 3.23
@@ -130,7 +133,7 @@ cmd/velonetics-ce/schema/schema.json:
 
 # Build Velonetics using docker (defaults to whatever the golang container uses)
 build_on_docker: docker-builder-linux
-	docker run --rm -it -v "${PWD}:/app" -w /app velonetics/builder:${VERSION}-linux-generic sh -c "git config --global --add safe.directory /app && make -e build"
+	docker run --rm -it -v "${PWD}:/app" -w /app $(DOCKER_BUILDER):${VERSION}-linux-generic sh -c "git config --global --add safe.directory /app && make -e build"
 
 # Build the container using the Dockerfile (alpine)
 docker: cmd/velonetics-ce/schema/schema.json
@@ -139,18 +142,18 @@ docker: cmd/velonetics-ce/schema/schema.json
 		--build-arg GOLANG_VERSION=${GOLANG_VERSION} \
 		--build-arg ALPINE_VERSION=${ALPINE_VERSION} \
 		--build-arg VERSION=${VERSION} \
-		-t niteesh20/velonetics:${VERSION} .
+		-t $(DOCKER_CE):${VERSION} .
 
 docker-builder:
-	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} --build-arg ALPINE_VERSION=${ALPINE_VERSION} -t velonetics/builder:${VERSION} -f Dockerfile-builder .
+	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} --build-arg ALPINE_VERSION=${ALPINE_VERSION} -t $(DOCKER_BUILDER):${VERSION} -f Dockerfile-builder .
 
 docker-builder-linux:
-	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} -t velonetics/builder:${VERSION}-linux-generic -f Dockerfile-builder-linux .
+	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} -t $(DOCKER_BUILDER):${VERSION}-linux-generic -f Dockerfile-builder-linux .
 
 benchmark:
 	@mkdir -p bench_res
 	@touch bench_res/${GIT_COMMIT}.out
-	@docker run --rm -d --name velonetics -v "${PWD}/tests/fixtures:/etc/velonetics" -p 8080:8080 velonetics/velonetics:${VERSION} run -dc /etc/velonetics/bench.json
+	@docker run --rm -d --name velonetics -v "${PWD}/tests/fixtures:/etc/velonetics" -p 8080:8080 $(DOCKER_CE):${VERSION} run -dc /etc/velonetics/bench.json
 	@sleep 2
 	@docker run --rm -it --link velonetics peterevans/vegeta sh -c \
 		"echo 'GET http://velonetics:8080/test' | vegeta attack -rate=0 -duration=30s -max-workers=300 | tee results.bin | vegeta report" > bench_res/${GIT_COMMIT}.out
@@ -160,7 +163,7 @@ benchmark:
 security_scan:
 	@mkdir -p sec_scan
 	@touch sec_scan/${GIT_COMMIT}.out
-	@docker run --rm -d --name velonetics -v "${PWD}/tests/fixtures:/etc/velonetics" -p 8080:8080 velonetics/velonetics:${VERSION} run -dc /etc/velonetics/bench.json
+	@docker run --rm -d --name velonetics -v "${PWD}/tests/fixtures:/etc/velonetics" -p 8080:8080 $(DOCKER_CE):${VERSION} run -dc /etc/velonetics/bench.json
 	@docker run --rm -it --link velonetics instrumentisto/nmap --script vuln velonetics > sec_scan/${GIT_COMMIT}.out
 	@docker stop velonetics
 	@cat sec_scan/${GIT_COMMIT}.out

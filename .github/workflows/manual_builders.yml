@@ -6,6 +6,8 @@ on:
         description: semver to generate 
         required: true
 name: Manual Builders
+env:
+  DOCKER_HUB_USER: niteesh20
 jobs:
   builder:
     name: Generate builder containers
@@ -27,23 +29,25 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            velonetics/builder
+            ${{ env.DOCKER_HUB_USER }}/builder
           tags: |
             type=semver,pattern={{version}},value=${{ github.event.inputs.semver }}
             type=semver,pattern={{major}}.{{minor}},value=${{ github.event.inputs.semver }}
             type=semver,pattern={{major}},value=${{ github.event.inputs.semver }}
+            type=raw,value=latest
       - name: Docker meta
         id: meta-linux-generic
         uses: docker/metadata-action@v4
         with:
           images: |
-            velonetics/builder
+            ${{ env.DOCKER_HUB_USER }}/builder
           flavor: |
             suffix=-linux-generic,onlatest=true
           tags: |
             type=semver,pattern={{version}},value=${{ github.event.inputs.semver }}
             type=semver,pattern={{major}}.{{minor}},value=${{ github.event.inputs.semver }}
             type=semver,pattern={{major}},value=${{ github.event.inputs.semver }}
+            type=raw,value=latest-linux-generic
       - name: Build and push Velonetics plugin builder (Alpine)
         id: container-build
         uses: docker/build-push-action@v2
