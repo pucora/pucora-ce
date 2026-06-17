@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "port": 8080,
+  "write_timeout": "0s",
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[VELONETICS]",
+      "stdout": true
+    },
+    "telemetry/usage": {
+      "enabled": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/events",
+      "method": "GET",
+      "timeout": "30s",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type"],
+      "backend": [
+        {
+          "host": ["http://mock-backend:8081"],
+          "url_pattern": "/events",
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/chunked",
+      "method": "GET",
+      "timeout": "30s",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "host": ["http://mock-backend:8081"],
+          "url_pattern": "/chunked",
+          "encoding": "no-op"
+        }
+      ]
+    }
+  ]
+}
