@@ -11,6 +11,7 @@ name: Handle Release
 env:
   DOCKER_HUB_USER: niteesh20
   RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag }}
+  CHECKOUT_REF: ${{ github.event_name == 'workflow_dispatch' && github.sha || (github.event.release.tag_name || github.event.inputs.tag) }}
 jobs:
   gate:
     name: Check release credentials
@@ -50,7 +51,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          ref: ${{ env.CHECKOUT_REF }}
       - name: Set the environment variables
         run: |
           echo "GOLANG_VERSION=$(grep -m 1 GOLANG_VERSION Makefile | sed 's/^.*= //g')" >> $GITHUB_ENV
@@ -115,7 +116,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          ref: ${{ env.CHECKOUT_REF }}
       - name: Set release version
         run: echo "RELEASE_VERSION=${RELEASE_TAG#v}" >> "$GITHUB_ENV"
       - name: Import GPG key
@@ -226,7 +227,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          ref: ${{ env.CHECKOUT_REF }}
 
       - name: Set up Go
         uses: actions/setup-go@v5
