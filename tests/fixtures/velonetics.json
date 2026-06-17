@@ -103,6 +103,19 @@
             ]
         },
         {
+            "endpoint": "/sse/stream",
+            "method": "GET",
+            "timeout": "30s",
+            "output_encoding": "no-op",
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "host": [ "http://127.0.0.1:8081" ],
+                    "url_pattern": "/sse/events"
+                }
+            ]
+        },
+        {
             "endpoint": "/xml/xml",
             "output_encoding": "xml",
             "backend": [

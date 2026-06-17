@@ -113,10 +113,13 @@ Streaming endpoints use standard endpoint/backend settings. Three requirements:
 | `encoding` | Backend | Must be `"no-op"` |
 | `timeout` | Endpoint | Max stream duration (e.g. `"300s"`, `"5m"`) |
 | `input_headers` | Endpoint | Forward headers like `Content-Type` to backend |
-| `write_timeout` | Service | Set `"0s"` when streaming endpoints exist |
+| `write_timeout` | Service | **Required `"0s"`** when streaming endpoints exist (validated at startup) |
+| `read_timeout` | Service | Prefer `"0s"` for long-lived GET streams; limits full request read time |
+| `idle_timeout` | Service | Ensure load balancers and this value allow long idle streams |
+| `response_header_timeout` | Service | Use `"0s"` or at least `"30s"` when streaming (validated at startup) |
 | `max_shutdown_wait_time` | Service | Grace period before force-killing streams on shutdown |
 
-**Important:** Keep the root service `timeout` short. Set long timeouts only on streaming endpoints.
+**Important:** Keep the root service `timeout` short. Set long timeouts only on streaming endpoints. Velonetics **rejects invalid streaming configs at startup** (`velonetics check` / `velonetics run`), not only via audit warnings.
 
 ## How it works
 
@@ -138,9 +141,12 @@ Velonetics uses `NoOpHTTPResponseParser` to pipe the backend response body direc
 | Lua post-response | **No** |
 | Response JSON schema | **No** |
 | Response body modifiers | **No** |
-| Multi-backend merge | **No** |
+| Multi-backend merge | **No** (rejected at startup) |
+| Sequential proxy | **No** (rejected at startup) |
+| Backend HTTP cache | **No** (rejected at startup) |
+| Martian response scope | **No** (rejected at startup) |
 
-Run `velonetics audit` to catch common misconfigurations (rules 5.2.4–5.2.6).
+Run `velonetics check` before deploy — invalid streaming combinations fail config parsing. `velonetics audit` also warns on related misconfigurations (rules 5.2.4–5.2.6).
 
 ## Operational considerations
 
@@ -157,7 +163,12 @@ Run `velonetics audit` to catch common misconfigurations (rules 5.2.4–5.2.6).
 | Events arrive all at once at end | Proxy or LB buffering | Ensure `no-op` encoding; set `write_timeout: "0s"`; disable LB buffering |
 | Connection drops early | Timeout too short | Increase endpoint `timeout`; check service `write_timeout` |
 | Empty response | Wrong backend encoding | Set backend `encoding: "no-op"` |
-| 401 before stream | JWT on protected endpoint | Pass valid `Authorization` header |
+| Connection drops before first byte | `response_header_timeout` too low | Set `"response_header_timeout": "0s"` or at least `"30s"` |
+| Config fails `velonetics check` | Incompatible middleware on streaming endpoint | Remove response Lua, schema, modifiers, cache, or multi-backend |
+
+## Requirements
+
+- `github.com/velonetics/lura/v2` **v2.0.3+** (flush-aware streaming proxy and startup validation)
 
 ## See also
 

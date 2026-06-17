@@ -9,7 +9,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
 	github.com/spf13/cobra v1.8.1
 	github.com/velonetics/bloomfilter/v2 v2.0.0
-	github.com/velonetics/lura/v2 v2.0.2
+	github.com/velonetics/lura/v2 v2.0.3
 	github.com/velonetics/velonetics-amqp/v2 v2.0.0
 	github.com/velonetics/velonetics-audit v1.0.1
 	github.com/velonetics/velonetics-botdetector/v2 v2.0.0

@@ -598,6 +598,7 @@ func (mockBackendBuilder) New(cfg *Config) http.Server {
 	mux.HandleFunc("/delayed/", checkXForwardedFor(delayedEndpoint(cfg.getDelay(), http.HandlerFunc(echoEndpoint))))
 	mux.HandleFunc("/redirect/", checkXForwardedFor(http.HandlerFunc(redirectEndpoint)))
 	mux.HandleFunc("/jwk/symmetric", http.HandlerFunc(symmetricJWKEndpoint))
+	mux.HandleFunc("/sse/events", checkXForwardedFor(http.HandlerFunc(sseEventsEndpoint)))
 
 	return http.Server{ // skipcq: GO-S2112
 		Addr:    fmt.Sprintf(":%v", cfg.getBackendPort()),
@@ -705,4 +706,11 @@ func symmetricJWKEndpoint(rw http.ResponseWriter, _ *http.Request) {
     }
   ]
 }`))
+}
+
+func sseEventsEndpoint(rw http.ResponseWriter, _ *http.Request) {
+	rw.Header().Set("Content-Type", "text/event-stream")
+	rw.Header().Set("Cache-Control", "no-cache")
+	rw.WriteHeader(http.StatusOK)
+	_, _ = rw.Write([]byte("data: {\"seq\":1,\"message\":\"event-1\"}\n\n"))
 }

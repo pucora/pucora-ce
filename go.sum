@@ -725,8 +725,8 @@ github.com/velonetics/httpcache v1.0.0 h1:VmMYlLpNM+FnL7iAdppnW4zp7uyoIc7Qa5JRGb
 github.com/velonetics/httpcache v1.0.0/go.mod h1:Ddr+GUlHkQaFqQise8H0AaROts+GfDFaTQ5nSEj0Lo0=
 github.com/velonetics/lru v1.0.0 h1:2+mo3v8He4Ul/QuxamKEmlSeUQ5VPTaTWNOZDH9cXAU=
 github.com/velonetics/lru v1.0.0/go.mod h1:5owN8TP+mGwyezK0wX3KLPGoCK/ozDVeo+cu7XtDe9A=
-github.com/velonetics/lura/v2 v2.0.2 h1:PPUP219Qav/1ED9hvihTiADg9p6X4CjXCZP1EFwEBis=
-github.com/velonetics/lura/v2 v2.0.2/go.mod h1:cXeGRH6p+IVaSCFEGRj1cxUrI7prCRlK1v80mBPx3WY=
+github.com/velonetics/lura/v2 v2.0.3 h1:pDWGNlO9eGiu50XDBHJgRvboM97pfWBetp8tTuEX8Cc=
+github.com/velonetics/lura/v2 v2.0.3/go.mod h1:cXeGRH6p+IVaSCFEGRj1cxUrI7prCRlK1v80mBPx3WY=
 github.com/velonetics/velonetics-amqp/v2 v2.0.0 h1:ZQPa3IX4BUMBWK/Iax4RMnlO0cqA1eSaZl9OQSq9ONQ=
 github.com/velonetics/velonetics-amqp/v2 v2.0.0/go.mod h1:SGo3MK2SontSxmHLCM7bFJXbXfGgp4L58KaOV96NZLM=
 github.com/velonetics/velonetics-audit v1.0.1 h1:+G8ZAWHyIXWVBlj9WV7ox/b2NHO5hQyAQCn59lXx/6g=

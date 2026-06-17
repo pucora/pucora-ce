@@ -71,10 +71,12 @@ test: build
 test-websocket:
 	cd ../velonetics-websocket && go test ./...
 
-test-streaming:
+test-streaming: build
+	cd ../velonetics-lura && go test ./config -run Streaming -count=1
 	cd ../velonetics-lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
 	cd ../velonetics-lura && go test ./router/gin -run 'TestRender_noop' -count=1
 	cd ../velonetics-audit && go test ./... -run 'Test_hasStreaming' -count=1
+	go test ./tests -run 'TestStreamingConfig' -count=1 -v
 
 test-soap:
 	cd ../velonetics-soap && go test ./...

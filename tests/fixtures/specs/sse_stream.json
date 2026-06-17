@@ -1,0 +1,16 @@
+{
+  "name": "sse stream no-op proxy",
+  "in": {
+    "method": "GET",
+    "url": "http://localhost:8080/sse/stream"
+  },
+  "out": {
+    "status_code": 200,
+    "body": "data: {\"seq\":1,\"message\":\"event-1\"}\n\n",
+    "header": {
+      "content-type": ["text/event-stream"],
+      "Cache-Control": ["no-cache"],
+      "X-Velonetics-Completed": ["false"]
+    }
+  }
+}
