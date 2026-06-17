@@ -37,6 +37,8 @@ import (
 	otellura "github.com/velonetics/velonetics-otel/lura"
 	otelgin "github.com/velonetics/velonetics-otel/router/gin"
 	usage "github.com/velonetics/velonetics-usage/v2"
+	maingrpc "github.com/velonetics/velonetics-grpc/v2"
+	grpcserver "github.com/velonetics/velonetics-grpc/v2/server"
 	"github.com/velonetics/lura/v2/async"
 	"github.com/velonetics/lura/v2/config"
 	"github.com/velonetics/lura/v2/core"
@@ -197,6 +199,15 @@ func (e *ExecutorBuilder) NewCmdExecutor(ctx context.Context) cmd.Executor {
 			logger.Warning("[SERVICE: Bloomfilter]", err.Error())
 		}
 
+		grpcRegistry, grpcSvcCfg, err := maingrpc.Bootstrap(cfg, logger)
+		if err != nil {
+			logger.Error("[SERVICE: gRPC]", err.Error())
+			return
+		}
+		if grpcRegistry != nil {
+			logger.Info("[SERVICE: gRPC]", "catalog loaded")
+		}
+
 		bpf := e.BackendFactory.NewBackendFactory(ctx, logger, metricCollector)
 		pf := e.ProxyFactory.NewProxyFactory(logger, bpf, metricCollector)
 		// we move the proxy factory out of the default proxy factory to make
@@ -211,6 +222,7 @@ func (e *ExecutorBuilder) NewCmdExecutor(ctx context.Context) cmd.Executor {
 
 		runServerChain := serverhttp.RunServerWithLoggerFactory(logger)
 		runServerChain = otellura.GlobalRunServer(logger, runServerChain)
+		runServerChain = grpcserver.RunServer(logger, grpcRegistry, grpcSvcCfg, pf, runServerChain)
 		runServerChain = router.RunServerFunc(e.RunServerFactory.NewRunServer(logger, runServerChain))
 
 		// setup the velonetics router

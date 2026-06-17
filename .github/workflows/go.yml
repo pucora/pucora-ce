@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GOSUMDB: off
     steps:
       - uses: actions/checkout@v4
 
@@ -26,6 +28,11 @@ jobs:
         run: |
           git clone --depth 1 --branch v2.1.0 https://github.com/velonetics/velonetics-soap.git /tmp/velonetics-soap
           cd /tmp/velonetics-soap && go test -count=1 .
+
+      - name: gRPC published module tests
+        run: |
+          git clone --depth 1 --branch v2.0.0 https://github.com/velonetics/velonetics-grpc.git /tmp/velonetics-grpc
+          cd /tmp/velonetics-grpc && go test -count=1 ./...
 
       - name: Fetch JSON schema
         run: |
@@ -45,6 +52,9 @@ jobs:
           ./velonetics check -c tests/fixtures/ws_jwt.json
           ./velonetics check -c velonetics-ws.json
           ./velonetics check -c tests/fixtures/soap_country.json
+          ./velonetics check -c tests/fixtures/grpc_client.json
+          ./velonetics check -c tests/fixtures/grpc_client_mapping.json
+          ./velonetics check -c tests/fixtures/grpc_server.json
 
       - name: WebSocket integration test
         run: cd tests && go test -count=1 -run TestWebSocket -timeout 2m

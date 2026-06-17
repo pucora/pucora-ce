@@ -55,7 +55,7 @@ RPM_OPTS =--rpm-user $(USER) \
 	--before-remove builder/scripts/prerm.rpm \
   --after-remove builder/scripts/postrm.rpm
 
-all: test test-websocket test-soap
+all: test test-websocket test-soap test-grpc
 
 build: cmd/velonetics-ce/schema/schema.json
 	@echo "Building the binary..."
@@ -74,12 +74,23 @@ test-websocket:
 test-soap:
 	cd ../velonetics-soap && go test ./...
 
+test-grpc:
+	cd ../velonetics-grpc && go test ./...
+
 check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/ws_direct.json
 	./${BIN_NAME} check -c tests/fixtures/ws_multiplex.json
 	./${BIN_NAME} check -c tests/fixtures/ws_jwt.json
 	./${BIN_NAME} check -c velonetics-ws.json
 	./${BIN_NAME} check -c tests/fixtures/soap_country.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_client.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_client_mapping.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server.json
+
+check-grpc-fixtures: build
+	./${BIN_NAME} check -c tests/fixtures/grpc_client.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_client_mapping.json
+	./${BIN_NAME} check -c tests/fixtures/grpc_server.json
 
 ws-compose-up:
 	cd examples/websocket && docker compose up --build -d
@@ -122,6 +133,24 @@ soap-compose-wssec-test: cmd/velonetics-ce/schema/schema.json
 	chmod +x examples/soap/scripts/smoke-wssec.sh
 	./examples/soap/scripts/smoke-wssec.sh
 	cd examples/soap && docker compose down -v
+
+grpc-compose-up:
+	cd examples/grpc && docker compose up --build -d
+
+grpc-compose-down:
+	cd examples/grpc && docker compose down
+
+grpc-compose-smoke:
+	chmod +x examples/grpc/scripts/smoke.sh
+	./examples/grpc/scripts/smoke.sh
+
+grpc-compose-test: cmd/velonetics-ce/schema/schema.json
+	GOWORK=off GOPROXY=direct GOPRIVATE=github.com/velonetics/* GOSUMDB=off go mod vendor
+	cd examples/grpc/mock-backend && GOWORK=off go mod tidy && GOWORK=off go mod vendor
+	cd examples/grpc && docker compose up --build -d
+	chmod +x examples/grpc/scripts/smoke.sh
+	./examples/grpc/scripts/smoke.sh
+	cd examples/grpc && docker compose down -v
 
 SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json
 

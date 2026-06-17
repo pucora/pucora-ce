@@ -54,6 +54,7 @@ MODULE_DIRS=(
 	velonetics-ratelimit
 	velonetics-rss
 	velonetics-soap
+	velonetics-grpc
 	velonetics-usage
 	velonetics-websocket
 	velonetics-xml

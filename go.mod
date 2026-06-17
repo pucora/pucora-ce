@@ -20,6 +20,7 @@ require (
 	github.com/velonetics/velonetics-flexibleconfig/v2 v2.0.0
 	github.com/velonetics/velonetics-gelf/v2 v2.0.0
 	github.com/velonetics/velonetics-gologging/v2 v2.0.0
+	github.com/velonetics/velonetics-grpc/v2 v2.0.0
 	github.com/velonetics/velonetics-httpcache/v2 v2.0.0
 	github.com/velonetics/velonetics-httpsecure/v2 v2.0.0
 	github.com/velonetics/velonetics-influx/v2 v2.0.0
@@ -43,6 +44,8 @@ require (
 	github.com/velonetics/velonetics-xml/v2 v2.0.0
 	golang.org/x/sync v0.20.0
 )
+
+require github.com/soheilhy/cmux v0.1.5 // indirect
 
 require (
 	cel.dev/expr v0.25.1 // indirect

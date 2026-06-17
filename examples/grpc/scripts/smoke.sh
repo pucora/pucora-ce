@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "==> REST gRPC client smoke"
+resp=$(curl -fsS "http://127.0.0.1:8080/flights?lat=40.7&lon=-74.0")
+echo "$resp" | grep -q "FL-001" || { echo "expected flight id in response: $resp"; exit 1; }
+echo "OK: $resp"
