@@ -6,33 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  contents: read
-
 jobs:
-  dependencies:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    permissions:
-      contents: read
-      dependency-graph: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - name: Submit dependency snapshot
-        uses: actions/dependency-submission-action@v4
-        with:
-          go-mod-path: go.mod
-
   build:
     runs-on: ubuntu-latest
-    needs: [dependencies]
-    if: always()
     steps:
       - uses: actions/checkout@v4
 
