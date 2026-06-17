@@ -1,0 +1,26 @@
+{
+  "version": 3,
+  "port": 8080,
+  "write_timeout": "0s",
+  "extra_config": {
+    "telemetry/usage": {
+      "enabled": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/events",
+      "method": "GET",
+      "timeout": "30s",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type"],
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/events",
+          "encoding": "no-op"
+        }
+      ]
+    }
+  ]
+}

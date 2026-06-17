@@ -7,7 +7,7 @@
 BIN_NAME :=velonetics
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/velonetics/velonetics-ce/v2
-VERSION := 2.0.2
+VERSION := 2.1.0
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := velonetics
@@ -55,7 +55,7 @@ RPM_OPTS =--rpm-user $(USER) \
 	--before-remove builder/scripts/prerm.rpm \
   --after-remove builder/scripts/postrm.rpm
 
-all: test test-websocket test-soap test-grpc
+all: test test-websocket test-streaming test-soap test-grpc
 
 build: cmd/velonetics-ce/schema/schema.json
 	@echo "Building the binary..."
@@ -70,6 +70,11 @@ test: build
 
 test-websocket:
 	cd ../velonetics-websocket && go test ./...
+
+test-streaming:
+	cd ../velonetics-lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
+	cd ../velonetics-lura && go test ./router/gin -run 'TestRender_noop' -count=1
+	cd ../velonetics-audit && go test ./... -run 'Test_hasStreaming' -count=1
 
 test-soap:
 	cd ../velonetics-soap && go test ./...
@@ -88,6 +93,7 @@ check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/grpc_server.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_server_mixed.json
 	./${BIN_NAME} check -c tests/fixtures/grpc_server_jwt.json
+	./${BIN_NAME} check -c tests/fixtures/sse_stream.json
 
 check-grpc-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/grpc_client.json
@@ -179,6 +185,24 @@ grpc-compose-test: cmd/velonetics-ce/schema/schema.json
 	cd examples/grpc && VELO_CONFIG=velonetics-jwt.json docker compose up --build -d
 	./examples/grpc/scripts/smoke-jwt.sh
 	cd examples/grpc && docker compose down -v
+
+sse-compose-up:
+	cd examples/streaming && docker compose up --build -d
+
+sse-compose-down:
+	cd examples/streaming && docker compose down
+
+sse-compose-smoke:
+	chmod +x examples/streaming/scripts/smoke.sh
+	./examples/streaming/scripts/smoke.sh
+
+sse-compose-test: cmd/velonetics-ce/schema/schema.json
+	@test -d vendor || GOWORK=off go mod vendor
+	cd examples/streaming/mock-backend && GOWORK=off go mod vendor
+	cd examples/streaming && docker compose up --build -d
+	chmod +x examples/streaming/scripts/smoke.sh
+	./examples/streaming/scripts/smoke.sh
+	cd examples/streaming && docker compose down -v
 
 SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json
 
