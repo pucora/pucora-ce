@@ -187,27 +187,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push CE image (account namespace)
+      - name: Build and push CE image to Docker Hub
         env:
           IMAGE_TAG: ${{ github.event.release.tag_name }}
-          DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: |
           docker build --pull \
             --build-arg GOLANG_VERSION=$(grep -m 1 GOLANG_VERSION Makefile | sed 's/^.*= //g') \
             --build-arg ALPINE_VERSION=$(grep -m 1 ALPINE_VERSION Makefile | sed 's/^.*= //g') \
             --build-arg VERSION=${IMAGE_TAG#v} \
-            -t "${DOCKER_NAMESPACE}/velonetics:${IMAGE_TAG}" \
-            -t "${DOCKER_NAMESPACE}/velonetics:${IMAGE_TAG#v}" \
+            -t "niteesh20/velonetics:${IMAGE_TAG}" \
+            -t "niteesh20/velonetics:${IMAGE_TAG#v}" \
             .
-          docker push "${DOCKER_NAMESPACE}/velonetics:${IMAGE_TAG}"
-          docker push "${DOCKER_NAMESPACE}/velonetics:${IMAGE_TAG#v}"
-
-      - name: Push official org image (optional)
-        continue-on-error: true
-        env:
-          IMAGE_TAG: ${{ github.event.release.tag_name }}
-        run: |
-          docker tag "${{ secrets.DOCKER_USERNAME }}/velonetics:${IMAGE_TAG}" "velonetics/velonetics:${IMAGE_TAG}"
-          docker tag "${{ secrets.DOCKER_USERNAME }}/velonetics:${IMAGE_TAG#v}" "velonetics/velonetics:${IMAGE_TAG#v}"
-          docker push "velonetics/velonetics:${IMAGE_TAG}"
-          docker push "velonetics/velonetics:${IMAGE_TAG#v}"
+          docker push "niteesh20/velonetics:${IMAGE_TAG}"
+          docker push "niteesh20/velonetics:${IMAGE_TAG#v}"

@@ -69,13 +69,13 @@ See [examples/websocket/README.md](examples/websocket/README.md).
 
 ### Single image
 
-Official image: `velonetics/velonetics:2.0.0` (requires org Docker Hub access). Until then, use the community-published image:
+Published on Docker Hub: **[niteesh20/velonetics](https://hub.docker.com/r/niteesh20/velonetics)**
 
 ```
 docker pull niteesh20/velonetics:2.0.0
 ```
 
-Release tags are also published automatically to `${DOCKER_USERNAME}/velonetics` when `DOCKER_USERNAME` / `DOCKER_PASSWORD` secrets are configured (see `.github/workflows/release.yml`).
+On each GitHub release, CI builds and pushes `niteesh20/velonetics:$TAG` when `DOCKER_USERNAME` and `DOCKER_PASSWORD` repo secrets are set (`DOCKER_USERNAME` = `niteesh20`).
 
 Build locally:
 

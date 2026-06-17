@@ -111,7 +111,7 @@ docker: cmd/velonetics-ce/schema/schema.json
 		--build-arg GOLANG_VERSION=${GOLANG_VERSION} \
 		--build-arg ALPINE_VERSION=${ALPINE_VERSION} \
 		--build-arg VERSION=${VERSION} \
-		-t velonetics/velonetics:${VERSION} .
+		-t niteesh20/velonetics:${VERSION} .
 
 docker-builder:
 	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} --build-arg ALPINE_VERSION=${ALPINE_VERSION} -t velonetics/builder:${VERSION} -f Dockerfile-builder .

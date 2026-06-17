@@ -1,24 +1,39 @@
-# Enable GitHub Dependency Graph (for dependency-review CI)
+# Dependency graph (optional CI polish)
 
-The [Dependency Review](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review) workflow needs the dependency graph enabled on this repository.
+## What is it?
 
-## One-time setup (org admin)
+GitHub can scan your `go.mod` and build a list of every library Velonetics depends on. That list is called the **dependency graph**.
 
-1. Open **Settings → Code security and analysis** for [velonetics-ce](https://github.com/velonetics/velonetics-ce/settings/security_analysis).
-2. Enable **Dependency graph**.
-3. (Optional) Enable **Dependabot alerts** and **Dependabot security updates**.
+The **Dependency Review** workflow (runs on pull requests) compares that list against known security advisories. If a PR adds a vulnerable package, GitHub can warn you in the PR.
 
-After the graph is populated, PRs will get dependency-review results. Until then, the workflow is marked `continue-on-error: true` so it does not block merges.
+Right now that workflow is set to `continue-on-error: true`, which means: *if it cannot run, ignore the failure and still allow merges.* That is intentional — the graph is not set up yet, so the check would always fail.
 
-> **Org policy note:** This repository's GitHub organization does not allow `dependency-graph: write` in Actions workflows, so automated dependency snapshot submission from CI is not possible. An org admin must enable **Dependency graph** in repository settings (step 1 above).
+## Do you need to do anything?
 
-## Required secrets for release Docker publish
+**No, not for WebSocket or releases to work.** This is optional supply-chain hygiene.
 
-| Secret | Purpose |
-|--------|---------|
-| `DOCKER_USERNAME` | Docker Hub login (e.g. `niteesh20`) |
-| `DOCKER_PASSWORD` | Docker Hub token |
-| `PGP_SIGNING_KEY` | Optional — signed `.deb`/`.rpm` artifacts |
-| `PGP_PASSPHRASE` | Optional — GPG passphrase |
+If you want PR dependency warnings later:
 
-Without Docker secrets, the Handle Release workflow still completes: builder/deb/rpm jobs are skipped and only the optional `ce-docker` job runs when credentials exist.
+1. Go to [velonetics-ce → Settings → Code security and analysis](https://github.com/velonetics/velonetics-ce/settings/security_analysis).
+2. Turn **Dependency graph** to **Enabled**.
+3. Wait until GitHub has indexed `go.mod` (usually after the next push to `main`).
+4. Open `.github/workflows/dependency_review.yml` and delete the line `continue-on-error: true` so failed reviews block merges.
+
+> The velonetics org does not allow CI to submit the graph automatically (`dependency-graph: write` is blocked). An admin must flip the setting in the GitHub UI.
+
+## Docker Hub (niteesh20)
+
+Images are published to **[niteesh20/velonetics](https://hub.docker.com/r/niteesh20/velonetics)**.
+
+Add these secrets under [velonetics-ce → Settings → Secrets → Actions](https://github.com/velonetics/velonetics-ce/settings/secrets/actions):
+
+| Secret | Value |
+|--------|-------|
+| `DOCKER_USERNAME` | `niteesh20` |
+| `DOCKER_PASSWORD` | A Docker Hub access token (not your account password) |
+
+Create a token at [Docker Hub → Account Settings → Security](https://hub.docker.com/settings/security).
+
+On each GitHub release, the **Handle Release** workflow builds and pushes `niteesh20/velonetics:$TAG`.
+
+Optional secrets for signed `.deb`/`.rpm` packages: `PGP_SIGNING_KEY`, `PGP_PASSPHRASE`.
