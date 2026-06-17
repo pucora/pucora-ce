@@ -69,7 +69,15 @@ See [examples/websocket/README.md](examples/websocket/README.md).
 
 ### Single image
 
-Build the Docker image:
+Official image: `velonetics/velonetics:2.0.0` (requires org Docker Hub access). Until then, use the community-published image:
+
+```
+docker pull niteesh20/velonetics:2.0.0
+```
+
+Release tags are also published automatically to `${DOCKER_USERNAME}/velonetics` when `DOCKER_USERNAME` / `DOCKER_PASSWORD` secrets are configured (see `.github/workflows/release.yml`).
+
+Build locally:
 
 ```
 make docker
@@ -78,7 +86,7 @@ make docker
 Run it:
 
 ```
-docker run -it -p "8080:8080" -v $(pwd)/velonetics.json:/etc/velonetics/velonetics.json velonetics/velonetics:2.0.0 run -c /etc/velonetics/velonetics.json
+docker run -it -p "8080:8080" -v $(pwd)/velonetics.json:/etc/velonetics/velonetics.json niteesh20/velonetics:2.0.0 run -c /etc/velonetics/velonetics.json
 ```
 
 ## Build

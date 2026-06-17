@@ -350,7 +350,7 @@ Ensure the container can reach backend `ws://` hosts (use host networking or ser
 | Path | Purpose |
 |------|---------|
 | [`velonetics-websocket`](https://github.com/velonetics/velonetics-websocket) | Implementation module (`../velonetics-websocket` in workspace) |
-| [`velonetics-schema` v2.13 websocket.json](https://github.com/velonetics/velonetics-schema/blob/v2.0.1/v2.13/websocket.json) | JSON Schema |
+| [`velonetics-schema` v2.13 websocket.json](https://github.com/velonetics/velonetics-schema/blob/v2.0.2/v2.13/websocket.json) | JSON Schema |
 | [`handler_factory.go`](../handler_factory.go) | Gateway wiring (WebSocket → JWT handler chain) |
 | [`lura` router/gin/router.go](https://github.com/velonetics/lura/blob/v2.0.1/router/gin/router.go) | GET-only registration for WS endpoints |
 | [`tests/fixtures/ws_direct.json`](../tests/fixtures/ws_direct.json) | Direct mode sample |

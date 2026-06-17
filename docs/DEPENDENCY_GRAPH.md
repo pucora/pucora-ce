@@ -8,8 +8,21 @@ The [Dependency Review](https://docs.github.com/en/code-security/supply-chain-se
 2. Enable **Dependency graph**.
 3. (Optional) Enable **Dependabot alerts** and **Dependabot security updates**.
 
-After the graph is populated (first push to `main` with `go.mod`), PRs will get dependency-review results. Until then, the workflow is marked `continue-on-error: true` so it does not block merges.
+After the graph is populated, PRs will get dependency-review results. Until then, the workflow is marked `continue-on-error: true` so it does not block merges.
 
-## Optional: submit snapshots from CI
+## Automatic snapshot submission
 
-If the org allows `dependency-graph: write`, add a job using [dependency-submission-action](https://github.com/marketplace/actions/go-dependency-submission) to `.github/workflows/go.yml` to populate the graph automatically on each push to `main`.
+`.github/workflows/dependency-submission.yml` submits Go dependency snapshots on each push to `main` using [go-dependency-submission-action](https://github.com/marketplace/actions/go-dependency-submission). The job uses `continue-on-error: true` if the org blocks `dependency-graph: write`.
+
+Once dependency review reports succeed on PRs, remove `continue-on-error: true` from `.github/workflows/dependency_review.yml`.
+
+## Required secrets for release Docker publish
+
+| Secret | Purpose |
+|--------|---------|
+| `DOCKER_USERNAME` | Docker Hub login (e.g. `niteesh20`) |
+| `DOCKER_PASSWORD` | Docker Hub token |
+| `PGP_SIGNING_KEY` | Optional — signed `.deb`/`.rpm` artifacts |
+| `PGP_PASSPHRASE` | Optional — GPG passphrase |
+
+Without Docker secrets, the Handle Release workflow still completes: builder/deb/rpm jobs are skipped and only the optional `ce-docker` job runs when credentials exist.

@@ -25,7 +25,7 @@ jobs:
       - name: Fetch JSON schema
         run: |
           curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.1/v2.13/velonetics.json
+            https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.2/v2.13/velonetics.json
 
       - name: Build
         run: |
@@ -39,6 +39,9 @@ jobs:
           ./velonetics check -c tests/fixtures/ws_multiplex.json
           ./velonetics check -c tests/fixtures/ws_jwt.json
           ./velonetics check -c velonetics-ws.json
+
+      - name: WebSocket integration test
+        run: cd tests && go test -count=1 -run TestWebSocket -timeout 2m
 
       - name: Unit tests
         run: go test $(go list ./... | grep -vE '/tests$|/cmd/velonetics-integration')
