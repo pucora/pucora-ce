@@ -110,6 +110,8 @@ var aliases = map[string]string{
 	"github.com/velonetics/velonetics-amqp/produce":                  "backend/amqp/producer",
 	"github.com/velonetics/velonetics-lambda":                        "backend/lambda",
 	"github.com/velonetics/velonetics-soap/v2":                       "backend/soap",
+	"github.com/velonetics/velonetics-grpc/v2":                       "grpc",
+	"github.com/velonetics/velonetics-grpc/v2/client":                "backend/grpc",
 	"github.com/velonetics/velonetics-pubsub/publisher":              "backend/pubsub/publisher",
 	"github.com/velonetics/velonetics-pubsub/subscriber":             "backend/pubsub/subscriber",
 	"github.com/velonetics/velonetics-ce/v2/transport/http/client/graphql": "backend/graphql",

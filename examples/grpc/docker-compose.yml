@@ -1,0 +1,27 @@
+services:
+  mock-backend:
+    build: ./mock-backend
+    ports:
+      - "4242:4242"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/mock-grpc-backend", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  velonetics:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      args:
+        VERSION: "2.0.1"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./velonetics.json:/etc/velonetics/velonetics.json:ro
+      - ./mock-backend/flights.pb:/etc/velonetics/grpcatalog/flights.pb:ro
+    depends_on:
+      mock-backend:
+        condition: service_healthy
+    command: ["run", "-c", "/etc/velonetics/velonetics.json"]

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://velonetics.io/schema/v2.13/velonetics.json",
+  "version": 3,
+  "port": 8080,
+  "extra_config": {
+    "grpc": {
+      "catalog": ["./tests/fixtures/grpcatalog/flights.pb"]
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/flights/{date}",
+      "method": "GET",
+      "input_query_strings": ["lat", "lon"],
+      "backend": [
+        {
+          "host": ["localhost:4242"],
+          "url_pattern": "/flight_finder.Flights/FindFlight",
+          "extra_config": {
+            "backend/grpc": {
+              "input_mapping": {
+                "lat": "where.latitude",
+                "lon": "where.longitude",
+                "Date": "when.departure"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

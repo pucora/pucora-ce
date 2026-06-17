@@ -18,6 +18,7 @@ import (
 	pubsub "github.com/velonetics/velonetics-pubsub/v2"
 	ratelimit "github.com/velonetics/velonetics-ratelimit/v3/proxy"
 	soap "github.com/velonetics/velonetics-soap/v2"
+	grpcclient "github.com/velonetics/velonetics-grpc/v2/client"
 	"github.com/velonetics/lura/v2/config"
 	"github.com/velonetics/lura/v2/logging"
 	"github.com/velonetics/lura/v2/proxy"
@@ -68,6 +69,7 @@ func internalNewBackendFactory(
 	backendFactory = amqp.NewBackendFactory(ctx, logger, backendFactory)
 	backendFactory = lambda.BackendFactory(logger, backendFactory)
 	backendFactory = soap.BackendFactory(logger, backendFactory)
+	backendFactory = grpcclient.BackendFactory(logger, backendFactory)
 	backendFactory = cel.BackendFactory(logger, backendFactory)
 	backendFactory = lua.BackendFactory(logger, backendFactory)
 	backendFactory = ratelimit.BackendFactory(logger, backendFactory)

@@ -650,6 +650,8 @@ github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFR
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
 github.com/sirupsen/logrus v1.6.0/go.mod h1:7uNnSEd1DgxDLC74fIahvMZmmYsHGZGEOFrfsX/uA88=
+github.com/soheilhy/cmux v0.1.5 h1:jjzc5WVemNEDTLwv9tlmemhC73tI08BNOIGwBOo10Js=
+github.com/soheilhy/cmux v0.1.5/go.mod h1:T7TcVDs9LWfQgPlPsdngu6I6QIoyIFZDDC6sNE1GqG0=
 github.com/sony/gobreaker/v2 v2.4.0 h1:g2KJRW1Ubty3+ZOcSEUN7K+REQJdN6yo6XvaML+jptg=
 github.com/sony/gobreaker/v2 v2.4.0/go.mod h1:pTyFJgcZ3h2tdQVLZZruK2C0eoFL1fb/G83wK1ZQl+s=
 github.com/spf13/cast v1.3.1/go.mod h1:Qx5cxh0v+4UWYiBimWS+eyWzqEqokIECu5etghLkUJE=
@@ -745,6 +747,8 @@ github.com/velonetics/velonetics-gelf/v2 v2.0.0 h1:ZgOkB5nW9s3sJHOVulKeVCbgs5TIs
 github.com/velonetics/velonetics-gelf/v2 v2.0.0/go.mod h1:Tn6xB38bioFks0aalRbAqhrAHIal9r9Y/dy3EvTe9wc=
 github.com/velonetics/velonetics-gologging/v2 v2.0.0 h1:qqMre9oXQrAsWbW7cSF3Yx8H/QmWlBgmviAg8DHCx24=
 github.com/velonetics/velonetics-gologging/v2 v2.0.0/go.mod h1:TrcYpzaBoMFxIqI4QhFnsMb1UHsbaekEFdY9p0mJFwo=
+github.com/velonetics/velonetics-grpc/v2 v2.0.0 h1:QUwIA3gEGfkrSKjwoPQ7PZ+8HDVYIjkpGqg/1WeEVik=
+github.com/velonetics/velonetics-grpc/v2 v2.0.0/go.mod h1:TIULya/dNByentRP8Jnk2GqzCQpGNyd43Af+Obx3B9o=
 github.com/velonetics/velonetics-httpcache/v2 v2.0.0 h1:d4GSYTBmHK82eUzWDRxBxcL2B5gv2kscj9WwseqeWp8=
 github.com/velonetics/velonetics-httpcache/v2 v2.0.0/go.mod h1:45hLrmS7fnM5ayWDKfefT86FC55t1lBI7xBluc+oIOQ=
 github.com/velonetics/velonetics-httpsecure/v2 v2.0.0 h1:+MYPhLxFIgsvaejW61rQxehWiHVy1vPornad6yWTdgY=
@@ -779,8 +783,6 @@ github.com/velonetics/velonetics-ratelimit/v3 v3.0.0 h1:r6AcyQMQ0LolSRDdFH+wwFHv
 github.com/velonetics/velonetics-ratelimit/v3 v3.0.0/go.mod h1:nqJ7Tab/e/1/9PWMv30OnSz29lQLKhKyiyTCtiwjl+g=
 github.com/velonetics/velonetics-rss/v2 v2.0.0 h1:UPtkuN8ghJdvtfroJKwKtQk+5XUQPcGNBmKmjM5K4Js=
 github.com/velonetics/velonetics-rss/v2 v2.0.0/go.mod h1:hdanp47U7AbYVeXPD+WVWjAfojIBC4OgQRL0FXRKB0A=
-github.com/velonetics/velonetics-soap/v2 v2.0.0 h1:Gu6sQ4F5AIvVXU+vcVlp9uNmMPAUAOGxlAHIDuEp9AQ=
-github.com/velonetics/velonetics-soap/v2 v2.0.0/go.mod h1:x+PYqaZ8sWMYlB2gXvg12hpPmecYCjGlBTQk1cSGP8U=
 github.com/velonetics/velonetics-soap/v2 v2.1.0 h1:/fOAGDjm+av/Xnuy6E4+C/kGu8VJJ8n+zqvMBKks0k4=
 github.com/velonetics/velonetics-soap/v2 v2.1.0/go.mod h1:Y4QwtEbYmEmQ8EXhZAR7mPrXMGJda6dKGedHNllT7LY=
 github.com/velonetics/velonetics-usage/v2 v2.0.0 h1:nzCHcfCmJraoN3ArragohE42VaWhjPnqJ7EIW2gUdOk=
@@ -949,6 +951,7 @@ golang.org/x/net v0.0.0-20200625001655-4c5254603344/go.mod h1:/O7V0waA8r7cgGh81R
 golang.org/x/net v0.0.0-20200707034311-ab3426394381/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/net v0.0.0-20200822124328-c89045814202/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/net v0.0.0-20201110031124-69a78807bb2b/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
+golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
 golang.org/x/net v0.0.0-20210226172049-e18ecbb05110/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=
 golang.org/x/net v0.0.0-20210525063256-abc453219eb5/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/net v0.0.0-20210916014120-12bc252f5db8/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
