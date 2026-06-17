@@ -104,10 +104,9 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
       - name: Set release version
-        id: release_version
         env:
           TAG: ${{ github.event.release.tag_name }}
-        run: echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+        run: echo "RELEASE_VERSION=${TAG#v}" >> "$GITHUB_ENV"
       - name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v5
@@ -117,37 +116,49 @@ jobs:
       - name: List keys
         run: gpg -K
       - name: Generate the artifacts for Debian/Ubuntu/Redhat/Centos (AMD64/ARM64)
-        uses: docker://niteesh20/builder:${{ steps.release_version.outputs.version }}-linux-generic
-        with:
-          args: sh -c "git config --global --add safe.directory /github/workspace;
-           export CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc ARCH=arm64 OS_TAG=_generic-linux GOARCH=arm64 GOHOSTARCH=amd64 EXTRA_LDFLAGS='-extld=aarch64-linux-gnu-gcc';
-           make -e build && make -e tgz;
-           make clean;
-           export CC= GOARCH=amd64 ARCH=amd64 OS_TAG=_generic-linux EXTRA_LDFLAGS=;
-           make -e build && make -e tgz;"
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/github/workspace" \
+            -w /github/workspace \
+            "niteesh20/builder:${RELEASE_VERSION}-linux-generic" \
+            sh -c "git config --global --add safe.directory /github/workspace;
+             export CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc ARCH=arm64 OS_TAG=_generic-linux GOARCH=arm64 GOHOSTARCH=amd64 EXTRA_LDFLAGS='-extld=aarch64-linux-gnu-gcc';
+             make -e build && make -e tgz;
+             make clean;
+             export CC= GOARCH=amd64 ARCH=amd64 OS_TAG=_generic-linux EXTRA_LDFLAGS=;
+             make -e build && make -e tgz;"
       - name: Build DEB package (AMD64)
-        uses: docker://niteesh20/fpm:deb
-        with:
-          entrypoint: /bin/bash
-          args: -c "make -e deb-release"
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/github/workspace" \
+            -w /github/workspace \
+            --entrypoint /bin/bash \
+            niteesh20/fpm:deb \
+            -c "make -e deb-release"
       - name: Build RPM package (AMD64)
-        uses: docker://niteesh20/fpm:rpm
-        with:
-          entrypoint: /bin/bash
-          args: -c "echo '${{ secrets.PGP_SIGNING_KEY }}' > pgp.key;
-           gpg --import pgp.key;
-           cp builder/files/rpmmacros /etc/rpm/macros;
-           make -e rpm-release &&
-           rpmsign --addsign *rpm"
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/github/workspace" \
+            -w /github/workspace \
+            --entrypoint /bin/bash \
+            niteesh20/fpm:rpm \
+            -c "echo '${{ secrets.PGP_SIGNING_KEY }}' > pgp.key;
+             gpg --import pgp.key;
+             cp builder/files/rpmmacros /etc/rpm/macros;
+             make -e rpm-release &&
+             rpmsign --addsign *rpm"
       - name: Generate the artifacts for Alpine (AMD64/ARM64)
-        uses: docker://niteesh20/builder:${{ steps.release_version.outputs.version }}
-        with:
-          args: sh -c "export GOARCH=amd64 ARCH=amd64 OS_TAG=_alpine;
-           make -e build && make -e tgz;
-           make clean;
-           export CGO_ENABLED=1 ARCH=arm64 OS_TAG=_alpine GOARCH=arm64 GOHOSTARCH=amd64;
-           export CC=aarch64-linux-musl-gcc EXTRA_LDFLAGS='-extldflags=-fuse-ld=bfd  -extld=aarch64-linux-musl-gcc';
-           make -e build && make -e tgz"
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/github/workspace" \
+            -w /github/workspace \
+            "niteesh20/builder:${RELEASE_VERSION}" \
+            sh -c "export GOARCH=amd64 ARCH=amd64 OS_TAG=_alpine;
+             make -e build && make -e tgz;
+             make clean;
+             export CGO_ENABLED=1 ARCH=arm64 OS_TAG=_alpine GOARCH=arm64 GOHOSTARCH=amd64;
+             export CC=aarch64-linux-musl-gcc EXTRA_LDFLAGS='-extldflags=-fuse-ld=bfd  -extld=aarch64-linux-musl-gcc';
+             make -e build && make -e tgz"
       - name: ASC files
         run: for i in $(ls *.tar.gz *.deb *.rpm);
          do gpg --armor --detach $i;
