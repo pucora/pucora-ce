@@ -6,6 +6,8 @@ Velonetics is an extensible, ultra-high performance API Gateway that helps you e
 
 **Velonetics Community Edition** (or *Velonetics-CE*) is an open-source API gateway.
 
+**WebSockets:** RFC-6455 multiplex and direct proxy to `ws://` / `wss://` backends — see [docs/websockets.md](docs/websockets.md) for configuration, JWT on upgrade, and Docker Compose examples.
+
 ## Benefits
 
 - **Easy integration** of an ultra-high performance gateway.
@@ -101,7 +103,11 @@ Legacy Velonetics namespace keys in `extra_config` are still accepted for backwa
 
 ### WebSockets
 
-See [docs/websockets.md](docs/websockets.md) for configuration, multiplex envelope protocol, JWT on upgrade, and sample configs under `tests/fixtures/ws_*.json`.
+Velonetics CE supports RFC-6455 WebSocket proxying (multiplex and direct modes, JWT on upgrade, reconnect, and OTEL metrics). See the full guide:
+
+- [docs/websockets.md](docs/websockets.md) — configuration, envelope protocol, JWT, Docker Compose stack
+- [tests/fixtures/ws_*.json](tests/fixtures/) — sample configs
+- [velonetics-ws.json](velonetics-ws.json) — minimal direct-mode sample
 
 ## License
 

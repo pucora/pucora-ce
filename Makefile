@@ -92,7 +92,7 @@ ws-compose-test: cmd/velonetics-ce/schema/schema.json
 	./examples/websocket/scripts/smoke.sh
 	cd examples/websocket && docker compose down -v
 
-SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.0/v2.13/velonetics.json
+SCHEMA_URL := https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.1/v2.13/velonetics.json
 
 cmd/velonetics-ce/schema/schema.json:
 	@echo "Fetching v${SCHEMA_VERSION} schema"

@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      dependency-graph: write
     steps:
       - uses: actions/checkout@v4
 
@@ -16,6 +19,11 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+
+      - name: Submit dependency snapshot
+        uses: actions/dependency-submission-action@v4
+        with:
+          go-mod-path: go.mod
 
       - name: WebSocket published module tests
         run: |
@@ -25,7 +33,7 @@ jobs:
       - name: Fetch JSON schema
         run: |
           curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.0/v2.13/velonetics.json
+            https://raw.githubusercontent.com/velonetics/velonetics-schema/v2.0.1/v2.13/velonetics.json
 
       - name: Build
         run: |
