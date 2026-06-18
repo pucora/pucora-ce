@@ -1,0 +1,26 @@
+service:
+  nlb:
+    enabled: true
+    externalTrafficPolicy: Local
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-name: "velonetics-gateway"
+      service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "Environment=prod,Team=platform"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      service.beta.kubernetes.io/aws-load-balancer-target-type: "ip"
+
+podAntiAffinity:
+  enabled: true
+  type: hard
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: velonetics
+
+networkPolicy:
+  enabled: true

@@ -1,0 +1,56 @@
+replicaCount: 2
+
+config:
+  mode: image
+
+usageReporting:
+  disable: true
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+probes:
+  startup:
+    enabled: true
+
+lifecycle:
+  preStop:
+    enabled: true
+    sleepSeconds: 10
+
+podAntiAffinity:
+  enabled: true
+  type: soft
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+
+networkPolicy:
+  enabled: true
+  allowIngressController: true
+  allowMetricsScraper: true
+
+serviceMonitor:
+  enabled: true
+
+prometheusRule:
+  enabled: true
+  rules:
+    - alert: VeloneticsDown
+      expr: up{job=~".*velonetics.*"} == 0
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: Velonetics gateway is down

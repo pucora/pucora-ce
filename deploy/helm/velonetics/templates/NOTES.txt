@@ -1,0 +1,57 @@
+1. Get the Velonetics API Gateway URL:
+
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "velonetics.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if eq (include "velonetics.isLoadBalancerService" .) "true" }}
+  NOTE: It may take a few minutes for the LoadBalancer IP/hostname to be available.
+  kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "velonetics.fullname" . }}
+{{- if .Values.service.nlb.enabled }}
+
+  NLB mode is enabled. Check cloud-provider tags and metadata via service annotations.
+{{- end }}
+{{- else }}
+  kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "velonetics.fullname" . }} 8080:{{ .Values.service.port }}
+  echo "Visit http://127.0.0.1:8080"
+{{- end }}
+
+2. Check the health endpoint:
+
+  curl http://127.0.0.1:8080/__health
+
+{{- if .Values.metrics.enabled }}
+
+3. Metrics are exposed on port {{ .Values.metrics.port }}.
+{{- if .Values.serviceMonitor.enabled }}
+   Prometheus ServiceMonitor is enabled for scraping.
+{{- else }}
+   Enable serviceMonitor.enabled to integrate with Prometheus Operator.
+{{- end }}
+{{- end }}
+{{- if .Values.sidecarInjection.enabled }}
+
+Sidecar injection is enabled.
+{{- if .Values.sidecarInjection.istio.enabled }}
+   Istio sidecar injection: {{ .Values.sidecarInjection.istio.inject | ternary "enabled" "disabled" }}
+{{- end }}
+{{- if .Values.sidecarInjection.linkerd.enabled }}
+   Linkerd injection: {{ .Values.sidecarInjection.linkerd.inject }}
+{{- end }}
+{{- end }}
+
+Configuration mode: {{ .Values.config.mode }}
+{{- if eq .Values.config.mode "configmap" }}
+   Update config.veloneticsJson in values.yaml or use --set-file config.veloneticsJson=./velonetics.json
+{{- else }}
+   Configuration is expected to be baked into the container image.
+{{- end }}
+
+Source repository: https://github.com/velonetics/velonetics-ce
+Chart: https://github.com/velonetics/velonetics-ce/tree/main/deploy/helm/velonetics

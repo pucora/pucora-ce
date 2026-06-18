@@ -4,9 +4,9 @@ examples/grpc/mock-backend/vendor
 examples/grpc/mock-jwt/vendor
 bench_res
 sec_scan
-velonetics
-velonetics-ce
-velonetics-alpine
+/velonetics
+/velonetics-ce
+/velonetics-alpine
 cmd/velonetics-integration/velonetics-integration
 tests/fixtures/velonetics.json.final
 .vscode

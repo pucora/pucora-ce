@@ -1,0 +1,36 @@
+{{- if and .Values.tests.enabled .Values.tests.configCheck (eq (include "velonetics.useConfigVolume" .) "true") }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "velonetics.fullname" . }}-config-test
+  labels:
+    {{- include "velonetics.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  restartPolicy: Never
+  containers:
+    - name: config-check
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      command:
+        - /usr/bin/velonetics
+        - check
+        - -c
+        - /etc/velonetics/velonetics.json
+      volumeMounts:
+        - name: config
+          mountPath: /etc/velonetics/velonetics.json
+          subPath: velonetics.json
+          readOnly: true
+  volumes:
+    {{- if eq (include "velonetics.useConfigMap" .) "true" }}
+    - name: config
+      configMap:
+        name: {{ include "velonetics.configMapName" . }}
+    {{- else if eq (include "velonetics.useConfigSecret" .) "true" }}
+    - name: config
+      secret:
+        secretName: {{ include "velonetics.configSecretName" . }}
+    {{- end }}
+{{- end }}

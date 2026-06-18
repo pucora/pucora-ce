@@ -1,0 +1,11 @@
+{{- if and (eq .Values.config.mode "configmap") (not .Values.config.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "velonetics.configMapName" . }}
+  labels:
+    {{- include "velonetics.labels" . | nindent 4 }}
+data:
+  velonetics.json: |
+{{- .Values.config.veloneticsJson | nindent 4 }}
+{{- end }}

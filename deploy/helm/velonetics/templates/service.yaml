@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "velonetics.fullname" . }}
+  labels:
+    {{- include "velonetics.labels" . | nindent 4 }}
+    {{- if .Values.service.nlb.enabled }}
+    {{- with .Values.service.nlb.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- end }}
+  {{- $serviceAnnotations := include "velonetics.serviceAnnotations" . }}
+  {{- if $serviceAnnotations }}
+  annotations:
+    {{- $serviceAnnotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ include "velonetics.serviceType" . }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "velonetics.selectorLabels" . | nindent 4 }}
+  {{- if .Values.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- end }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if eq (include "velonetics.isLoadBalancerService" .) "true" }}
+  {{- $loadBalancerIP := .Values.service.loadBalancerIP }}
+  {{- if and .Values.service.nlb.enabled .Values.service.nlb.loadBalancerIP }}
+  {{- $loadBalancerIP = .Values.service.nlb.loadBalancerIP }}
+  {{- end }}
+  {{- if $loadBalancerIP }}
+  loadBalancerIP: {{ $loadBalancerIP | quote }}
+  {{- end }}
+  {{- $loadBalancerClass := .Values.service.loadBalancerClass }}
+  {{- if and .Values.service.nlb.enabled .Values.service.nlb.loadBalancerClass }}
+  {{- $loadBalancerClass = .Values.service.nlb.loadBalancerClass }}
+  {{- end }}
+  {{- if $loadBalancerClass }}
+  loadBalancerClass: {{ $loadBalancerClass | quote }}
+  {{- end }}
+  {{- $externalTrafficPolicy := .Values.service.externalTrafficPolicy }}
+  {{- if and .Values.service.nlb.enabled .Values.service.nlb.externalTrafficPolicy }}
+  {{- $externalTrafficPolicy = .Values.service.nlb.externalTrafficPolicy }}
+  {{- end }}
+  {{- if $externalTrafficPolicy }}
+  externalTrafficPolicy: {{ $externalTrafficPolicy }}
+  {{- end }}
+  {{- $sourceRanges := .Values.service.loadBalancerSourceRanges }}
+  {{- if and .Values.service.nlb.enabled .Values.service.nlb.loadBalancerSourceRanges }}
+  {{- $sourceRanges = .Values.service.nlb.loadBalancerSourceRanges }}
+  {{- end }}
+  {{- with $sourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}

@@ -9,7 +9,7 @@ services:
       context: ../..
       dockerfile: Dockerfile
       args:
-        VERSION: "2.0.0"
+        VERSION: "2.2.0"
     ports:
       - "8080:8080"
     environment:

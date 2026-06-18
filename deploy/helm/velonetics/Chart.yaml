@@ -1,0 +1,16 @@
+apiVersion: v2
+name: velonetics
+description: Helm chart for deploying the Velonetics API Gateway on Kubernetes
+type: application
+version: 2.2.0
+appVersion: "2.2.0"
+keywords:
+  - api-gateway
+  - velonetics
+  - microservices
+home: https://velonetics.io
+sources:
+  - https://github.com/velonetics/velonetics-ce
+maintainers:
+  - name: Velonetics Team
+    email: community@velonetics.io

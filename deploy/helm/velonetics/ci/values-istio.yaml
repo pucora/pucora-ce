@@ -1,0 +1,14 @@
+sidecarInjection:
+  enabled: true
+  istio:
+    enabled: true
+    inject: true
+    holdApplicationUntilProxyStarts: true
+
+probes:
+  startup:
+    enabled: true
+    failureThreshold: 60
+
+podAnnotations:
+  traffic.sidecar.istio.io/includeOutboundIPRanges: "0.0.0.0/0"
