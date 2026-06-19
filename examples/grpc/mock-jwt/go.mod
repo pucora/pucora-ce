@@ -1,4 +1,4 @@
-module github.com/pucora/velonetics-ce/examples/grpc/mock-jwt
+module github.com/pucora/pucora-ce/examples/grpc/mock-jwt
 
 go 1.25.0
 

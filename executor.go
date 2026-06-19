@@ -12,36 +12,36 @@ import (
 	"github.com/go-contrib/uuid"
 	"golang.org/x/sync/errgroup"
 
-	veloneticsbf "github.com/pucora/bloomfilter/v2/pucora"
-	asyncamqp "github.com/pucora/velonetics-amqp/v2/async"
-	asynckafka "github.com/pucora/velonetics-pubsub/v2/async"
-	kafkapkg "github.com/pucora/velonetics-pubsub/v2/kafka"
-	audit "github.com/pucora/velonetics-audit"
-	cel "github.com/pucora/velonetics-cel/v2"
-	cmd "github.com/pucora/velonetics-cobra/v2"
-	cors "github.com/pucora/velonetics-cors/v2/gin"
-	gelf "github.com/pucora/velonetics-gelf/v2"
-	gologging "github.com/pucora/velonetics-gologging/v2"
-	influxdb "github.com/pucora/velonetics-influx/v2"
-	jose "github.com/pucora/velonetics-jose/v2"
-	logstash "github.com/pucora/velonetics-logstash/v2"
-	metrics "github.com/pucora/velonetics-metrics/v2/gin"
-	opencensus "github.com/pucora/velonetics-opencensus/v2"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/datadog"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/influxdb"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/jaeger"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/ocagent"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/prometheus"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/stackdriver"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/xray"
-	_ "github.com/pucora/velonetics-opencensus/v2/exporter/zipkin"
-	kotel "github.com/pucora/velonetics-otel"
-	otellura "github.com/pucora/velonetics-otel/lura"
-	otelgin "github.com/pucora/velonetics-otel/router/gin"
-	usage "github.com/pucora/velonetics-usage/v2"
-	soap "github.com/pucora/velonetics-soap/v2"
-	maingrpc "github.com/pucora/velonetics-grpc/v2"
-	grpcserver "github.com/pucora/velonetics-grpc/v2/server"
+	pucorabf "github.com/pucora/bloomfilter/v2/pucora"
+	asyncamqp "github.com/pucora/pucora-amqp/v2/async"
+	asynckafka "github.com/pucora/pucora-pubsub/v2/async"
+	kafkapkg "github.com/pucora/pucora-pubsub/v2/kafka"
+	audit "github.com/pucora/pucora-audit"
+	cel "github.com/pucora/pucora-cel/v2"
+	cmd "github.com/pucora/pucora-cobra/v2"
+	cors "github.com/pucora/pucora-cors/v2/gin"
+	gelf "github.com/pucora/pucora-gelf/v2"
+	gologging "github.com/pucora/pucora-gologging/v2"
+	influxdb "github.com/pucora/pucora-influx/v2"
+	jose "github.com/pucora/pucora-jose/v2"
+	logstash "github.com/pucora/pucora-logstash/v2"
+	metrics "github.com/pucora/pucora-metrics/v2/gin"
+	opencensus "github.com/pucora/pucora-opencensus/v2"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/datadog"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/influxdb"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/jaeger"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/ocagent"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/prometheus"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/stackdriver"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/xray"
+	_ "github.com/pucora/pucora-opencensus/v2/exporter/zipkin"
+	kotel "github.com/pucora/pucora-otel"
+	otellura "github.com/pucora/pucora-otel/lura"
+	otelgin "github.com/pucora/pucora-otel/router/gin"
+	usage "github.com/pucora/pucora-usage/v2"
+	soap "github.com/pucora/pucora-soap/v2"
+	maingrpc "github.com/pucora/pucora-grpc/v2"
+	grpcserver "github.com/pucora/pucora-grpc/v2/server"
 	"github.com/pucora/lura/v2/async"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/core"
@@ -208,7 +208,7 @@ func (e *ExecutorBuilder) NewCmdExecutor(ctx context.Context) cmd.Executor {
 			logger,
 			e.SubscriberFactoriesRegister.Register(ctx, cfg, logger),
 		)
-		if err != nil && err != veloneticsbf.ErrNoConfig {
+		if err != nil && err != pucorabf.ErrNoConfig {
 			logger.Warning("[SERVICE: Bloomfilter]", err.Error())
 		}
 
@@ -364,7 +364,7 @@ func (LoggerBuilder) NewLogger(cfg config.ServiceConfig) (logging.Logger, io.Wri
 
 		if gologgingErr != nil {
 			var err error
-			logger, err = logging.NewLogger("DEBUG", os.Stdout, "VELONETICS")
+			logger, err = logging.NewLogger("DEBUG", os.Stdout, "PUCORA")
 			if err != nil {
 				return logger, gelfWriter, err
 			}
@@ -391,7 +391,7 @@ type BloomFilterJWT struct{}
 // NewTokenRejecter registers the bloomfilter component and links it to a token rejecter. Then it returns a chained
 // rejecter factory with the created token rejecter and other based on the CEL component.
 func (BloomFilterJWT) NewTokenRejecter(ctx context.Context, cfg config.ServiceConfig, l logging.Logger, reg func(n string, p int)) (jose.ChainedRejecterFactory, error) {
-	rejecter, err := veloneticsbf.Register(ctx, "velonetics-bf", cfg, l, reg)
+	rejecter, err := pucorabf.Register(ctx, "pucora-bf", cfg, l, reg)
 
 	return jose.ChainedRejecterFactory([]jose.RejecterFactory{
 		jose.RejecterFactoryFunc(func(_ logging.Logger, _ *config.EndpointConfig) jose.Rejecter {

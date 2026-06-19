@@ -2,21 +2,21 @@
 
 ## Module published
 
-- Repository: https://github.com/pucora/velonetics-websocket
+- Repository: https://github.com/pucora/pucora-websocket
 - Tags: `v2.0.0`, `v2.0.1`
-- Go module: `github.com/pucora/velonetics-websocket/v2`
+- Go module: `github.com/pucora/pucora-websocket/v2`
 - Router support: https://github.com/pucora/lura `v2.0.1` (GET + NoopProxy for WS endpoints)
 
 ## CE integration
 
 | Path | Purpose |
 |------|---------|
-| `../velonetics-websocket` | Sibling module (use `go.work`; publish with `scripts/publish-fork-module.sh`) |
+| `../pucora-websocket` | Sibling module (use `go.work`; publish with `scripts/publish-fork-module.sh`) |
 | `handler_factory.go` | Wires WebSocket handler before JWT |
 | `docs/websockets.md` | Configuration reference |
 | `examples/websocket/` | Docker Compose stack + smoke tests |
 | `tests/fixtures/ws_*.json` | Config fixtures |
-| `velonetics-ws.json` | Minimal direct-mode sample config |
+| `pucora-ws.json` | Minimal direct-mode sample config |
 
 ## Local workspace
 
@@ -32,10 +32,10 @@ Without `go.work`, builds use published module versions from `go.mod`.
 ## Commands
 
 ```bash
-make test-websocket      # unit tests in ../velonetics-websocket
-make check-fixtures      # validate ws_*.json + velonetics-ws.json
+make test-websocket      # unit tests in ../pucora-websocket
+make check-fixtures      # validate ws_*.json + pucora-ws.json
 make ws-compose-test     # Docker Compose end-to-end smoke
-./scripts/publish-fork-module.sh velonetics-websocket v2.0.x
+./scripts/publish-fork-module.sh pucora-websocket v2.0.x
 ./scripts/publish-fork-module.sh lura v2.0.x
 ```
 

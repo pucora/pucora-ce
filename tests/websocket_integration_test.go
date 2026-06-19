@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
-	ws "github.com/pucora/velonetics-websocket/v2"
+	ws "github.com/pucora/pucora-websocket/v2"
 )
 
 func TestWebSocketDirectEchoIntegration(t *testing.T) {

@@ -236,8 +236,8 @@ jobs:
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.3/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.3/v2.13/pucora.json
 
       - name: Vendor modules for offline Docker build
         run: GOWORK=off go mod vendor
@@ -294,5 +294,5 @@ jobs:
           helm package deploy/helm/pucora \
             --version "${APP_VERSION}" \
             --app-version "${APP_VERSION}"
-          helm push "velonetics-${APP_VERSION}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
+          helm push "pucora-${APP_VERSION}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
           echo "Published oci://ghcr.io/${{ github.repository_owner }}/charts/pucora:${APP_VERSION}"

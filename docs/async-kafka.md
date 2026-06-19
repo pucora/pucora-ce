@@ -52,7 +52,7 @@ The topic name comes from `async_agent[].consumer.topic`. The driver uses a **la
         "async/kafka": {
           "cluster": {
             "brokers": ["localhost:9092"],
-            "client_id": "velonetics_async_agent"
+            "client_id": "pucora_async_agent"
           },
           "group": {
             "group_id": "my_group_id",

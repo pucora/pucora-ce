@@ -1,9 +1,9 @@
 package pucora
 
 import (
-	rss "github.com/pucora/velonetics-rss/v2"
-	xml "github.com/pucora/velonetics-xml/v2"
-	ginxml "github.com/pucora/velonetics-xml/v2/gin"
+	rss "github.com/pucora/pucora-rss/v2"
+	xml "github.com/pucora/pucora-xml/v2"
+	ginxml "github.com/pucora/pucora-xml/v2/gin"
 	"github.com/pucora/lura/v2/router/gin"
 )
 

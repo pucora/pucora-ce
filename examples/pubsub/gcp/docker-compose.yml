@@ -1,7 +1,7 @@
 services:
   pubsub:
     image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
-    command: gcloud beta emulators pubsub start --host-port=0.0.0.0:8085 --project=velonetics-smoke
+    command: gcloud beta emulators pubsub start --host-port=0.0.0.0:8085 --project=pucora-smoke
     ports:
       - "8085:8085"
 
@@ -17,12 +17,12 @@ services:
       - |
         set -euo pipefail
         for i in $(seq 1 30); do
-          if gcloud pubsub topics create events --project=velonetics-smoke 2>/dev/null; then
+          if gcloud pubsub topics create events --project=pucora-smoke 2>/dev/null; then
             break
           fi
           sleep 2
         done
-        gcloud pubsub subscriptions create events-sub --topic=events --project=velonetics-smoke
+        gcloud pubsub subscriptions create events-sub --topic=events --project=pucora-smoke
         echo "GCP Pub/Sub emulator initialized"
 
   pucora:

@@ -23,7 +23,7 @@
           "disable_host_sanitize": true,
           "extra_config": {
             "backend/pubsub/publisher": {
-              "topic_url": "projects/velonetics-smoke/topics/events"
+              "topic_url": "projects/pucora-smoke/topics/events"
             }
           }
         }
@@ -40,7 +40,7 @@
           "encoding": "json",
           "extra_config": {
             "backend/pubsub/subscriber": {
-              "subscription_url": "velonetics-smoke/events-sub"
+              "subscription_url": "pucora-smoke/events-sub"
             }
           }
         }

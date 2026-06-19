@@ -26,37 +26,37 @@ import (
 )
 
 var (
-	defaultBinPath     *string = flag.String("velonetics_bin_path", ".././pucora", "The default path to the pucora bin")
-	defaultSpecsPath   *string = flag.String("velonetics_specs_path", "./fixtures/specs", "The default path to the specs folder")
-	defaultBackendPort *int    = flag.Int("velonetics_backend_port", 8081, "The port for the mocked backend api")
+	defaultBinPath     *string = flag.String("pucora_bin_path", ".././pucora", "The default path to the pucora bin")
+	defaultSpecsPath   *string = flag.String("pucora_specs_path", "./fixtures/specs", "The default path to the specs folder")
+	defaultBackendPort *int    = flag.Int("pucora_backend_port", 8081, "The port for the mocked backend api")
 	defaultCfgPath     *string = flag.String(
-		"velonetics_config_path",
+		"pucora_config_path",
 		"fixtures/pucora.json",
 		"The default path to the pucora config",
 	)
 	defaultDelay *time.Duration = flag.Duration(
-		"velonetics_delay",
+		"pucora_delay",
 		200*time.Millisecond,
 		"The delay for the delayed backend endpoint",
 	)
 	defaultEnvironPatterns *string = flag.String(
-		"velonetics_envar_pattern",
+		"pucora_envar_pattern",
 		"",
 		"Comma separated list of patterns to use to filter the envars to pass (set to \".*\" to pass everything)",
 	)
 	notFollowRedirects                = flag.Bool("client_not_follow_redirects", false, "The test http client should not follow http redirects")
 	defaultStartupWait *time.Duration = flag.Duration(
-		"velonetics_startup_wait",
+		"pucora_startup_wait",
 		1500*time.Millisecond,
 		"The time to wait to let servers startup before start testing",
 	)
 	defaultReadyURL *string = flag.String(
-		"velonetics_ready_url",
+		"pucora_ready_url",
 		"",
 		"The url to check for system under test readiness.",
 	)
 	defaultReadyURLWait *time.Duration = flag.Duration(
-		"velonetics_ready_url_wait",
+		"pucora_ready_url_wait",
 		1500*time.Millisecond,
 		"The maximum time to wait for the ready url to return a 200 Ok response.",
 	)
@@ -551,17 +551,17 @@ func readSpecs(dirPath string) (map[string][]byte, error) {
 	return data, nil
 }
 
-var defaultCmdBuilder veloneticsCmdBuilder
+var defaultCmdBuilder pucoraCmdBuilder
 
-type veloneticsCmdBuilder struct{}
+type pucoraCmdBuilder struct{}
 
-func (k veloneticsCmdBuilder) New(cfg *Config) *exec.Cmd {
+func (k pucoraCmdBuilder) New(cfg *Config) *exec.Cmd {
 	cmd := exec.Command(cfg.getBinPath(), "run", "-d", "-c", cfg.getCfgPath())
 	cmd.Env = k.getEnviron(cfg)
 	return cmd
 }
 
-func (veloneticsCmdBuilder) getEnviron(cfg *Config) []string {
+func (pucoraCmdBuilder) getEnviron(cfg *Config) []string {
 	environ := []string{"USAGE_DISABLE=1"}
 
 	var patterns []*regexp.Regexp

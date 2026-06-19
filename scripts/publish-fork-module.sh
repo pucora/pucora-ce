@@ -2,15 +2,15 @@
 # Publish a Go module from a sibling repo to github.com/pucora/<name>
 #
 # Usage:
-#   ./scripts/publish-fork-module.sh velonetics-websocket v2.0.1
-#   ./scripts/publish-fork-module.sh velonetics-websocket v2.0.1 --dry-run
-#   ./scripts/publish-fork-module.sh lura v2.0.1   # publishes ../velonetics-lura
+#   ./scripts/publish-fork-module.sh pucora-websocket v2.0.1
+#   ./scripts/publish-fork-module.sh pucora-websocket v2.0.1 --dry-run
+#   ./scripts/publish-fork-module.sh lura v2.0.1   # publishes ../pucora-lura
 #
 set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
   echo "usage: $0 <module-dir-name> <tag> [--dry-run]" >&2
-  echo "example: $0 velonetics-websocket v2.0.1" >&2
+  echo "example: $0 pucora-websocket v2.0.1" >&2
   exit 2
 fi
 
@@ -24,17 +24,17 @@ fi
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKSPACE="$(cd "${ROOT}/.." && pwd)"
 
-# GitHub repo name (lura vs velonetics-lura).
+# GitHub repo name (lura vs lura).
 case "${MODULE_NAME}" in
   lura) GH_NAME="lura" ;;
   binder|bloomfilter|flatmap|go-auth0|httpcache|lru) GH_NAME="${MODULE_NAME}" ;;
-  velonetics-*) GH_NAME="${MODULE_NAME}" ;;
+  pucora-*) GH_NAME="${MODULE_NAME}" ;;
   *) GH_NAME="${MODULE_NAME}" ;;
 esac
 
-# Local directory (velonetics-lura for lura).
+# Local directory (lura for lura).
 case "${MODULE_NAME}" in
-  lura) LOCAL_NAME="velonetics-lura" ;;
+  lura) LOCAL_NAME="lura" ;;
   *) LOCAL_NAME="${MODULE_NAME}" ;;
 esac
 
@@ -108,4 +108,4 @@ git tag -a "$TAG" -m "${GH_NAME} ${TAG}"
 git push origin "$TAG" --force
 
 echo "==> Published ${REMOTE} @ ${TAG}"
-echo "Next: bump github.com/pucora/${GH_NAME}/v2 in velonetics-ce go.mod if needed."
+echo "Next: bump github.com/pucora/${GH_NAME}/v2 in pucora-ce go.mod if needed."

@@ -2,7 +2,7 @@
 
 Pucora exposes gRPC client and server integration with KrakenD-parity configuration. Unary RPC only; catalog uses compiled `.pb` descriptor files.
 
-Implemented by [`velonetics-grpc`](https://github.com/pucora/velonetics-grpc) via:
+Implemented by [`pucora-grpc`](https://github.com/pucora/pucora-grpc) via:
 
 - `extra_config.grpc` — service catalog and optional gRPC server
 - `extra_config.backend/grpc` — gRPC upstream backends
@@ -128,14 +128,14 @@ When a published method has a single `backend/grpc` backend, the gateway forward
 | Config | `make` target | Smoke |
 |--------|---------------|-------|
 | `pucora.json` | `grpc-compose-test` (client) | REST `/flights` |
-| `velonetics-server.json` | server variant | `grpcurl` FindFlight |
-| `velonetics-mixed.json` | mixed variant | REST + `grpcurl` |
-| `velonetics-jwt.json` | JWT variant | auth required |
+| `pucora-server.json` | server variant | `grpcurl` FindFlight |
+| `pucora-mixed.json` | mixed variant | REST + `grpcurl` |
+| `pucora-jwt.json` | JWT variant | auth required |
 
 ## Local development
 
 ```bash
-cd velonetics-ce-master
+cd pucora-ce
 make test-grpc
 make check-grpc-fixtures
 make grpc-compose-test

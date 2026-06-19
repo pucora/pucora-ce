@@ -64,8 +64,8 @@ jobs:
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.2/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
 
       - name: Docker meta
         id: meta

@@ -6,7 +6,7 @@
 
 BIN_NAME :=pucora
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
-MODULE := github.com/pucora/velonetics-ce/v2
+MODULE := github.com/pucora/pucora-ce/v2
 VERSION := 2.2.0
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
@@ -57,38 +57,38 @@ RPM_OPTS =--rpm-user $(USER) \
 
 all: test test-websocket test-graphql test-streaming test-soap test-grpc test-pubsub
 
-build: cmd/velonetics-ce/schema/schema.json
+build: cmd/pucora-ce/schema/schema.json
 	@echo "Building the binary..."
 	@go get .
 	@go build -ldflags="-X ${MODULE}/pkg.Version=${VERSION} -X github.com/pucora/lura/v2/core.PucoraVersion=${VERSION} \
 	-X github.com/pucora/lura/v2/core.GlibcVersion=${GLIBC_VERSION} ${EXTRA_LDFLAGS}" \
-	-o ${BIN_NAME} ./cmd/velonetics-ce
+	-o ${BIN_NAME} ./cmd/pucora-ce
 	@echo "You can now use ./${BIN_NAME}"
 
 test: build
 	go test -v ./tests
 
 test-websocket:
-	cd ../velonetics-websocket && go test ./...
+	cd ../pucora-websocket && go test ./...
 
 test-streaming: build
-	cd ../velonetics-lura && go test ./config -run Streaming -count=1
-	cd ../velonetics-lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
-	cd ../velonetics-lura && go test ./router/gin -run 'TestRender_noop' -count=1
-	cd ../velonetics-audit && go test ./... -run 'Test_hasStreaming' -count=1
+	cd ../pucora-lura && go test ./config -run Streaming -count=1
+	cd ../pucora-lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
+	cd ../pucora-lura && go test ./router/gin -run 'TestRender_noop' -count=1
+	cd ../pucora-audit && go test ./... -run 'Test_hasStreaming' -count=1
 	go test ./tests -run 'TestStreamingConfig' -count=1 -v
 
 test-soap:
-	cd ../velonetics-soap && go test ./...
+	cd ../pucora-soap && go test ./...
 
 test-grpc:
-	cd ../velonetics-grpc && go test ./...
+	cd ../pucora-grpc && go test ./...
 
 test-pubsub:
-	cd ../velonetics-pubsub && go test ./...
+	cd ../pucora-pubsub && go test ./...
 
 test-graphql:
-	cd ../velonetics-lura && go test ./transport/http/client/graphql/... ./proxy/... -run 'GraphQL|GetOptions|Resolve|ExtraConfig' -count=1
+	cd ../pucora-lura && go test ./transport/http/client/graphql/... ./proxy/... -run 'GraphQL|GetOptions|Resolve|ExtraConfig' -count=1
 
 check-fixtures: build
 	./${BIN_NAME} check -c tests/fixtures/ws_direct.json
@@ -131,7 +131,7 @@ ws-compose-smoke:
 	chmod +x examples/websocket/scripts/smoke.sh
 	./examples/websocket/scripts/smoke.sh
 
-ws-compose-test: cmd/velonetics-ce/schema/schema.json
+ws-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off go mod vendor
 	cd examples/websocket/mock-backend && GOWORK=off go mod vendor
 	cd examples/websocket && docker compose up --build -d
@@ -149,7 +149,7 @@ graphql-compose-smoke:
 	chmod +x examples/graphql/scripts/smoke.sh
 	./examples/graphql/scripts/smoke.sh
 
-graphql-compose-test: cmd/velonetics-ce/schema/schema.json
+graphql-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off go mod vendor
 	cd examples/graphql && docker compose up --build -d
 	chmod +x examples/graphql/scripts/smoke.sh
@@ -166,14 +166,14 @@ soap-compose-smoke:
 	chmod +x examples/soap/scripts/smoke.sh
 	./examples/soap/scripts/smoke.sh
 
-soap-compose-test: cmd/velonetics-ce/schema/schema.json
+soap-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/soap && docker compose up --build -d
 	chmod +x examples/soap/scripts/smoke.sh
 	./examples/soap/scripts/smoke.sh
 	cd examples/soap && docker compose down -v
 
-soap-compose-wssec-test: cmd/velonetics-ce/schema/schema.json
+soap-compose-wssec-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/soap && PUCORA_CONFIG=pucora-wssec.json docker compose up --build -d
 	chmod +x examples/soap/scripts/smoke-wssec.sh
@@ -202,7 +202,7 @@ grpc-compose-jwt-smoke:
 	chmod +x examples/grpc/scripts/*.sh
 	./examples/grpc/scripts/smoke-jwt.sh
 
-grpc-compose-test: cmd/velonetics-ce/schema/schema.json
+grpc-compose-test: cmd/pucora-ce/schema/schema.json
 	@command -v grpcurl >/dev/null 2>&1 || GOPROXY=direct go install github.com/fullstorydev/grpcurl/cmd/grpcurl@v1.9.3
 	GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/grpc/mock-backend && GOWORK=off go mod tidy && GOWORK=off go mod vendor
@@ -222,56 +222,56 @@ grpc-compose-test: cmd/velonetics-ce/schema/schema.json
 	./examples/grpc/scripts/smoke-jwt.sh
 	cd examples/grpc && docker compose down -v
 
-pubsub-nats-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-nats-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/nats && docker compose up --build -d
 	chmod +x examples/pubsub/nats/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/nats/scripts/smoke.sh
 	cd examples/pubsub/nats && docker compose down -v
 
-pubsub-kafka-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-kafka-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/kafka && docker compose up --build -d
 	chmod +x examples/pubsub/kafka/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/kafka/scripts/smoke.sh
 	cd examples/pubsub/kafka && docker compose down -v
 
-pubsub-rabbit-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-rabbit-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/rabbit && docker compose up --build -d
 	chmod +x examples/pubsub/rabbit/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/rabbit/scripts/smoke.sh
 	cd examples/pubsub/rabbit && docker compose down -v
 
-pubsub-gcp-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-gcp-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/gcp && docker compose up --build -d
 	chmod +x examples/pubsub/gcp/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/gcp/scripts/smoke.sh
 	cd examples/pubsub/gcp && docker compose down -v
 
-pubsub-aws-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-aws-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/aws && docker compose up --build -d
 	chmod +x examples/pubsub/aws/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/aws/scripts/smoke.sh
 	cd examples/pubsub/aws && docker compose down -v
 
-pubsub-azure-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-azure-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/azure && docker compose up --build -d
 	chmod +x examples/pubsub/azure/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/azure/scripts/smoke.sh
 	cd examples/pubsub/azure && docker compose down -v
 
-pubsub-kafka-advanced-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-kafka-advanced-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/kafka-advanced && docker compose up --build -d
 	chmod +x examples/pubsub/kafka-advanced/scripts/smoke.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/kafka-advanced/scripts/smoke.sh
 	cd examples/pubsub/kafka-advanced && docker compose down -v
 
-pubsub-async-kafka-compose-test: cmd/velonetics-ce/schema/schema.json
+pubsub-async-kafka-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
 	cd examples/pubsub/async-kafka && docker compose up --build -d
 	chmod +x examples/pubsub/async-kafka/scripts/smoke.sh
@@ -288,7 +288,7 @@ sse-compose-smoke:
 	chmod +x examples/streaming/scripts/smoke.sh
 	./examples/streaming/scripts/smoke.sh
 
-sse-compose-test: cmd/velonetics-ce/schema/schema.json
+sse-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off go mod vendor
 	cd examples/streaming/mock-backend && GOWORK=off go mod vendor
 	cd examples/streaming && docker compose up --build -d
@@ -296,12 +296,12 @@ sse-compose-test: cmd/velonetics-ce/schema/schema.json
 	./examples/streaming/scripts/smoke.sh
 	cd examples/streaming && docker compose down -v
 
-SCHEMA_URL := https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.2/v2.13/pucora.json
+SCHEMA_URL := https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
 
-cmd/velonetics-ce/schema/schema.json:
+cmd/pucora-ce/schema/schema.json:
 	@echo "Fetching v${SCHEMA_VERSION} schema"
 	@mkdir -p $(dir $@)
-	@cp ../velonetics-schema/v${SCHEMA_VERSION}/pucora.json $@ 2>/dev/null || \
+	@cp ../pucora-schema/v${SCHEMA_VERSION}/pucora.json $@ 2>/dev/null || \
 		curl -fsSL -o $@ $(SCHEMA_URL)
 
 # Build Pucora using docker (defaults to whatever the golang container uses)
@@ -309,7 +309,7 @@ build_on_docker: docker-builder-linux
 	docker run --rm -it -v "${PWD}:/app" -w /app $(DOCKER_BUILDER):${VERSION}-linux-generic sh -c "git config --global --add safe.directory /app && make -e build"
 
 # Build the container using the Dockerfile (alpine)
-docker: cmd/velonetics-ce/schema/schema.json
+docker: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off go mod vendor
 	docker build --pull \
 		--build-arg GOLANG_VERSION=${GOLANG_VERSION} \
@@ -385,15 +385,15 @@ builder/skel/%/etc/rsyslog.d/pucora.conf: builder/files/pucora.conf-rsyslog
 	mkdir -p "$(dir $@)"
 	cp builder/files/pucora.conf-rsyslog "$@"
 
-builder/skel/%/etc/logrotate.d/pucora: builder/files/velonetics-logrotate
+builder/skel/%/etc/logrotate.d/pucora: builder/files/pucora-logrotate
 	mkdir -p "$(dir $@)"
-	cp builder/files/velonetics-logrotate "$@"
+	cp builder/files/pucora-logrotate "$@"
 
 .PHONY: tgz
 tgz: builder/skel/tgz/usr/bin/pucora
 tgz: builder/skel/tgz/etc/pucora/pucora.json
 tgz: builder/skel/tgz/etc/init.d/pucora
-	tar zcvf velonetics_${VERSION}_${ARCH}${OS_TAG}.tar.gz -C builder/skel/tgz/ .
+	tar zcvf pucora_${VERSION}_${ARCH}${OS_TAG}.tar.gz -C builder/skel/tgz/ .
 
 .PHONY: deb
 deb: builder/skel/deb/usr/bin/pucora
@@ -440,4 +440,4 @@ clean:
 	rm -rf builder/skel/*
 	rm -f ${BIN_NAME}
 	rm -rf vendor/
-	rm -f cmd/velonetics-ce/schema/schema.json
+	rm -f cmd/pucora-ce/schema/schema.json

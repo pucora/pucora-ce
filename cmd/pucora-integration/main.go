@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pucora/velonetics-ce/v2/tests"
+	"github.com/pucora/pucora-ce/v2/tests"
 )
 
 func main() {

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	cmd "github.com/pucora/velonetics-cobra/v2"
+	cmd "github.com/pucora/pucora-cobra/v2"
 	"github.com/pucora/lura/v2/logging"
 	proxy "github.com/pucora/lura/v2/proxy/plugin"
 	client "github.com/pucora/lura/v2/transport/http/client/plugin"

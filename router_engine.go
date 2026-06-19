@@ -5,10 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	botdetector "github.com/pucora/velonetics-botdetector/v2/gin"
-	httpsecure "github.com/pucora/velonetics-httpsecure/v2/gin"
-	lua "github.com/pucora/velonetics-lua/v2/router/gin"
-	opencensus "github.com/pucora/velonetics-opencensus/v2/router/gin"
+	botdetector "github.com/pucora/pucora-botdetector/v2/gin"
+	httpsecure "github.com/pucora/pucora-httpsecure/v2/gin"
+	lua "github.com/pucora/pucora-lua/v2/router/gin"
+	opencensus "github.com/pucora/pucora-opencensus/v2/router/gin"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/core"
 	luragin "github.com/pucora/lura/v2/router/gin"

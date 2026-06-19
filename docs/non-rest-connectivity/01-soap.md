@@ -2,7 +2,7 @@
 
 **Edition:** Community Edition (Pucora CE)  
 **Namespace:** `backend/soap`  
-**Official docs:** [Pucora SOAP Backend](../../velonetics-ce-master/docs/soap.md) · [KrakenD SOAP](https://www.krakend.io/docs/enterprise/backends/soap/)
+**Official docs:** [Pucora SOAP Backend](../../pucora-ce/docs/soap.md) · [KrakenD SOAP](https://www.krakend.io/docs/enterprise/backends/soap/)
 
 ## What it does
 

@@ -285,7 +285,7 @@ const file_flights_proto_rawDesc = "" +
 	"\aflights\x18\x01 \x03(\v2\x15.flight_finder.FlightR\aflights2\\\n" +
 	"\aFlights\x12Q\n" +
 	"\n" +
-	"FindFlight\x12 .flight_finder.FindFlightRequest\x1a!.flight_finder.FindFlightResponseBAZ?github.com/pucora/velonetics-grpc/v2/testdata/flight_finderb\x06proto3"
+	"FindFlight\x12 .flight_finder.FindFlightRequest\x1a!.flight_finder.FindFlightResponseBAZ?github.com/pucora/pucora-grpc/v2/testdata/flight_finderb\x06proto3"
 
 var (
 	file_flights_proto_rawDescOnce sync.Once

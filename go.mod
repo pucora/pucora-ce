@@ -1,4 +1,4 @@
-module github.com/pucora/velonetics-ce/v2
+module github.com/pucora/pucora-ce/v2
 
 go 1.25.3
 
@@ -10,38 +10,38 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/pucora/bloomfilter/v2 v2.0.0
 	github.com/pucora/lura/v2 v2.0.7
-	github.com/pucora/velonetics-amqp/v2 v2.0.3
-	github.com/pucora/velonetics-audit v1.0.1
-	github.com/pucora/velonetics-botdetector/v2 v2.0.0
-	github.com/pucora/velonetics-cel/v2 v2.0.0
-	github.com/pucora/velonetics-circuitbreaker/v3 v3.0.0
-	github.com/pucora/velonetics-cobra/v2 v2.0.0
-	github.com/pucora/velonetics-cors/v2 v2.0.0
-	github.com/pucora/velonetics-flexibleconfig/v2 v2.0.0
-	github.com/pucora/velonetics-gelf/v2 v2.0.0
-	github.com/pucora/velonetics-gologging/v2 v2.0.0
-	github.com/pucora/velonetics-grpc/v2 v2.0.7
-	github.com/pucora/velonetics-httpcache/v2 v2.0.0
-	github.com/pucora/velonetics-httpsecure/v2 v2.0.0
-	github.com/pucora/velonetics-influx/v2 v2.0.0
-	github.com/pucora/velonetics-jose/v2 v2.0.0
-	github.com/pucora/velonetics-jsonschema/v2 v2.0.0
-	github.com/pucora/velonetics-koanf v1.0.0
-	github.com/pucora/velonetics-lambda/v2 v2.0.0
-	github.com/pucora/velonetics-logstash/v2 v2.0.0
-	github.com/pucora/velonetics-lua/v2 v2.0.0
-	github.com/pucora/velonetics-martian/v2 v2.0.0
-	github.com/pucora/velonetics-metrics/v2 v2.0.0
-	github.com/pucora/velonetics-oauth2-clientcredentials/v2 v2.0.0
-	github.com/pucora/velonetics-opencensus/v2 v2.0.0
-	github.com/pucora/velonetics-otel v1.0.0
-	github.com/pucora/velonetics-pubsub/v2 v2.0.5
-	github.com/pucora/velonetics-ratelimit/v3 v3.0.0
-	github.com/pucora/velonetics-rss/v2 v2.0.0
-	github.com/pucora/velonetics-soap/v2 v2.2.2
-	github.com/pucora/velonetics-usage/v2 v2.0.0
-	github.com/pucora/velonetics-websocket/v2 v2.0.7
-	github.com/pucora/velonetics-xml/v2 v2.0.0
+	github.com/pucora/pucora-amqp/v2 v2.0.3
+	github.com/pucora/pucora-audit v1.0.1
+	github.com/pucora/pucora-botdetector/v2 v2.0.0
+	github.com/pucora/pucora-cel/v2 v2.0.0
+	github.com/pucora/pucora-circuitbreaker/v3 v3.0.0
+	github.com/pucora/pucora-cobra/v2 v2.0.0
+	github.com/pucora/pucora-cors/v2 v2.0.0
+	github.com/pucora/pucora-flexibleconfig/v2 v2.0.0
+	github.com/pucora/pucora-gelf/v2 v2.0.0
+	github.com/pucora/pucora-gologging/v2 v2.0.0
+	github.com/pucora/pucora-grpc/v2 v2.0.7
+	github.com/pucora/pucora-httpcache/v2 v2.0.0
+	github.com/pucora/pucora-httpsecure/v2 v2.0.0
+	github.com/pucora/pucora-influx/v2 v2.0.0
+	github.com/pucora/pucora-jose/v2 v2.0.0
+	github.com/pucora/pucora-jsonschema/v2 v2.0.0
+	github.com/pucora/pucora-koanf v1.0.0
+	github.com/pucora/pucora-lambda/v2 v2.0.0
+	github.com/pucora/pucora-logstash/v2 v2.0.0
+	github.com/pucora/pucora-lua/v2 v2.0.0
+	github.com/pucora/pucora-martian/v2 v2.0.0
+	github.com/pucora/pucora-metrics/v2 v2.0.0
+	github.com/pucora/pucora-oauth2-clientcredentials/v2 v2.0.0
+	github.com/pucora/pucora-opencensus/v2 v2.0.0
+	github.com/pucora/pucora-otel v1.0.0
+	github.com/pucora/pucora-pubsub/v2 v2.0.5
+	github.com/pucora/pucora-ratelimit/v3 v3.0.0
+	github.com/pucora/pucora-rss/v2 v2.0.0
+	github.com/pucora/pucora-soap/v2 v2.2.2
+	github.com/pucora/pucora-usage/v2 v2.0.0
+	github.com/pucora/pucora-websocket/v2 v2.0.7
+	github.com/pucora/pucora-xml/v2 v2.0.0
 	golang.org/x/sync v0.20.0
 )
 
@@ -304,38 +304,38 @@ replace (
 	github.com/pucora/go-auth0/v2 => ../go-auth0
 	github.com/pucora/httpcache => ../httpcache
 	github.com/pucora/lru => ../lru
-	github.com/pucora/velonetics-amqp/v2 => ../velonetics-amqp
-	github.com/pucora/velonetics-audit => ../velonetics-audit
-	github.com/pucora/velonetics-botdetector/v2 => ../velonetics-botdetector
-	github.com/pucora/velonetics-cel/v2 => ../velonetics-cel
-	github.com/pucora/velonetics-circuitbreaker/v3 => ../velonetics-circuitbreaker
-	github.com/pucora/velonetics-cobra/v2 => ../velonetics-cobra
-	github.com/pucora/velonetics-configurator => ../velonetics-configurator
-	github.com/pucora/velonetics-cors/v2 => ../velonetics-cors
-	github.com/pucora/velonetics-flexibleconfig/v2 => ../velonetics-flexibleconfig
-	github.com/pucora/velonetics-gelf/v2 => ../velonetics-gelf
-	github.com/pucora/velonetics-gologging/v2 => ../velonetics-gologging
-	github.com/pucora/velonetics-httpcache/v2 => ../velonetics-httpcache
-	github.com/pucora/velonetics-httpsecure/v2 => ../velonetics-httpsecure
-	github.com/pucora/velonetics-influx/v2 => ../velonetics-influx
-	github.com/pucora/velonetics-jose/v2 => ../velonetics-jose
-	github.com/pucora/velonetics-jsonschema/v2 => ../velonetics-jsonschema
-	github.com/pucora/velonetics-koanf => ../velonetics-koanf
-	github.com/pucora/velonetics-lambda/v2 => ../velonetics-lambda
-	github.com/pucora/velonetics-logstash/v2 => ../velonetics-logstash
-	github.com/pucora/velonetics-lua/v2 => ../velonetics-lua
-	github.com/pucora/lura/v2 => ../velonetics-lura
-	github.com/pucora/velonetics-martian/v2 => ../velonetics-martian
-	github.com/pucora/velonetics-metrics/v2 => ../velonetics-metrics
-	github.com/pucora/velonetics-oauth2-clientcredentials/v2 => ../velonetics-oauth2-clientcredentials
-	github.com/pucora/velonetics-opencensus/v2 => ../velonetics-opencensus
-	github.com/pucora/velonetics-otel => ../velonetics-otel
-	github.com/pucora/velonetics-pubsub/v2 => ../velonetics-pubsub
-	github.com/pucora/velonetics-ratelimit/v3 => ../velonetics-ratelimit
-	github.com/pucora/velonetics-rss/v2 => ../velonetics-rss
-	github.com/pucora/velonetics-soap/v2 => ../velonetics-soap
-	github.com/pucora/velonetics-grpc/v2 => ../velonetics-grpc
-	github.com/pucora/velonetics-usage/v2 => ../velonetics-usage
-	github.com/pucora/velonetics-websocket/v2 => ../velonetics-websocket
-	github.com/pucora/velonetics-xml/v2 => ../velonetics-xml
+	github.com/pucora/pucora-amqp/v2 => ../pucora-amqp
+	github.com/pucora/pucora-audit => ../pucora-audit
+	github.com/pucora/pucora-botdetector/v2 => ../pucora-botdetector
+	github.com/pucora/pucora-cel/v2 => ../pucora-cel
+	github.com/pucora/pucora-circuitbreaker/v3 => ../pucora-circuitbreaker
+	github.com/pucora/pucora-cobra/v2 => ../pucora-cobra
+	github.com/pucora/pucora-configurator => ../pucora-configurator
+	github.com/pucora/pucora-cors/v2 => ../pucora-cors
+	github.com/pucora/pucora-flexibleconfig/v2 => ../pucora-flexibleconfig
+	github.com/pucora/pucora-gelf/v2 => ../pucora-gelf
+	github.com/pucora/pucora-gologging/v2 => ../pucora-gologging
+	github.com/pucora/pucora-httpcache/v2 => ../pucora-httpcache
+	github.com/pucora/pucora-httpsecure/v2 => ../pucora-httpsecure
+	github.com/pucora/pucora-influx/v2 => ../pucora-influx
+	github.com/pucora/pucora-jose/v2 => ../pucora-jose
+	github.com/pucora/pucora-jsonschema/v2 => ../pucora-jsonschema
+	github.com/pucora/pucora-koanf => ../pucora-koanf
+	github.com/pucora/pucora-lambda/v2 => ../pucora-lambda
+	github.com/pucora/pucora-logstash/v2 => ../pucora-logstash
+	github.com/pucora/pucora-lua/v2 => ../pucora-lua
+	github.com/pucora/lura/v2 => ../lura
+	github.com/pucora/pucora-martian/v2 => ../pucora-martian
+	github.com/pucora/pucora-metrics/v2 => ../pucora-metrics
+	github.com/pucora/pucora-oauth2-clientcredentials/v2 => ../pucora-oauth2-clientcredentials
+	github.com/pucora/pucora-opencensus/v2 => ../pucora-opencensus
+	github.com/pucora/pucora-otel => ../pucora-otel
+	github.com/pucora/pucora-pubsub/v2 => ../pucora-pubsub
+	github.com/pucora/pucora-ratelimit/v3 => ../pucora-ratelimit
+	github.com/pucora/pucora-rss/v2 => ../pucora-rss
+	github.com/pucora/pucora-soap/v2 => ../pucora-soap
+	github.com/pucora/pucora-grpc/v2 => ../pucora-grpc
+	github.com/pucora/pucora-usage/v2 => ../pucora-usage
+	github.com/pucora/pucora-websocket/v2 => ../pucora-websocket
+	github.com/pucora/pucora-xml/v2 => ../pucora-xml
 )

@@ -5,9 +5,11 @@ examples/grpc/mock-jwt/vendor
 bench_res
 sec_scan
 /pucora
-/velonetics
-/velonetics-ce
-/velonetics-alpine
-cmd/velonetics-integration/velonetics-integration
+/pucora
+/pucora-ce
+/pucora-alpine
+cmd/pucora-integration/pucora-integration
 tests/fixtures/pucora.json.final
 .vscode
+/velonetics
+/velonetics-ce

@@ -2,14 +2,14 @@
 
 Pucora connects legacy SOAP/XML services to modern REST clients. The gateway crafts SOAP request bodies from Go templates, optionally applies WS-Security, and transforms XML responses to JSON (or other encodings).
 
-Implemented by [`velonetics-soap`](https://github.com/pucora/velonetics-soap) via `extra_config.backend/soap` on a backend.
+Implemented by [`pucora-soap`](https://github.com/pucora/pucora-soap) via `extra_config.backend/soap` on a backend.
 
 ## Quick start
 
 See the Docker example in [`examples/soap/`](../examples/soap/):
 
 ```bash
-cd velonetics-ce-master
+cd pucora-ce
 make soap-compose-test
 ```
 

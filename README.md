@@ -29,7 +29,7 @@ Pucora is an extensible, ultra-high performance API Gateway that helps you effor
 - **Throttling**: Limits of usage in the router and proxy layers
 - **Multi-layer rate-limiting** for the end-user and between Pucora and your services, including bursting, load balancing, and circuit breaker.
 - **Telemetry** and dashboards of all sorts: Datadog, Zipkin, Jaeger, Prometheus, Grafana...
-- **WebSockets** (RFC-6455): multiplexed or direct proxy to `ws://` / `wss://` backends — see [docs/websockets.md](docs/websockets.md) and the standalone module [pucora/velonetics-websocket](https://github.com/pucora/velonetics-websocket)
+- **WebSockets** (RFC-6455): multiplexed or direct proxy to `ws://` / `wss://` backends — see [docs/websockets.md](docs/websockets.md) and the standalone module [pucora/pucora-websocket](https://github.com/pucora/pucora-websocket)
 - **Extensible** with Go plugins, Lua scripts, Martian, or Google CEL spec.
 
 ## Run
@@ -49,7 +49,7 @@ Run with the sample configuration:
 For WebSocket-only local testing (requires a `ws://` backend on port 8081):
 
 ```
-./pucora run -c velonetics-ws.json
+./pucora run -c pucora-ws.json
 # or: make ws-compose-test
 ```
 
@@ -91,11 +91,11 @@ docker run -it -p "8080:8080" -v $(pwd)/pucora.json:/etc/pucora/pucora.json nite
 
 ## Kubernetes / Helm
 
-Deploy to Kubernetes with the official Helm chart from the [velonetics-ce](https://github.com/pucora/velonetics-ce) repository:
+Deploy to Kubernetes with the official Helm chart from the [pucora-ce](https://github.com/pucora/pucora-ce) repository:
 
 ```bash
-git clone https://github.com/pucora/velonetics-ce.git
-cd velonetics-ce
+git clone https://github.com/pucora/pucora-ce.git
+cd pucora-ce
 helm install my-gateway ./deploy/helm/pucora
 ```
 
@@ -127,7 +127,7 @@ Pucora CE supports RFC-6455 WebSocket proxying (multiplex and direct modes, JWT 
 
 - [docs/websockets.md](docs/websockets.md) — configuration, envelope protocol, JWT, Docker Compose stack
 - [tests/fixtures/ws_*.json](tests/fixtures/) — sample configs
-- [velonetics-ws.json](velonetics-ws.json) — minimal direct-mode sample
+- [pucora-ws.json](pucora-ws.json) — minimal direct-mode sample
 - 
 
 ## License

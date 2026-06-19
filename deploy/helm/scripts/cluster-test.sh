@@ -4,10 +4,10 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 CHART_DIR="${ROOT_DIR}/deploy/helm/pucora"
-RELEASE_NAME="${RELEASE_NAME:-velonetics-ci}"
+RELEASE_NAME="${RELEASE_NAME:-pucora-ci}"
 NAMESPACE="${NAMESPACE:-default}"
-CLUSTER_NAME="${CLUSTER_NAME:-velonetics-helm-test}"
-IMAGE_REPO="${IMAGE_REPO:-velonetics-ci}"
+CLUSTER_NAME="${CLUSTER_NAME:-pucora-helm-test}"
+IMAGE_REPO="${IMAGE_REPO:-pucora-ci}"
 IMAGE_TAG="${IMAGE_TAG:-test}"
 SKIP_BUILD="${SKIP_BUILD:-0}"
 SKIP_CLUSTER_CREATE="${SKIP_CLUSTER_CREATE:-0}"
@@ -62,12 +62,12 @@ helm upgrade --install "${RELEASE_NAME}" "${CHART_DIR}" \
   --wait \
   --timeout 5m
 
-SERVICE="${RELEASE_NAME}-velonetics"
+SERVICE="${RELEASE_NAME}-pucora"
 log "waiting for deployment rollout"
 kubectl rollout status "deployment/${SERVICE}" -n "${NAMESPACE}" --timeout=5m
 
 log "checking /__health via in-cluster curl"
-kubectl run "velonetics-health-check-$RANDOM" \
+kubectl run "pucora-health-check-$RANDOM" \
   --namespace "${NAMESPACE}" \
   --rm \
   --restart=Never \

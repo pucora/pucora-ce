@@ -2,9 +2,9 @@
 
 ## Module published
 
-- Repository: https://github.com/pucora/velonetics-grpc
+- Repository: https://github.com/pucora/pucora-grpc
 - Tag: `v2.0.1` (parity gap closure)
-- Go module: `github.com/pucora/velonetics-grpc/v2`
+- Go module: `github.com/pucora/pucora-grpc/v2`
 
 ### v2.0.1 highlights
 
@@ -19,13 +19,13 @@
 ## CE release
 
 - Version: `v2.0.2`
-- Requires: `github.com/pucora/velonetics-grpc/v2 v2.0.1`
+- Requires: `github.com/pucora/pucora-grpc/v2 v2.0.1`
 
 ## CE integration
 
 | Path | Purpose |
 |------|---------|
-| `../velonetics-grpc` | Sibling module (use `go.work` locally; publish with `scripts/publish-fork-module.sh`) |
+| `../pucora-grpc` | Sibling module (use `go.work` locally; publish with `scripts/publish-fork-module.sh`) |
 | `backend_factory.go` | Wires `backend/grpc` client factory |
 | `executor.go` | Catalog bootstrap + gRPC server on gateway port + JWT rejecter |
 | `docs/grpc.md` | Configuration reference |
@@ -46,10 +46,10 @@ Without `go.work`, builds use published module versions from `go.mod` (no `repla
 ## Commands
 
 ```bash
-make test-grpc           # unit tests in ../velonetics-grpc (local monorepo)
+make test-grpc           # unit tests in ../pucora-grpc (local monorepo)
 make check-grpc-fixtures # validate grpc_*.json
 make grpc-compose-test   # Docker Compose end-to-end (client + server + mixed + JWT)
-./scripts/publish-fork-module.sh velonetics-grpc v2.0.x
+./scripts/publish-fork-module.sh pucora-grpc v2.0.x
 ```
 
 ## CI

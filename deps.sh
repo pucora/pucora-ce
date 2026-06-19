@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE=/tmp/velonetics_ce_deps.txt
+FILE=/tmp/pucora_ce_deps.txt
 
 go list -m -u all > "$FILE"
 

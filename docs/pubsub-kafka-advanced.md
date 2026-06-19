@@ -29,7 +29,7 @@ Use this instead of the basic `kafka://` driver when you need explicit broker co
         "key_meta": "X-Event-Key",
         "cluster": {
           "brokers": ["localhost:9092"],
-          "client_id": "velonetics_publisher",
+          "client_id": "pucora_publisher",
           "sasl": {
             "user": "user",
             "password": "password"
@@ -59,7 +59,7 @@ Use this instead of the basic `kafka://` driver when you need explicit broker co
         "key_meta": "X-Event-Key",
         "cluster": {
           "brokers": ["localhost:9092"],
-          "client_id": "velonetics_subscriber"
+          "client_id": "pucora_subscriber"
         },
         "group": {
           "id": "my_group_id",

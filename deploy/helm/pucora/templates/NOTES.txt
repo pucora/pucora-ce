@@ -48,10 +48,10 @@ Sidecar injection is enabled.
 
 Configuration mode: {{ .Values.config.mode }}
 {{- if eq .Values.config.mode "configmap" }}
-   Update config.veloneticsJson in values.yaml or use --set-file config.veloneticsJson=./pucora.json
+   Update config.pucoraJson in values.yaml or use --set-file config.pucoraJson=./pucora.json
 {{- else }}
    Configuration is expected to be baked into the container image.
 {{- end }}
 
-Source repository: https://github.com/pucora/velonetics-ce
-Chart: https://github.com/pucora/velonetics-ce/tree/main/deploy/helm/pucora
+Source repository: https://github.com/pucora/pucora-ce
+Chart: https://github.com/pucora/pucora-ce/tree/main/deploy/helm/pucora

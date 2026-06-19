@@ -2,7 +2,7 @@
 
 Pucora supports bidirectional communication using the [WebSocket protocol (RFC-6455)](https://datatracker.ietf.org/doc/html/rfc6455). Clients connect to the gateway over WebSocket; the gateway connects to one or more backend hosts using `ws://` or `wss://`.
 
-This feature is implemented by the [`velonetics-websocket`](https://github.com/pucora/velonetics-websocket) module and is configured per endpoint via `extra_config.websocket`.
+This feature is implemented by the [`pucora-websocket`](https://github.com/pucora/pucora-websocket) module and is configured per endpoint via `extra_config.websocket`.
 
 ## Operating modes
 
@@ -292,7 +292,7 @@ Unless `disable_otel_metrics` is set:
 Module tests (sibling repo or `go.work` workspace):
 
 ```bash
-cd ../velonetics-websocket
+cd ../pucora-websocket
 go test ./...
 ```
 
@@ -339,7 +339,7 @@ See [examples/websocket/README.md](../examples/websocket/README.md).
 ```bash
 make docker
 docker run -p 8080:8080 \
-  -v $(pwd)/velonetics-ws.json:/etc/pucora/pucora.json \
+  -v $(pwd)/pucora-ws.json:/etc/pucora/pucora.json \
   niteesh20/pucora:2.0.0 run -c /etc/pucora/pucora.json
 ```
 
@@ -349,8 +349,8 @@ Ensure the container can reach backend `ws://` hosts (use host networking or ser
 
 | Path | Purpose |
 |------|---------|
-| [`velonetics-websocket`](https://github.com/pucora/velonetics-websocket) | Implementation module (`../velonetics-websocket` in workspace) |
-| [`velonetics-schema` v2.13 websocket.json](https://github.com/pucora/velonetics-schema/blob/v2.0.2/v2.13/websocket.json) | JSON Schema |
+| [`pucora-websocket`](https://github.com/pucora/pucora-websocket) | Implementation module (`../pucora-websocket` in workspace) |
+| [`pucora-schema` v2.13 websocket.json](https://github.com/pucora/pucora-schema/blob/v2.0.2/v2.13/websocket.json) | JSON Schema |
 | [`handler_factory.go`](../handler_factory.go) | Gateway wiring (WebSocket → JWT handler chain) |
 | [`lura` router/gin/router.go](https://github.com/pucora/lura/blob/v2.0.1/router/gin/router.go) | GET-only registration for WS endpoints |
 | [`tests/fixtures/ws_direct.json`](../tests/fixtures/ws_direct.json) | Direct mode sample |

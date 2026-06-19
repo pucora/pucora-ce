@@ -3,11 +3,11 @@ package pucora
 import (
 	"fmt"
 
-	cel "github.com/pucora/velonetics-cel/v2"
-	jsonschema "github.com/pucora/velonetics-jsonschema/v2"
-	lua "github.com/pucora/velonetics-lua/v2/proxy"
-	metrics "github.com/pucora/velonetics-metrics/v2/gin"
-	opencensus "github.com/pucora/velonetics-opencensus/v2"
+	cel "github.com/pucora/pucora-cel/v2"
+	jsonschema "github.com/pucora/pucora-jsonschema/v2"
+	lua "github.com/pucora/pucora-lua/v2/proxy"
+	metrics "github.com/pucora/pucora-metrics/v2/gin"
+	opencensus "github.com/pucora/pucora-opencensus/v2"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"

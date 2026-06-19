@@ -19,34 +19,34 @@ jobs:
 
       - name: WebSocket published module tests
         run: |
-          git clone --depth 1 --branch v2.0.1 https://github.com/pucora/velonetics-websocket.git /tmp/velonetics-websocket
-          cd /tmp/velonetics-websocket && go test -count=1 .
+          git clone --depth 1 --branch v2.0.1 https://github.com/pucora/pucora-websocket.git /tmp/pucora-websocket
+          cd /tmp/pucora-websocket && go test -count=1 .
 
       - name: SOAP published module tests
         run: |
-          git clone --depth 1 --branch v2.1.0 https://github.com/pucora/velonetics-soap.git /tmp/velonetics-soap
-          cd /tmp/velonetics-soap && go test -count=1 .
+          git clone --depth 1 --branch v2.1.0 https://github.com/pucora/pucora-soap.git /tmp/pucora-soap
+          cd /tmp/pucora-soap && go test -count=1 .
 
       - name: gRPC published module tests
         run: |
-          git clone --depth 1 --branch v2.0.1 https://github.com/pucora/velonetics-grpc.git /tmp/velonetics-grpc
-          cd /tmp/velonetics-grpc && go test -count=1 ./...
+          git clone --depth 1 --branch v2.0.1 https://github.com/pucora/pucora-grpc.git /tmp/pucora-grpc
+          cd /tmp/pucora-grpc && go test -count=1 ./...
 
       - name: Lura GraphQL module tests
         run: |
-          git clone --depth 1 --branch v2.0.4 https://github.com/pucora/lura.git /tmp/velonetics-lura
-          cd /tmp/velonetics-lura && go test -count=1 ./transport/http/client/graphql/... ./proxy/... -run 'GraphQL|GetOptions|Resolve|ExtraConfig'
+          git clone --depth 1 --branch v2.0.4 https://github.com/pucora/lura.git /tmp/pucora-lura
+          cd /tmp/pucora-lura && go test -count=1 ./transport/http/client/graphql/... ./proxy/... -run 'GraphQL|GetOptions|Resolve|ExtraConfig'
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.2/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
 
       - name: Build
         run: |
           VERSION=$(grep '^VERSION :=' Makefile | awk '{print $3}')
           go build -ldflags="-X github.com/pucora/lura/v2/core.PucoraVersion=${VERSION}" \
-            -o pucora ./cmd/velonetics-ce
+            -o pucora ./cmd/pucora-ce
 
       - name: Validate WebSocket fixtures
         run: |
@@ -76,7 +76,7 @@ jobs:
         run: cd tests && go test -count=1 -run TestWebSocket -timeout 2m
 
       - name: Unit tests
-        run: go test $(go list ./... | grep -vE '/tests$|/cmd/velonetics-integration')
+        run: go test $(go list ./... | grep -vE '/tests$|/cmd/pucora-integration')
 
   helm:
     runs-on: ubuntu-latest

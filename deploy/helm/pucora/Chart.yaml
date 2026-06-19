@@ -10,7 +10,7 @@ keywords:
   - microservices
 home: https://pucora.io
 sources:
-  - https://github.com/pucora/velonetics-ce
+  - https://github.com/pucora/pucora-ce
 maintainers:
   - name: Pucora Team
     email: community@pucora.io

@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'examples/graphql/**'
-      - 'cmd/velonetics-ce/main.go'
+      - 'cmd/pucora-ce/main.go'
       - 'docs/graphql.md'
       - 'tests/fixtures/graphql*'
       - 'tests/graphql_integration_test.go'
@@ -17,7 +17,7 @@ on:
     branches: [main]
     paths:
       - 'examples/graphql/**'
-      - 'cmd/velonetics-ce/main.go'
+      - 'cmd/pucora-ce/main.go'
       - 'docs/graphql.md'
       - 'tests/fixtures/graphql*'
       - 'tests/graphql_integration_test.go'
@@ -42,8 +42,8 @@ jobs:
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.2/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
 
       - name: GraphQL Docker Compose smoke
         run: make graphql-compose-test

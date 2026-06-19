@@ -1,7 +1,7 @@
 .git
 .github
 pucora
-velonetics-alpine
+pucora-alpine
 tests
 builder/skel
 *.tar.gz

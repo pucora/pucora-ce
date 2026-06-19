@@ -12,19 +12,19 @@ COPY . .
 
 # Offline build when vendor/ is present (local dev); otherwise fetch modules (CI).
 RUN set -eux; \
-    test -f cmd/velonetics-ce/schema/schema.json; \
+    test -f cmd/pucora-ce/schema/schema.json; \
     if [ -d vendor ]; then \
       CGO_ENABLED=0 GOPROXY=off go build -mod=vendor \
         -ldflags="-s -w \
-          -X github.com/pucora/velonetics-ce/v2/pkg.Version=${VERSION} \
+          -X github.com/pucora/pucora-ce/v2/pkg.Version=${VERSION} \
           -X github.com/pucora/lura/v2/core.PucoraVersion=${VERSION}" \
-        -o pucora ./cmd/velonetics-ce; \
+        -o pucora ./cmd/pucora-ce; \
     else \
       CGO_ENABLED=0 go build \
         -ldflags="-s -w \
-          -X github.com/pucora/velonetics-ce/v2/pkg.Version=${VERSION} \
+          -X github.com/pucora/pucora-ce/v2/pkg.Version=${VERSION} \
           -X github.com/pucora/lura/v2/core.PucoraVersion=${VERSION}" \
-        -o pucora ./cmd/velonetics-ce; \
+        -o pucora ./cmd/pucora-ce; \
     fi
 
 FROM alpine:${ALPINE_VERSION}

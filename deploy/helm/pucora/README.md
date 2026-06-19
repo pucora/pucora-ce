@@ -2,8 +2,8 @@
 
 Deploy the [Pucora API Gateway](https://pucora.io) on Kubernetes.
 
-**Source repository:** [github.com/pucora/velonetics-ce](https://github.com/pucora/velonetics-ce)  
-**Chart path:** [`deploy/helm/pucora/`](https://github.com/pucora/velonetics-ce/tree/main/deploy/helm/pucora)
+**Source repository:** [github.com/pucora/pucora-ce](https://github.com/pucora/pucora-ce)  
+**Chart path:** [`deploy/helm/pucora/`](https://github.com/pucora/pucora-ce/tree/main/deploy/helm/pucora)
 
 ## Prerequisites
 
@@ -17,15 +17,15 @@ Deploy the [Pucora API Gateway](https://pucora.io) on Kubernetes.
 ## Quick start
 
 ```bash
-git clone https://github.com/pucora/velonetics-ce.git
-cd velonetics-ce
+git clone https://github.com/pucora/pucora-ce.git
+cd pucora-ce
 helm install my-gateway ./deploy/helm/pucora
 ```
 
 Verify:
 
 ```bash
-kubectl port-forward svc/my-gateway-velonetics 8080:8080
+kubectl port-forward svc/my-gateway-pucora 8080:8080
 curl http://localhost:8080/__health
 helm test my-gateway
 ```
@@ -83,17 +83,17 @@ helm install my-gateway ./deploy/helm/pucora -f deploy/helm/pucora/ci/values-pro
 ```bash
 # Custom config file
 helm install my-gateway ./deploy/helm/pucora \
-  --set-file config.veloneticsJson=./pucora.json
+  --set-file config.pucoraJson=./pucora.json
 
 # Secret mode
 helm install my-gateway ./deploy/helm/pucora \
   --set config.mode=secret \
-  --set-file config.veloneticsJson=./pucora.json
+  --set-file config.pucoraJson=./pucora.json
 
 # Immutable image
 helm install my-gateway ./deploy/helm/pucora \
   --set config.mode=image \
-  --set image.repository=myregistry/velonetics-gateway \
+  --set image.repository=myregistry/pucora-gateway \
   --set image.tag=v1.0.0
 ```
 

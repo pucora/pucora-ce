@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Generate go.work at the Pucora workspace root (parent of this repo).
 #
-# Usage (from velonetics-ce-master or workspace root):
+# Usage (from pucora-ce or workspace root):
 #   ./scripts/init-workspace.sh
 #
-# Creates ../../go.work relative to velonetics-ce-master, listing every sibling
+# Creates ../../go.work relative to pucora-ce, listing every sibling
 # Go module found on disk. Local builds then use sibling repos instead of
 # published GitHub tags. CI and solo CE clones continue to use go.mod require.
 #
@@ -18,46 +18,46 @@ GO_VERSION="$(grep '^go ' "${CE_ROOT}/go.mod" | awk '{print $2}')"
 
 # Sibling module directories (relative to workspace root).
 MODULE_DIRS=(
-	velonetics-ce-master
+	pucora-ce
 	binder
 	bloomfilter
 	flatmap
 	go-auth0
 	httpcache
 	lru
-	velonetics-amqp
-	velonetics-audit
-	velonetics-botdetector
-	velonetics-cel
-	velonetics-circuitbreaker
-	velonetics-cobra
-	velonetics-cors
-	velonetics-flexibleconfig
-	velonetics-gelf
-	velonetics-gologging
-	velonetics-httpcache
-	velonetics-httpsecure
-	velonetics-influx
-	velonetics-jose
-	velonetics-jsonschema
-	velonetics-koanf
-	velonetics-lambda
-	velonetics-logstash
-	velonetics-lua
-	velonetics-lura
-	velonetics-martian
-	velonetics-metrics
-	velonetics-oauth2-clientcredentials
-	velonetics-opencensus
-	velonetics-otel
-	velonetics-pubsub
-	velonetics-ratelimit
-	velonetics-rss
-	velonetics-soap
-	velonetics-grpc
-	velonetics-usage
-	velonetics-websocket
-	velonetics-xml
+	pucora-amqp
+	pucora-audit
+	pucora-botdetector
+	pucora-cel
+	pucora-circuitbreaker
+	pucora-cobra
+	pucora-cors
+	pucora-flexibleconfig
+	pucora-gelf
+	pucora-gologging
+	pucora-httpcache
+	pucora-httpsecure
+	pucora-influx
+	pucora-jose
+	pucora-jsonschema
+	pucora-koanf
+	pucora-lambda
+	pucora-logstash
+	pucora-lua
+	lura
+	pucora-martian
+	pucora-metrics
+	pucora-oauth2-clientcredentials
+	pucora-opencensus
+	pucora-otel
+	pucora-pubsub
+	pucora-ratelimit
+	pucora-rss
+	pucora-soap
+	pucora-grpc
+	pucora-usage
+	pucora-websocket
+	pucora-xml
 )
 
 {

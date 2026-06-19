@@ -6,7 +6,7 @@ on:
     paths:
       - 'deploy/helm/**'
       - 'Dockerfile'
-      - 'cmd/velonetics-ce/**'
+      - 'cmd/pucora-ce/**'
       - 'go.mod'
       - 'go.sum'
       - 'Makefile'
@@ -16,7 +16,7 @@ on:
     paths:
       - 'deploy/helm/**'
       - 'Dockerfile'
-      - 'cmd/velonetics-ce/**'
+      - 'cmd/pucora-ce/**'
       - 'go.mod'
       - 'go.sum'
       - 'Makefile'
@@ -38,8 +38,8 @@ jobs:
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.3/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.3/v2.13/pucora.json
 
       - name: Vendor modules for offline Docker build
         run: GOWORK=off go mod vendor
@@ -55,11 +55,11 @@ jobs:
       - name: Create Kind cluster
         uses: helm/kind-action@v1
         with:
-          cluster_name: velonetics-helm-test
+          cluster_name: pucora-helm-test
 
       - name: Run cluster install test
         env:
-          RELEASE_NAME: velonetics-ci
-          CLUSTER_NAME: velonetics-helm-test
+          RELEASE_NAME: pucora-ci
+          CLUSTER_NAME: pucora-helm-test
           SKIP_CLUSTER_CREATE: "1"
         run: deploy/helm/scripts/cluster-test.sh

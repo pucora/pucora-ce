@@ -14,7 +14,7 @@ Right now that workflow is set to `continue-on-error: true`, which means: *if it
 
 If you want PR dependency warnings later:
 
-1. Go to [velonetics-ce → Settings → Code security and analysis](https://github.com/pucora/velonetics-ce/settings/security_analysis).
+1. Go to [pucora-ce → Settings → Code security and analysis](https://github.com/pucora/pucora-ce/settings/security_analysis).
 2. Turn **Dependency graph** to **Enabled**.
 3. Wait until GitHub has indexed `go.mod` (usually after the next push to `main`).
 4. Open `.github/workflows/dependency_review.yml` and delete the line `continue-on-error: true` so failed reviews block merges.
@@ -25,7 +25,7 @@ If you want PR dependency warnings later:
 
 Images are published to **[niteesh20/pucora](https://hub.docker.com/r/niteesh20/pucora)**.
 
-Add these secrets under [velonetics-ce → Settings → Secrets → Actions](https://github.com/pucora/velonetics-ce/settings/secrets/actions):
+Add these secrets under [pucora-ce → Settings → Secrets → Actions](https://github.com/pucora/pucora-ce/settings/secrets/actions):
 
 | Secret | Value |
 |--------|-------|

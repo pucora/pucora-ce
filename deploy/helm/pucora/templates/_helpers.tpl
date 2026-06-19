@@ -85,7 +85,7 @@ Secret name for pucora.json
 Whether configuration is mounted from a ConfigMap.
 */}}
 {{- define "pucora.useConfigMap" -}}
-{{- if and (eq .Values.config.mode "configmap") (or .Values.config.existingConfigMap .Values.config.veloneticsJson) }}
+{{- if and (eq .Values.config.mode "configmap") (or .Values.config.existingConfigMap .Values.config.pucoraJson) }}
 true
 {{- else }}
 false
@@ -96,7 +96,7 @@ false
 Whether configuration is mounted from a Secret.
 */}}
 {{- define "pucora.useConfigSecret" -}}
-{{- if and (eq .Values.config.mode "secret") (or .Values.config.existingSecret .Values.config.veloneticsJson) }}
+{{- if and (eq .Values.config.mode "secret") (or .Values.config.existingSecret .Values.config.pucoraJson) }}
 true
 {{- else }}
 false

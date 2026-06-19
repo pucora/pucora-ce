@@ -9,4 +9,4 @@ name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_root = "github.com/pucora/velonetics-ce/v2"
+  import_root = "github.com/pucora/pucora-ce/v2"

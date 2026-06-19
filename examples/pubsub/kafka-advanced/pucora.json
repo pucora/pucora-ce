@@ -30,7 +30,7 @@
                 "key_meta": "X-Event-Key",
                 "cluster": {
                   "brokers": ["redpanda:9092"],
-                  "client_id": "velonetics_publisher"
+                  "client_id": "pucora_publisher"
                 },
                 "producer": {
                   "idempotent": true
@@ -58,10 +58,10 @@
                 "key_meta": "X-Event-Key",
                 "cluster": {
                   "brokers": ["redpanda:9092"],
-                  "client_id": "velonetics_subscriber"
+                  "client_id": "pucora_subscriber"
                 },
                 "group": {
-                  "id": "velonetics-advanced-smoke",
+                  "id": "pucora-advanced-smoke",
                   "isolation_level": "read_commited"
                 }
               }

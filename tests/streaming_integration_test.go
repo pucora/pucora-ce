@@ -22,7 +22,7 @@ func TestStreamingConfigRejectedAtStartup(t *testing.T) {
 			name: "lua post on streaming endpoint",
 			mutate: func(s *config.ServiceConfig) {
 				s.Endpoints[0].ExtraConfig = config.ExtraConfig{
-					"github.com/pucora/velonetics-lua/router": map[string]interface{}{
+					"github.com/pucora/pucora-lua/router": map[string]interface{}{
 						"post": "local r = response.load()",
 					},
 				}
@@ -33,7 +33,7 @@ func TestStreamingConfigRejectedAtStartup(t *testing.T) {
 			name: "backend httpcache on streaming endpoint",
 			mutate: func(s *config.ServiceConfig) {
 				s.Endpoints[0].Backend[0].ExtraConfig = config.ExtraConfig{
-					"github.com/pucora/velonetics-httpcache": map[string]interface{}{"shared": true},
+					"github.com/pucora/pucora-httpcache": map[string]interface{}{"shared": true},
 				}
 			},
 			wantErr: config.ErrStreamingBackendHTTPCache,

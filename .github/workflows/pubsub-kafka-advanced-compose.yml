@@ -8,7 +8,7 @@ on:
       - 'examples/pubsub/scripts/**'
       - 'backend_factory.go'
       - 'executor.go'
-      - 'cmd/velonetics-ce/main.go'
+      - 'cmd/pucora-ce/main.go'
       - 'Dockerfile'
       - 'go.mod'
       - 'go.sum'
@@ -20,7 +20,7 @@ on:
       - 'examples/pubsub/scripts/**'
       - 'backend_factory.go'
       - 'executor.go'
-      - 'cmd/velonetics-ce/main.go'
+      - 'cmd/pucora-ce/main.go'
       - 'Dockerfile'
       - 'go.mod'
       - 'go.sum'
@@ -42,8 +42,8 @@ jobs:
 
       - name: Fetch JSON schema
         run: |
-          curl -fsSL -o cmd/velonetics-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/velonetics-schema/v2.0.2/v2.13/pucora.json
+          curl -fsSL -o cmd/pucora-ce/schema/schema.json \
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
 
       - name: PubSub kafka-advanced Docker Compose smoke
         run: make pubsub-kafka-advanced-compose-test

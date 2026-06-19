@@ -36,10 +36,10 @@
         "async/kafka": {
           "cluster": {
             "brokers": ["redpanda:9092"],
-            "client_id": "velonetics_async_agent"
+            "client_id": "pucora_async_agent"
           },
           "group": {
-            "group_id": "velonetics-async-smoke",
+            "group_id": "pucora-async-smoke",
             "isolation_level": "read_commited"
           },
           "key_meta": "X-Event-Key"

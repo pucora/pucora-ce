@@ -11,7 +11,7 @@
 
 | Path | Purpose |
 |------|---------|
-| `cmd/velonetics-ce/main.go` | `ExtraConfigAlias` for `backend/graphql` |
+| `cmd/pucora-ce/main.go` | `ExtraConfigAlias` for `backend/graphql` |
 | `docs/graphql.md` | Configuration reference (3 KrakenD modes) |
 | `examples/graphql/` | Docker Compose stack + smoke tests |
 | `tests/fixtures/graphql_*.json` | Config fixtures |

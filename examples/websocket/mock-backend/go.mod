@@ -1,4 +1,4 @@
-module github.com/pucora/velonetics-ce/examples/websocket/mock-backend
+module github.com/pucora/pucora-ce/examples/websocket/mock-backend
 
 go 1.24.0
 
