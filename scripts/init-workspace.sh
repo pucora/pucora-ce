@@ -6,7 +6,11 @@
 #
 # Creates ../../go.work relative to pucora-ce, listing every sibling
 # Go module found on disk. Local builds then use sibling repos instead of
-# published GitHub tags. CI and solo CE clones continue to use go.mod require.
+# published GitHub tags. CI and solo CE clones use go.mod require only.
+#
+# Do NOT add replace ../... blocks to committed go.mod files — they break
+# standalone clones. go.work is local-only and must not be committed to
+# individual module repos.
 #
 set -euo pipefail
 

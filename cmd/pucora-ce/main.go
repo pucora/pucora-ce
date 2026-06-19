@@ -81,10 +81,10 @@ func main() {
 }
 
 var aliases = map[string]string{
-	"github_com/pucora/pucora-ce/v2/transport/http/server/handler":  "plugin/http-server",
-	"github.com/pucora/pucora-ce/v2/transport/http/client/executor": "plugin/http-client",
-	"github.com/pucora/pucora-ce/v2/proxy/plugin":                   "plugin/req-resp-modifier",
-	"github.com/pucora/pucora-ce/v2/proxy":                          "proxy",
+	"github_com/pucora/pucora/transport/http/server/handler":        "plugin/http-server",
+	"github.com/pucora/pucora/transport/http/client/executor":       "plugin/http-client",
+	"github.com/pucora/pucora/proxy/plugin":                         "plugin/req-resp-modifier",
+	"github.com/pucora/pucora/proxy":                                "proxy",
 	"github_com/pucora/lura/v2/router/gin":                              "router",
 
 	"github.com/pucora/pucora-httpcache":                "qos/http-cache",
@@ -116,7 +116,7 @@ var aliases = map[string]string{
 	"github.com/pucora/pucora-pubsub/kafka/subscriber":       "backend/pubsub/subscriber/kafka",
 	"github.com/pucora/pucora-pubsub/async":                "async/kafka",
 	"github.com/pucora/lura/v2/transport/http/client/graphql": "backend/graphql",
-	"github.com/pucora/pucora-ce/v2/http":                          "backend/http",
+	"github.com/pucora/pucora/http":                                 "backend/http",
 
 	"github_com/pucora/pucora-gelf":       "telemetry/gelf",
 	"github_com/pucora/pucora-gologging":  "telemetry/logging",

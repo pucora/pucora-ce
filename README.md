@@ -109,6 +109,36 @@ See the required Go version in the `Makefile`, and then:
 make build
 ```
 
+### Standalone clone (any directory)
+
+`go.mod` uses **GitHub module paths and version tags only** — no `replace ../...` directives. After cloning this repo anywhere:
+
+```
+git clone https://github.com/pucora/pucora-ce.git
+cd pucora-ce
+make build
+```
+
+Go downloads dependencies from `github.com/pucora/*` at the versions pinned in `go.mod`.
+
+### Local monorepo (all sibling modules)
+
+When developing several Pucora modules together, use a **workspace file** (not committed to individual repos):
+
+```
+# From pucora-ce, with sibling repos checked out under the same parent directory:
+./scripts/init-workspace.sh   # writes ../go.work listing local modules
+make build                    # uses sibling source instead of published tags
+```
+
+Delete `go.work` (or run builds with `GOWORK=off`) to switch back to published GitHub modules.
+
+To publish a updated module tag after local changes:
+
+```
+./scripts/publish-fork-module.sh pucora-websocket v2.0.8
+```
+
 Or, if you don't have or don't want to install `go`, you can build it using the golang docker container:
 
 ```

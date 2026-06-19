@@ -7,7 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-contrib/uuid v1.2.0
 	github.com/pucora/bloomfilter/v2 v2.0.0
-	github.com/pucora/lura/v2 v2.0.7
+	github.com/pucora/lura/v2 v2.0.8
 	github.com/pucora/pucora-amqp/v2 v2.0.3
 	github.com/pucora/pucora-audit v1.0.1
 	github.com/pucora/pucora-botdetector/v2 v2.0.0
@@ -210,8 +210,8 @@ require (
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/prometheus/statsd_exporter v0.26.1 // indirect
-	github.com/pucora/binder v1.0.0 // indirect
-	github.com/pucora/flatmap v1.0.0 // indirect
+	github.com/pucora/binder v1.0.1 // indirect
+	github.com/pucora/flatmap v1.0.1 // indirect
 	github.com/pucora/go-auth0/v2 v2.0.0 // indirect
 	github.com/pucora/httpcache v1.0.0 // indirect
 	github.com/pucora/lru v1.0.0 // indirect
@@ -291,47 +291,4 @@ require (
 	gopkg.in/DataDog/dd-trace-go.v1 v1.62.0 // indirect
 	gopkg.in/Graylog2/go-gelf.v2 v2.0.0-20191017102106-1550ee647df0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-)
-
-replace (
-	github.com/pucora/binder => ../binder
-	github.com/pucora/bloomfilter/v2 => ../bloomfilter
-	github.com/pucora/flatmap => ../flatmap
-	github.com/pucora/go-auth0/v2 => ../go-auth0
-	github.com/pucora/httpcache => ../httpcache
-	github.com/pucora/lru => ../lru
-	github.com/pucora/lura/v2 => ../lura
-	github.com/pucora/pucora-amqp/v2 => ../pucora-amqp
-	github.com/pucora/pucora-audit => ../pucora-audit
-	github.com/pucora/pucora-botdetector/v2 => ../pucora-botdetector
-	github.com/pucora/pucora-cel/v2 => ../pucora-cel
-	github.com/pucora/pucora-circuitbreaker/v3 => ../pucora-circuitbreaker
-	github.com/pucora/pucora-cobra/v2 => ../pucora-cobra
-	github.com/pucora/pucora-configurator => ../pucora-configurator
-	github.com/pucora/pucora-cors/v2 => ../pucora-cors
-	github.com/pucora/pucora-flexibleconfig/v2 => ../pucora-flexibleconfig
-	github.com/pucora/pucora-gelf/v2 => ../pucora-gelf
-	github.com/pucora/pucora-gologging/v2 => ../pucora-gologging
-	github.com/pucora/pucora-grpc/v2 => ../pucora-grpc
-	github.com/pucora/pucora-httpcache/v2 => ../pucora-httpcache
-	github.com/pucora/pucora-httpsecure/v2 => ../pucora-httpsecure
-	github.com/pucora/pucora-influx/v2 => ../pucora-influx
-	github.com/pucora/pucora-jose/v2 => ../pucora-jose
-	github.com/pucora/pucora-jsonschema/v2 => ../pucora-jsonschema
-	github.com/pucora/pucora-koanf => ../pucora-koanf
-	github.com/pucora/pucora-lambda/v2 => ../pucora-lambda
-	github.com/pucora/pucora-logstash/v2 => ../pucora-logstash
-	github.com/pucora/pucora-lua/v2 => ../pucora-lua
-	github.com/pucora/pucora-martian/v2 => ../pucora-martian
-	github.com/pucora/pucora-metrics/v2 => ../pucora-metrics
-	github.com/pucora/pucora-oauth2-clientcredentials/v2 => ../pucora-oauth2-clientcredentials
-	github.com/pucora/pucora-opencensus/v2 => ../pucora-opencensus
-	github.com/pucora/pucora-otel => ../pucora-otel
-	github.com/pucora/pucora-pubsub/v2 => ../pucora-pubsub
-	github.com/pucora/pucora-ratelimit/v3 => ../pucora-ratelimit
-	github.com/pucora/pucora-rss/v2 => ../pucora-rss
-	github.com/pucora/pucora-soap/v2 => ../pucora-soap
-	github.com/pucora/pucora-usage/v2 => ../pucora-usage
-	github.com/pucora/pucora-websocket/v2 => ../pucora-websocket
-	github.com/pucora/pucora-xml/v2 => ../pucora-xml
 )

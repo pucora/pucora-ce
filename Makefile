@@ -7,6 +7,11 @@
 BIN_NAME :=pucora
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 MODULE := github.com/pucora/pucora-ce/v2
+WORKSPACE_ROOT := $(abspath ..)
+ifneq ($(wildcard $(WORKSPACE_ROOT)/go.work),)
+export GOWORK := $(WORKSPACE_ROOT)/go.work
+export GOSUMDB := off
+endif
 VERSION := 2.2.0
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
@@ -59,7 +64,9 @@ all: test test-websocket test-graphql test-streaming test-soap test-grpc test-pu
 
 build: cmd/pucora-ce/schema/schema.json
 	@echo "Building the binary..."
+ifndef GOWORK
 	@go get .
+endif
 	@go build -ldflags="-X ${MODULE}/pkg.Version=${VERSION} -X github.com/pucora/lura/v2/core.PucoraVersion=${VERSION} \
 	-X github.com/pucora/lura/v2/core.GlibcVersion=${GLIBC_VERSION} ${EXTRA_LDFLAGS}" \
 	-o ${BIN_NAME} ./cmd/pucora-ce
