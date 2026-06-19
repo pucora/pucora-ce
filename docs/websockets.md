@@ -350,7 +350,7 @@ Ensure the container can reach backend `ws://` hosts (use host networking or ser
 | Path | Purpose |
 |------|---------|
 | [`pucora-websocket`](https://github.com/pucora/pucora-websocket) | Implementation module (`../pucora-websocket` in workspace) |
-| [`pucora-schema` v2.13 websocket.json](https://github.com/pucora/pucora-schema/blob/v2.0.2/v2.13/websocket.json) | JSON Schema |
+| [`pucora-schema` v2.13 websocket.json](https://github.com/pucora/pucora-schema/blob/v2.0.4/v2.13/websocket.json) | JSON Schema |
 | [`handler_factory.go`](../handler_factory.go) | Gateway wiring (WebSocket → JWT handler chain) |
 | [`lura` router/gin/router.go](https://github.com/pucora/lura/blob/v2.0.1/router/gin/router.go) | GET-only registration for WS endpoints |
 | [`tests/fixtures/ws_direct.json`](../tests/fixtures/ws_direct.json) | Direct mode sample |

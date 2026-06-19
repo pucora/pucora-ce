@@ -303,7 +303,7 @@ sse-compose-test: cmd/pucora-ce/schema/schema.json
 	./examples/streaming/scripts/smoke.sh
 	cd examples/streaming && docker compose down -v
 
-SCHEMA_URL := https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.2/v2.13/pucora.json
+SCHEMA_URL := https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.4/v2.13/pucora.json
 
 cmd/pucora-ce/schema/schema.json:
 	@echo "Fetching v${SCHEMA_VERSION} schema"

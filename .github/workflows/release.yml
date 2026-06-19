@@ -237,7 +237,7 @@ jobs:
       - name: Fetch JSON schema
         run: |
           curl -fsSL -o cmd/pucora-ce/schema/schema.json \
-            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.3/v2.13/pucora.json
+            https://raw.githubusercontent.com/pucora/pucora-schema/v2.0.4/v2.13/pucora.json
 
       - name: Vendor modules for offline Docker build
         run: GOWORK=off go mod vendor
