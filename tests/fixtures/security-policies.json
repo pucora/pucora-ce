@@ -1,0 +1,28 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/protected",
+      "extra_config": {
+        "security/policies": {
+          "policies": [
+            {
+              "name": "require-api-key",
+              "type": "allow",
+              "expr": "req_headers['x-api-key'] == 'secret'"
+            }
+          ],
+          "auto_join_action": "deny"
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/data"
+        }
+      ]
+    }
+  ]
+}

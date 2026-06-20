@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "extra_config": {
+    "plugin/wildcard": {
+      "prefix": "/__wildcard",
+      "mappings": {
+        "/api": ["/v1/api"]
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/*",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/data",
+          "encoding": "no-op"
+        }
+      ]
+    }
+  ]
+}

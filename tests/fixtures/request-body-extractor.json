@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/extract",
+      "method": "POST",
+      "extra_config": {
+        "modifier/request-body-extractor": {
+          "headers": {"user_id": "X-User-Id"}
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/backend"
+        }
+      ]
+    }
+  ]
+}

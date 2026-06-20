@@ -1,0 +1,24 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/redis-limited",
+      "extra_config": {
+        "qos/ratelimit/router/redis": {
+          "addr": "localhost:6379",
+          "max_rate": 100,
+          "capacity": 100,
+          "strategy": "ip"
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/data"
+        }
+      ]
+    }
+  ]
+}

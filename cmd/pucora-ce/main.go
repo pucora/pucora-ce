@@ -135,10 +135,28 @@ var aliases = map[string]string{
 	"github.com/pucora/pucora-lua/proxy/backend": "modifier/lua-backend",
 	"github.com/pucora/pucora-martian":           "modifier/martian",
 
+	"github.com/pucora/pucora-fastjson":    "encoding/fast-json",
+	"github.com/pucora/pucora-no-redirect": "backend/no-redirect",
+
+	"github.com/pucora/pucora-jmespath":          "modifier/jmespath",
+	"github.com/pucora/pucora-security-policies": "security/policies",
+	"github.com/pucora/pucora-wildcard":          "plugin/wildcard",
+	"github.com/pucora/pucora-openapi":           "documentation/openapi",
+	"github.com/pucora/pucora-postman":           "documentation/postman",
+	"github.com/pucora/pucora-middleware-plugin": "plugin/middleware",
 }
 
 func registerAliases() {
 	for key, alias := range aliases {
 		config.ExtraConfigAlias[alias] = key
 	}
+
+	// multi-namespace modules (same Go package, multiple config namespaces)
+	config.ExtraConfigAlias["modifier/response-body"] = "github.com/pucora/pucora-response-body"
+	config.ExtraConfigAlias["modifier/response-body-generator"] = "github.com/pucora/pucora-response-body"
+	config.ExtraConfigAlias["modifier/request-body-extractor"] = "github.com/pucora/pucora-request-body"
+	config.ExtraConfigAlias["modifier/request-body-generator"] = "github.com/pucora/pucora-request-body"
+	config.ExtraConfigAlias["validation/response-json-schema"] = "github.com/pucora/pucora-jsonschema/v2"
+	config.ExtraConfigAlias["qos/ratelimit/router/redis"] = "github.com/pucora/pucora-ratelimit/v3"
+	config.ExtraConfigAlias["qos/ratelimit/tiered"] = "github.com/pucora/pucora-ratelimit/v3"
 }

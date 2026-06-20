@@ -1,0 +1,25 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/validated",
+      "extra_config": {
+        "validation/response-json-schema": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": {"type": "string"}
+          }
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/data"
+        }
+      ]
+    }
+  ]
+}

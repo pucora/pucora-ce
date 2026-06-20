@@ -11,6 +11,9 @@ import (
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
+	jmespath "github.com/pucora/pucora-jmespath"
+	responsebody "github.com/pucora/pucora-response-body"
+	requestbody "github.com/pucora/pucora-request-body"
 )
 
 func internalNewProxyFactory(logger logging.Logger, backendFactory proxy.BackendFactory,
@@ -19,8 +22,12 @@ func internalNewProxyFactory(logger logging.Logger, backendFactory proxy.Backend
 	proxyFactory := proxy.NewDefaultFactory(backendFactory, logger)
 	proxyFactory = proxy.NewShadowFactory(proxyFactory)
 	proxyFactory = jsonschema.ProxyFactory(logger, proxyFactory)
+	proxyFactory = jsonschema.ResponseProxyFactory(logger, proxyFactory)
 	proxyFactory = cel.ProxyFactory(logger, proxyFactory)
 	proxyFactory = lua.ProxyFactory(logger, proxyFactory)
+	proxyFactory = requestbody.ProxyFactory(proxyFactory)
+	proxyFactory = responsebody.ProxyFactory(proxyFactory)
+	proxyFactory = jmespath.ProxyFactory(proxyFactory)
 	proxyFactory = metricCollector.ProxyFactory("pipe", proxyFactory)
 	proxyFactory = opencensus.ProxyFactory(proxyFactory)
 	return proxyFactory

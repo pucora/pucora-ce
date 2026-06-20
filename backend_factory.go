@@ -19,6 +19,7 @@ import (
 	opencensus "github.com/pucora/pucora-opencensus/v2"
 	otellura "github.com/pucora/pucora-otel/lura"
 	pubsub "github.com/pucora/pucora-pubsub/v2"
+	noredirect "github.com/pucora/pucora-no-redirect"
 	ratelimit "github.com/pucora/pucora-ratelimit/v3/proxy"
 	soap "github.com/pucora/pucora-soap/v2"
 	grpcclient "github.com/pucora/pucora-grpc/v2/client"
@@ -48,6 +49,7 @@ func NewBackendFactory(logger logging.Logger, metricCollector *metrics.Metrics) 
 func newRequestExecutorFactory(ctx context.Context, logger logging.Logger) func(*config.Backend) client.HTTPRequestExecutor {
 	requestExecutorFactory := func(cfg *config.Backend) client.HTTPRequestExecutor {
 		clientFactory := client.NewHTTPClient
+        clientFactory = noredirect.NewHTTPClient(cfg, clientFactory)
 		clientFactory = ntlm.NewHTTPClient(cfg, clientFactory)
 		if _, ok := cfg.ExtraConfig[oauth2client.Namespace]; ok {
 			clientFactory = oauth2client.NewHTTPClient(cfg)

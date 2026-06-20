@@ -1,4 +1,4 @@
-.PHONY: all build test jwk-aggregator-plugin test-auth check-fixtures-auth
+.PHONY: all build test jwk-aggregator-plugin test-auth check-fixtures-auth check-fixtures-endpoints test-endpoints
 
 # This Makefile is a simple example that demonstrates usual steps to build a binary that can be run in the same
 # architecture that was compiled in. The "ldflags" in the build assure that any needed dependency is included in the
@@ -12,7 +12,7 @@ ifneq ($(wildcard $(WORKSPACE_ROOT)/go.work),)
 export GOWORK := $(WORKSPACE_ROOT)/go.work
 export GOSUMDB := off
 endif
-VERSION := 2.2.0
+VERSION := 2.3.0
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := pucora
@@ -79,11 +79,11 @@ test-websocket:
 	cd ../pucora-websocket && go test ./...
 
 test-streaming: build
-	cd ../pucora-lura && go test ./config -run Streaming -count=1
-	cd ../pucora-lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
-	cd ../pucora-lura && go test ./router/gin -run 'TestRender_noop' -count=1
+	cd ../lura && go test ./config -run Streaming -count=1
+	cd ../lura && go test ./proxy -run 'TestIsStreamingEndpoint|TestStreamCopy|TestNopHTTPResponseParser' -count=1
+	cd ../lura && go test ./router/gin -run 'TestRender_noop' -count=1
 	cd ../pucora-audit && go test ./... -run 'Test_hasStreaming' -count=1
-	go test ./tests -run 'TestStreamingConfig' -count=1 -v
+	go test ./tests -run 'TestStreaming' -count=1 -v
 
 test-soap:
 	cd ../pucora-soap && go test ./...
@@ -138,6 +138,32 @@ test-auth:
 	cd ../pucora-ntlm && go test ./...
 	cd ../pucora-revoker && go test ./...
 	cd ../pucora-jwk-aggregator && go test ./...
+
+check-fixtures-endpoints: build
+	./${BIN_NAME} check -c tests/fixtures/jmespath.json
+	./${BIN_NAME} check -c tests/fixtures/response-body.json
+	./${BIN_NAME} check -c tests/fixtures/request-body-extractor.json
+	./${BIN_NAME} check -c tests/fixtures/response-json-schema.json
+	./${BIN_NAME} check -c tests/fixtures/security-policies.json
+	./${BIN_NAME} check -c tests/fixtures/wildcard.json
+	./${BIN_NAME} check -c tests/fixtures/ratelimit-redis.json
+	./${BIN_NAME} check -c tests/fixtures/ratelimit-tiered.json
+	./${BIN_NAME} check -c tests/fixtures/openapi-export.json
+	./${BIN_NAME} check -c tests/fixtures/postman-export.json
+	./${BIN_NAME} check -c tests/fixtures/middleware-plugin.json
+
+test-endpoints:
+	cd ../pucora-jmespath && go test ./...
+	cd ../pucora-response-body && go test ./...
+	cd ../pucora-request-body && go test ./...
+	cd ../pucora-jsonschema && go test ./...
+	cd ../pucora-security-policies && go test ./...
+	cd ../pucora-wildcard && go test ./...
+	cd ../pucora-ratelimit && go test ./...
+	cd ../pucora-openapi && go test ./...
+	cd ../pucora-postman && go test ./...
+	cd ../pucora-middleware-plugin && go test ./...
+	go test ./tests -run TestEndpoints -count=1 -timeout 2m
 
 jwk-aggregator-plugin:
 	@mkdir -p plugins

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/masked",
+      "extra_config": {
+        "modifier/response-body": {
+          "card": {"find": "\\d{12}(\\d{4})", "replace": "****$1"}
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/card"
+        }
+      ]
+    }
+  ]
+}

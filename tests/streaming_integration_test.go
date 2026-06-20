@@ -2,6 +2,9 @@ package tests
 
 import (
 	"errors"
+	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -11,6 +14,140 @@ import (
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/encoding"
 )
+
+func TestStreamingRuntimeIntegration(t *testing.T) {
+	bin := "../pucora"
+	if _, err := os.Stat(bin); err != nil {
+		t.Skip("pucora binary not built; run make build first")
+	}
+
+	backend := startRecordingBackend(t, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
+		w.WriteHeader(http.StatusOK)
+
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			t.Fatal("expected http.ResponseWriter to be an http.Flusher")
+		}
+
+		_, _ = w.Write([]byte("data: chunk1\n\n"))
+		flusher.Flush()
+
+		if strings.HasPrefix(r.URL.Path, "/fail") {
+			hj, ok := w.(http.Hijacker)
+			if ok {
+				conn, _, _ := hj.Hijack()
+				conn.Close()
+			}
+			return
+		}
+
+		_, _ = w.Write([]byte("data: chunk2\n\n"))
+		flusher.Flush()
+	})
+	defer backend.Close()
+
+	gatewayPort, err := freePort()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cfg := map[string]interface{}{
+		"version": 3,
+		"port":    gatewayPort,
+		"extra_config": map[string]interface{}{
+			"telemetry/logging": map[string]interface{}{"level": "ERROR", "stdout": true},
+			"telemetry/usage":   map[string]interface{}{"enabled": false},
+		},
+		"endpoints": []map[string]interface{}{
+			{
+				"endpoint":        "/stream",
+				"output_encoding": "no-op",
+				"backend": []map[string]interface{}{
+					{
+						"url_pattern": "/stream",
+						"host":        []string{backend.URL},
+						"encoding":    "no-op",
+					},
+				},
+			},
+			{
+				"endpoint":        "/fail",
+				"output_encoding": "no-op",
+				"backend": []map[string]interface{}{
+					{
+						"url_pattern": "/fail",
+						"host":        []string{backend.URL},
+						"encoding":    "no-op",
+					},
+				},
+			},
+		},
+	}
+
+	stop := startGateway(t, bin, cfg)
+	defer stop()
+
+	t.Run("sse-chunked", func(t *testing.T) {
+		req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("http://127.0.0.1:%d/stream", gatewayPort), nil)
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("expected 200, got %d", resp.StatusCode)
+		}
+		if resp.Header.Get("Content-Type") != "text/event-stream" {
+			t.Errorf("expected Content-Type text/event-stream, got %q", resp.Header.Get("Content-Type"))
+		}
+
+		b, err := io.ReadAll(resp.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		res := string(b)
+		if !strings.Contains(res, "data: chunk1") {
+			t.Errorf("expected chunk1, got %q", res)
+		}
+		if !strings.Contains(res, "data: chunk2") {
+			t.Errorf("expected chunk2, got %q", res)
+		}
+	})
+
+	t.Run("mid-stream-failure", func(t *testing.T) {
+		req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("http://127.0.0.1:%d/fail", gatewayPort), nil)
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("expected 200, got %d", resp.StatusCode)
+		}
+
+		buf := make([]byte, 1024)
+		n, err := resp.Body.Read(buf)
+		if err != nil {
+			t.Fatal(err)
+		}
+		res := string(buf[:n])
+		if !strings.Contains(res, "data: chunk1") {
+			t.Errorf("expected chunk1, got %q", res)
+		}
+
+		_, err = resp.Body.Read(buf)
+		if err == nil {
+			t.Fatal("expected error on mid-stream failure, got nil")
+		}
+	})
+}
 
 func TestStreamingConfigRejectedAtStartup(t *testing.T) {
 	cases := []struct {

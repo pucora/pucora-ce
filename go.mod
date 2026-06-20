@@ -1,6 +1,6 @@
 module github.com/pucora/pucora-ce/v2
 
-go 1.25.3
+go 1.26.2
 
 require (
 	github.com/coder/websocket v1.8.13
@@ -40,7 +40,6 @@ require (
 	github.com/pucora/pucora-otel v1.0.1
 	github.com/pucora/pucora-pubsub/v2 v2.0.6
 	github.com/pucora/pucora-ratelimit/v3 v3.0.1
-	github.com/pucora/pucora-revoker/v2 v2.0.0
 	github.com/pucora/pucora-rss/v2 v2.0.1
 	github.com/pucora/pucora-soap/v2 v2.2.3
 	github.com/pucora/pucora-usage/v2 v2.0.1
@@ -145,7 +144,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.30.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
-	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
@@ -227,6 +226,10 @@ require (
 	github.com/pucora/go-auth0/v2 v2.0.1 // indirect
 	github.com/pucora/httpcache v1.0.1 // indirect
 	github.com/pucora/lru v1.0.1 // indirect
+	github.com/pucora/pucora-fastjson v0.0.0
+	github.com/pucora/pucora-middleware-plugin v0.0.0
+	github.com/pucora/pucora-no-redirect v0.0.0
+	github.com/pucora/pucora-security-policies v0.0.0
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/quic-go/quic-go v0.59.1 // indirect
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
@@ -286,7 +289,7 @@ require (
 	gocloud.dev/pubsub/rabbitpubsub v0.45.0 // indirect
 	gocloud.dev/secrets/hashivault v0.45.0 // indirect
 	golang.org/x/arch v0.22.0 // indirect
-	golang.org/x/crypto v0.52.0 // indirect
+	golang.org/x/crypto v0.52.0
 	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa // indirect
 	golang.org/x/mod v0.35.0 // indirect
 	golang.org/x/net v0.55.0 // indirect
@@ -314,3 +317,17 @@ replace (
 	github.com/pucora/pucora-ntlm/v2 => ../pucora-ntlm
 	github.com/pucora/pucora-revoker/v2 => ../pucora-revoker
 )
+
+replace github.com/pucora/pucora-fastjson => ../pucora-fastjson
+
+replace github.com/pucora/pucora-no-redirect => ../pucora-no-redirect
+
+replace github.com/pucora/pucora-security-policies => ../pucora-security-policies
+
+replace github.com/pucora/pucora-wildcard => ../pucora-wildcard
+
+replace github.com/pucora/pucora-openapi => ../pucora-openapi
+
+replace github.com/pucora/pucora-postman => ../pucora-postman
+
+replace github.com/pucora/pucora-middleware-plugin => ../pucora-middleware-plugin

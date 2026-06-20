@@ -1,0 +1,21 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "port": 18080,
+  "endpoints": [
+    {
+      "endpoint": "/jmespath",
+      "extra_config": {
+        "modifier/jmespath": {
+          "expr": "items[0]"
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://127.0.0.1:8081"],
+          "url_pattern": "/items"
+        }
+      ]
+    }
+  ]
+}

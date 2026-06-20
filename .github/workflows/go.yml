@@ -75,6 +75,8 @@ jobs:
           ./pucora check -c tests/fixtures/backend_ntlm.json
           ./pucora check -c tests/fixtures/revoke_server.json
           ./pucora check -c tests/fixtures/multi_idp.json
+          ./pucora check -c tests/fixtures/fast-json.json
+          ./pucora check -c tests/fixtures/no-redirect.json
 
       - name: Authorization module tests
         run: make test-auth
@@ -90,6 +92,12 @@ jobs:
 
       - name: Authorization integration test
         run: cd tests && go test -count=1 -run 'TestAPIKeysIntegration|TestBasicAuthIntegration' -timeout 2m
+
+      - name: Endpoint module tests
+        run: make test-endpoints
+
+      - name: Validate endpoint fixtures
+        run: make check-fixtures-endpoints
 
       - name: Unit tests
         run: go test $(go list ./... | grep -vE '/tests$|/cmd/pucora-integration')
