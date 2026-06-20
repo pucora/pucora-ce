@@ -4,7 +4,7 @@ replicaCount: 2
 
 image:
   repository: pucora/pucora
-  tag: "2.2.0"
+  tag: "2.3.2"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []

@@ -12,7 +12,7 @@ ifneq ($(wildcard $(WORKSPACE_ROOT)/go.work),)
 export GOWORK := $(WORKSPACE_ROOT)/go.work
 export GOSUMDB := off
 endif
-VERSION := 2.3.0
+VERSION := 2.3.2
 SCHEMA_VERSION := 2.13
 GIT_COMMIT := $(shell git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
 PKGNAME := pucora
