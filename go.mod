@@ -27,19 +27,19 @@ require (
 	github.com/pucora/pucora-httpsecure/v2 v2.0.1
 	github.com/pucora/pucora-influx/v2 v2.0.1
 	github.com/pucora/pucora-jose/v2 v2.0.1
-	github.com/pucora/pucora-jsonschema/v2 v2.0.1
+	github.com/pucora/pucora-jsonschema/v2 v2.0.2
 	github.com/pucora/pucora-koanf v1.0.1
 	github.com/pucora/pucora-lambda/v2 v2.0.1
 	github.com/pucora/pucora-logstash/v2 v2.0.1
 	github.com/pucora/pucora-lua/v2 v2.0.1
 	github.com/pucora/pucora-martian/v2 v2.0.1
 	github.com/pucora/pucora-metrics/v2 v2.0.1
-	github.com/pucora/pucora-ntlm/v2 v2.0.0-00010101000000-000000000000
+	github.com/pucora/pucora-ntlm/v2 v2.0.0
 	github.com/pucora/pucora-oauth2-clientcredentials/v2 v2.0.1
 	github.com/pucora/pucora-opencensus/v2 v2.0.1
 	github.com/pucora/pucora-otel v1.0.1
 	github.com/pucora/pucora-pubsub/v2 v2.0.6
-	github.com/pucora/pucora-ratelimit/v3 v3.0.1
+	github.com/pucora/pucora-ratelimit/v3 v3.0.2
 	github.com/pucora/pucora-rss/v2 v2.0.1
 	github.com/pucora/pucora-soap/v2 v2.2.3
 	github.com/pucora/pucora-usage/v2 v2.0.1
@@ -226,10 +226,13 @@ require (
 	github.com/pucora/go-auth0/v2 v2.0.1 // indirect
 	github.com/pucora/httpcache v1.0.1 // indirect
 	github.com/pucora/lru v1.0.1 // indirect
-	github.com/pucora/pucora-fastjson v0.0.0
-	github.com/pucora/pucora-middleware-plugin v0.0.0
-	github.com/pucora/pucora-no-redirect v0.0.0
-	github.com/pucora/pucora-security-policies v0.0.0
+	github.com/pucora/pucora-fastjson v1.0.0
+	github.com/pucora/pucora-jmespath v1.0.0
+	github.com/pucora/pucora-middleware-plugin v1.0.0
+	github.com/pucora/pucora-no-redirect v1.0.0
+	github.com/pucora/pucora-request-body v1.0.0
+	github.com/pucora/pucora-response-body v1.0.0
+	github.com/pucora/pucora-security-policies v1.0.0
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/quic-go/quic-go v0.59.1 // indirect
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
@@ -308,26 +311,3 @@ require (
 	gopkg.in/Graylog2/go-gelf.v2 v2.0.0-20191017102106-1550ee647df0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace (
-	github.com/pucora/pucora-apikeys/v2 => ../pucora-apikeys
-	github.com/pucora/pucora-aws-sigv4/v2 => ../pucora-aws-sigv4
-	github.com/pucora/pucora-basicauth/v2 => ../pucora-basicauth
-	github.com/pucora/pucora-gcp-auth/v2 => ../pucora-gcp-auth
-	github.com/pucora/pucora-ntlm/v2 => ../pucora-ntlm
-	github.com/pucora/pucora-revoker/v2 => ../pucora-revoker
-)
-
-replace github.com/pucora/pucora-fastjson => ../pucora-fastjson
-
-replace github.com/pucora/pucora-no-redirect => ../pucora-no-redirect
-
-replace github.com/pucora/pucora-security-policies => ../pucora-security-policies
-
-replace github.com/pucora/pucora-wildcard => ../pucora-wildcard
-
-replace github.com/pucora/pucora-openapi => ../pucora-openapi
-
-replace github.com/pucora/pucora-postman => ../pucora-postman
-
-replace github.com/pucora/pucora-middleware-plugin => ../pucora-middleware-plugin
