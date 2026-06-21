@@ -36,16 +36,16 @@ clone_auth() {
 }
 
 clone_endpoints() {
-  clone pucora-jmespath v1.0.0
-  clone pucora-response-body v1.0.0
-  clone pucora-request-body v1.0.0
-  clone pucora-jsonschema v2.0.2
-  clone pucora-security-policies v1.0.0
-  clone pucora-wildcard v1.0.0
-  clone pucora-ratelimit v3.0.2
-  clone pucora-openapi v1.0.0
-  clone pucora-postman v1.0.0
-  clone pucora-middleware-plugin v1.0.0
+  clone pucora-jmespath v1.0.1
+  clone pucora-response-body v1.0.1
+  clone pucora-request-body v1.0.1
+  clone pucora-jsonschema v2.0.3
+  clone pucora-security-policies v1.0.1
+  clone pucora-wildcard v1.0.1
+  clone pucora-ratelimit v3.0.3
+  clone pucora-openapi v1.0.1
+  clone pucora-postman v1.0.1
+  clone pucora-middleware-plugin v1.0.1
 }
 
 case "${SCOPE}" in

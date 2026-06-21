@@ -27,7 +27,7 @@ require (
 	github.com/pucora/pucora-httpsecure/v2 v2.0.1
 	github.com/pucora/pucora-influx/v2 v2.0.1
 	github.com/pucora/pucora-jose/v2 v2.0.1
-	github.com/pucora/pucora-jsonschema/v2 v2.0.2
+	github.com/pucora/pucora-jsonschema/v2 v2.0.3
 	github.com/pucora/pucora-koanf v1.0.1
 	github.com/pucora/pucora-lambda/v2 v2.0.1
 	github.com/pucora/pucora-logstash/v2 v2.0.1
@@ -39,7 +39,7 @@ require (
 	github.com/pucora/pucora-opencensus/v2 v2.0.1
 	github.com/pucora/pucora-otel v1.0.1
 	github.com/pucora/pucora-pubsub/v2 v2.0.6
-	github.com/pucora/pucora-ratelimit/v3 v3.0.2
+	github.com/pucora/pucora-ratelimit/v3 v3.0.3
 	github.com/pucora/pucora-rss/v2 v2.0.1
 	github.com/pucora/pucora-soap/v2 v2.2.3
 	github.com/pucora/pucora-usage/v2 v2.0.1
@@ -228,11 +228,11 @@ require (
 	github.com/pucora/lru v1.0.1 // indirect
 	github.com/pucora/pucora-fastjson v1.0.0
 	github.com/pucora/pucora-jmespath v1.0.0
-	github.com/pucora/pucora-middleware-plugin v1.0.0
+	github.com/pucora/pucora-middleware-plugin v1.0.1
 	github.com/pucora/pucora-no-redirect v1.0.0
-	github.com/pucora/pucora-request-body v1.0.0
-	github.com/pucora/pucora-response-body v1.0.0
-	github.com/pucora/pucora-security-policies v1.0.0
+	github.com/pucora/pucora-request-body v1.0.1
+	github.com/pucora/pucora-response-body v1.0.1
+	github.com/pucora/pucora-security-policies v1.0.1
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/quic-go/quic-go v0.59.1 // indirect
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
