@@ -303,7 +303,7 @@ jobs:
       - name: Package and push Helm chart
         run: |
           APP_VERSION=${RELEASE_TAG#v}
-          deploy/helm/scripts/verify-chart-version.sh "${APP_VERSION}"
+          bash deploy/helm/scripts/verify-chart-version.sh "${APP_VERSION}"
           helm package deploy/helm/pucora \
             --version "${APP_VERSION}" \
             --app-version "${APP_VERSION}"

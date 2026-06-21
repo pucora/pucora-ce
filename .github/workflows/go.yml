@@ -80,6 +80,9 @@ jobs:
           ./pucora check -c tests/fixtures/fast-json.json
           ./pucora check -c tests/fixtures/no-redirect.json
 
+      - name: Checkout authorization module siblings
+        run: bash scripts/clone-ci-siblings.sh auth
+
       - name: Authorization module tests
         run: make test-auth
 
@@ -97,6 +100,9 @@ jobs:
 
       - name: Production auth audit (CRITICAL,HIGH)
         run: ./pucora audit -c tests/fixtures/prod_auth_baseline.json -s CRITICAL,HIGH
+
+      - name: Checkout endpoint module siblings
+        run: bash scripts/clone-ci-siblings.sh endpoints
 
       - name: Endpoint module tests
         run: make test-endpoints
@@ -121,7 +127,7 @@ jobs:
         run: helm lint deploy/helm/pucora
 
       - name: Verify chart version alignment
-        run: deploy/helm/scripts/verify-chart-version.sh
+        run: bash deploy/helm/scripts/verify-chart-version.sh
 
       - name: Template Helm chart (default)
         run: helm template test deploy/helm/pucora > /dev/null

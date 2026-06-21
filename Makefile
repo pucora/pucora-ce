@@ -382,20 +382,20 @@ CHART_DIR := deploy/helm/pucora
 .PHONY: sync-chart-version verify-chart-version helm-lint helm-cluster-test
 
 sync-chart-version:
-	@deploy/helm/scripts/sync-chart-version.sh $(VERSION)
+	@bash deploy/helm/scripts/sync-chart-version.sh $(VERSION)
 
 verify-chart-version:
-	@deploy/helm/scripts/verify-chart-version.sh $(VERSION)
+	@bash deploy/helm/scripts/verify-chart-version.sh $(VERSION)
 
 helm-lint:
 	helm lint $(CHART_DIR)
 	helm lint $(CHART_DIR) -f $(CHART_DIR)/ci/values-prod.yaml
 	helm lint $(CHART_DIR) -f $(CHART_DIR)/ci/values-aws-nlb.yaml
 	helm lint $(CHART_DIR) -f $(CHART_DIR)/ci/values-istio.yaml
-	@deploy/helm/scripts/verify-chart-version.sh $(VERSION)
+	@bash deploy/helm/scripts/verify-chart-version.sh $(VERSION)
 
 helm-cluster-test:
-	@deploy/helm/scripts/cluster-test.sh
+	@bash deploy/helm/scripts/cluster-test.sh
 
 docker-builder:
 	docker build --no-cache --pull --build-arg GOLANG_VERSION=${GOLANG_VERSION} --build-arg ALPINE_VERSION=${ALPINE_VERSION} -t $(DOCKER_BUILDER):${VERSION} -f Dockerfile-builder .

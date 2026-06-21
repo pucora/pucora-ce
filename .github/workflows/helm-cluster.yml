@@ -45,7 +45,7 @@ jobs:
         run: GOWORK=off go mod vendor
 
       - name: Verify chart version alignment
-        run: deploy/helm/scripts/verify-chart-version.sh
+        run: bash deploy/helm/scripts/verify-chart-version.sh
 
       - name: Install Helm
         uses: azure/setup-helm@v4
@@ -62,4 +62,4 @@ jobs:
           RELEASE_NAME: pucora-ci
           CLUSTER_NAME: pucora-helm-test
           SKIP_CLUSTER_CREATE: "1"
-        run: deploy/helm/scripts/cluster-test.sh
+        run: bash deploy/helm/scripts/cluster-test.sh
