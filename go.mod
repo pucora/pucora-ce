@@ -9,7 +9,7 @@ require (
 	github.com/pucora/bloomfilter/v2 v2.0.1
 	github.com/pucora/lura/v2 v2.0.9
 	github.com/pucora/pucora-amqp/v2 v2.0.4
-	github.com/pucora/pucora-apikeys/v2 v2.0.0
+	github.com/pucora/pucora-apikeys/v2 v2.0.1
 	github.com/pucora/pucora-audit v1.0.2
 	github.com/pucora/pucora-aws-sigv4/v2 v2.0.0
 	github.com/pucora/pucora-basicauth/v2 v2.0.0
@@ -311,4 +311,3 @@ require (
 	gopkg.in/Graylog2/go-gelf.v2 v2.0.0-20191017102106-1550ee647df0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-

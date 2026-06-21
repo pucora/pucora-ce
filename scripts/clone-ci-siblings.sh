@@ -26,7 +26,7 @@ clone() {
 }
 
 clone_auth() {
-  clone pucora-apikeys v2.0.0
+  clone pucora-apikeys v2.0.1
   clone pucora-basicauth v2.0.0
   clone pucora-gcp-auth v2.0.0
   clone pucora-aws-sigv4 v2.0.0
