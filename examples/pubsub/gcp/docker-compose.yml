@@ -6,24 +6,16 @@ services:
       - "8085:8085"
 
   pubsub-init:
-    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    image: curlimages/curl:8.11.1
     depends_on:
-      - pubsub
+      pubsub:
+        condition: service_started
     environment:
       PUBSUB_EMULATOR_HOST: pubsub:8085
-    entrypoint: /bin/bash
-    command:
-      - -c
-      - |
-        set -euo pipefail
-        for i in $(seq 1 30); do
-          if gcloud pubsub topics create events --project=pucora-smoke 2>/dev/null; then
-            break
-          fi
-          sleep 2
-        done
-        gcloud pubsub subscriptions create events-sub --topic=events --project=pucora-smoke
-        echo "GCP Pub/Sub emulator initialized"
+      PUBSUB_PROJECT_ID: pucora-smoke
+    volumes:
+      - ./scripts/init-pubsub.sh:/scripts/init-pubsub.sh:ro
+    entrypoint: ["/bin/sh", "/scripts/init-pubsub.sh"]
 
   pucora:
     build:

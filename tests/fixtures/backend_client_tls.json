@@ -1,0 +1,28 @@
+{
+  "version": 3,
+  "endpoints": [
+    {
+      "endpoint": "/mtls-backend",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/",
+          "host": ["https://backend.internal"],
+          "extra_config": {
+            "backend/http/client": {
+              "client_tls": {
+                "client_certs": [
+                  {
+                    "certificate": "cert.pem",
+                    "private_key": "key.pem"
+                  }
+                ],
+                "ca_certs": ["ca.pem"]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

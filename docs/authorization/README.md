@@ -18,6 +18,8 @@ Implementation reference for KrakenD Enterprise authentication and authorization
 
 All seven Enterprise-only authorization features are implemented in Pucora CE with schema parity.
 
+**Production go-live:** [GO-LIVE.md](GO-LIVE.md) — checklist, auth matrix template, and `pucora audit` gates.
+
 ## Test fixtures
 
 See [pucora-ce/tests/fixtures/](../tests/fixtures/):
@@ -27,6 +29,7 @@ See [pucora-ce/tests/fixtures/](../tests/fixtures/):
 - `backend_gcp.json` — GCP ID token injection
 - `backend_sigv4.json` — AWS SigV4 signing
 - `backend_ntlm.json` — NTLM backend client
+- `backend_client_tls.json` — per-backend mTLS via `backend/http/client`
 - `revoke_server.json` — standalone revoker config
 - `multi_idp.json` — jwk-aggregator plugin + JWT validator
 

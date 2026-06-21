@@ -129,6 +129,11 @@ check-fixtures-auth: build
 	./${BIN_NAME} check -c tests/fixtures/backend_ntlm.json
 	./${BIN_NAME} check -c tests/fixtures/revoke_server.json
 	./${BIN_NAME} check -c tests/fixtures/multi_idp.json
+	./${BIN_NAME} check -c tests/fixtures/backend_client_tls.json
+	./${BIN_NAME} check -c tests/fixtures/prod_auth_baseline.json
+
+audit-prod: build
+	./${BIN_NAME} audit -c tests/fixtures/prod_auth_baseline.json -s CRITICAL,HIGH
 
 test-auth:
 	cd ../pucora-apikeys && go test ./...
@@ -300,8 +305,8 @@ pubsub-rabbit-compose-test: cmd/pucora-ce/schema/schema.json
 
 pubsub-gcp-compose-test: cmd/pucora-ce/schema/schema.json
 	@test -d vendor || GOWORK=off GOPROXY=direct GOPRIVATE=github.com/pucora/* GOSUMDB=off go mod vendor
-	cd examples/pubsub/gcp && docker compose up --build -d
-	chmod +x examples/pubsub/gcp/scripts/smoke.sh examples/pubsub/scripts/common.sh
+	cd examples/pubsub/gcp && docker compose up --build -d || (docker compose logs pubsub-init; exit 1)
+	chmod +x examples/pubsub/gcp/scripts/smoke.sh examples/pubsub/gcp/scripts/init-pubsub.sh examples/pubsub/scripts/common.sh
 	./examples/pubsub/gcp/scripts/smoke.sh
 	cd examples/pubsub/gcp && docker compose down -v
 

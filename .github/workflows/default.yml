@@ -23,7 +23,7 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: dessant/lock-threads@v5
+      - uses: dessant/lock-threads@v6.0.2
         with:
           issue-inactive-days: 30
           pr-inactive-days: 30

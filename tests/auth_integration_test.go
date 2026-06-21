@@ -17,10 +17,7 @@ import (
 )
 
 func TestAPIKeysIntegration(t *testing.T) {
-	bin := "../pucora"
-	if _, err := os.Stat(bin); err != nil {
-		t.Skip("pucora binary not built; run make build first")
-	}
+	bin := gatewayBinary(t)
 
 	var backendHits atomic.Int32
 	backend := startRecordingBackend(t, func(w http.ResponseWriter, r *http.Request) {
@@ -94,10 +91,7 @@ func TestAPIKeysIntegration(t *testing.T) {
 }
 
 func TestBasicAuthIntegration(t *testing.T) {
-	bin := "../pucora"
-	if _, err := os.Stat(bin); err != nil {
-		t.Skip("pucora binary not built; run make build first")
-	}
+	bin := gatewayBinary(t)
 
 	hash, err := bcrypt.GenerateFromPassword([]byte("secret"), bcrypt.MinCost)
 	if err != nil {

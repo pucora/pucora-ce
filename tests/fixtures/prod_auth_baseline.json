@@ -1,0 +1,86 @@
+{
+  "version": 3,
+  "port": 8080,
+  "timeout": "3s",
+  "cache_ttl": "300s",
+  "tls": {
+    "public_key": "/etc/pucora/tls/cert.pem",
+    "private_key": "/etc/pucora/tls/key.pem"
+  },
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "stdout": true,
+      "syslog": false
+    },
+    "telemetry/metrics": {
+      "collection_time": "60s",
+      "listen_address": ":8090"
+    },
+    "telemetry/usage": {
+      "enabled": false
+    },
+    "security/cors": {
+      "allow_origins": ["https://app.example.com"],
+      "allow_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allow_headers": ["Authorization", "Content-Type"],
+      "max_age": "12h"
+    },
+    "security/http": {},
+    "qos/ratelimit/router": {
+      "max_rate": 100,
+      "client_max_rate": 10
+    },
+    "router": {
+      "hide_version_header": true
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/public/health",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["http://backend.internal:8080"],
+          "url_pattern": "/health"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/{resource}",
+      "method": "GET",
+      "timeout": "3s",
+      "input_headers": ["Authorization", "Content-Type"],
+      "input_query_strings": ["page"],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "https://idp.example.com/.well-known/jwks.json",
+          "audience": ["https://api.example.com"],
+          "issuer": "https://idp.example.com/",
+          "roles": ["user"],
+          "roles_key": "roles",
+          "cache": true
+        },
+        "qos/circuit-breaker": {
+          "interval": 60,
+          "timeout": 10,
+          "max_errors": 5
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://backend.internal:8080"],
+          "url_pattern": "/{resource}",
+          "extra_config": {
+            "auth/client-credentials": {
+              "client_id": "REPLACE_AT_DEPLOY",
+              "client_secret": "REPLACE_AT_DEPLOY",
+              "token_url": "https://idp.example.com/oauth/token"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

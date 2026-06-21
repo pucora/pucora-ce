@@ -75,6 +75,8 @@ jobs:
           ./pucora check -c tests/fixtures/backend_ntlm.json
           ./pucora check -c tests/fixtures/revoke_server.json
           ./pucora check -c tests/fixtures/multi_idp.json
+          ./pucora check -c tests/fixtures/backend_client_tls.json
+          ./pucora check -c tests/fixtures/prod_auth_baseline.json
           ./pucora check -c tests/fixtures/fast-json.json
           ./pucora check -c tests/fixtures/no-redirect.json
 
@@ -91,7 +93,10 @@ jobs:
         run: cd tests && go test -count=1 -run TestWebSocket -timeout 2m
 
       - name: Authorization integration test
-        run: cd tests && go test -count=1 -run 'TestAPIKeysIntegration|TestBasicAuthIntegration' -timeout 2m
+        run: cd tests && go test -count=1 -run 'TestAPIKeysIntegration|TestBasicAuthIntegration|TestOAuth2ClientCredentialsIntegration|TestAWSSigV4Integration' -timeout 2m
+
+      - name: Production auth audit (CRITICAL,HIGH)
+        run: ./pucora audit -c tests/fixtures/prod_auth_baseline.json -s CRITICAL,HIGH
 
       - name: Endpoint module tests
         run: make test-endpoints
