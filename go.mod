@@ -1,6 +1,6 @@
 module github.com/pucora/pucora-ce/v2
 
-go 1.26.2
+go 1.26.4
 
 require (
 	github.com/coder/websocket v1.8.13
@@ -79,7 +79,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.7.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus v1.10.0 // indirect
 	github.com/Azure/go-amqp v1.5.0 // indirect
-	github.com/Azure/go-ntlmssp v0.1.0 // indirect
+	github.com/Azure/go-ntlmssp v0.1.1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0 // indirect
 	github.com/DataDog/datadog-go v4.8.3+incompatible // indirect
 	github.com/DataDog/opencensus-go-exporter-datadog v0.0.0-20220622145613-731d59e8b567 // indirect
