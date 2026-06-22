@@ -45,7 +45,7 @@ func NewHandlerFactory(logger logging.Logger, metricCollector *metrics.Metrics, 
 
 	handlerFactory := router.CustomErrorEndpointHandler(logger, server.DefaultToHTTPError)
 	handlerFactory = ratelimit.NewRateLimiterMw(logger, handlerFactory)
-	handlerFactory = ratelimitredis.HandlerFactory(logger, handlerFactory)
+	handlerFactory = ratelimitredis.HandlerFactory(logger, handlerFactory, &serviceCfg)
 	handlerFactory = ratelimittiered.HandlerFactory(logger, handlerFactory)
 	handlerFactory = lua.HandlerFactory(logger, handlerFactory)
 	handlerFactory = wsgin.HandlerFactory(logger, handlerFactory)
