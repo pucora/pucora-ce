@@ -1,38 +1,26 @@
 package pucora
 
 import (
-	"encoding/json"
+	"net"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
 	botdetector "github.com/pucora/pucora-botdetector/v2/gin"
 	httpsecure "github.com/pucora/pucora-httpsecure/v2/gin"
 	lua "github.com/pucora/pucora-lua/v2/router/gin"
-	opencensus "github.com/pucora/pucora-opencensus/v2/router/gin"
 	"github.com/pucora/lura/v2/config"
-	"github.com/pucora/lura/v2/core"
 	luragin "github.com/pucora/lura/v2/router/gin"
-	"github.com/pucora/lura/v2/transport/http/server"
 )
 
-// NewEngine creates a new gin engine with some default values and a secure middleware
+type engineFactory struct{}
+
+func (engineFactory) NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
+	return NewEngine(cfg, opt)
+}
+
 func NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
 	engine := luragin.NewEngine(cfg, opt)
-
-	engine.NoRoute(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoRoute"}, defaultHandler, nil))
-	engine.NoMethod(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoMethod"}, defaultHandler, nil))
-	if v, ok := cfg.ExtraConfig[luragin.Namespace]; ok && v != nil {
-		var ginOpts ginOptions
-		if b, err := json.Marshal(v); err == nil {
-			json.Unmarshal(b, &ginOpts)
-		}
-		if ginOpts.ErrorBody.Err404 != nil {
-			engine.NoRoute(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoRoute"}, jsonHandler(404, ginOpts.ErrorBody.Err404), nil))
-		}
-		if ginOpts.ErrorBody.Err405 != nil {
-			engine.NoMethod(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoMethod"}, jsonHandler(405, ginOpts.ErrorBody.Err405), nil))
-		}
-	}
 
 	logPrefix := "[SERVICE: Gin]"
 	if err := httpsecure.Register(cfg.ExtraConfig, engine); err != nil && err != httpsecure.ErrNoConfig {
@@ -45,32 +33,47 @@ func NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine 
 
 	botdetector.Register(cfg, opt.Logger, engine)
 
+	RegisterVirtualHost(cfg, engine)
+
 	return engine
 }
 
-func defaultHandler(c *gin.Context) {
-	c.Header(core.PucoraHeaderName, core.PucoraHeaderValue)
-	c.Header(server.CompleteResponseHeaderName, server.HeaderIncompleteResponseValue)
-}
-
-func jsonHandler(status int, v interface{}) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		defaultHandler(c)
-		c.JSON(status, v)
+func parseCIDRs(networks []string) []*net.IPNet {
+	var result []*net.IPNet
+	for _, network := range networks {
+		if _, ipNet, err := net.ParseCIDR(network); err == nil {
+			result = append(result, ipNet)
+		} else if ip := net.ParseIP(network); ip != nil {
+			result = append(result, &net.IPNet{IP: ip, Mask: net.CIDRMask(32, 32)})
+		}
 	}
+	return result
 }
 
-type engineFactory struct{}
-
-func (engineFactory) NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
-	return NewEngine(cfg, opt)
+func isTrustedProxy(ipStr string, trustedCIDRs []*net.IPNet) bool {
+	ip := net.ParseIP(ipStr)
+	if ip == nil {
+		return false
+	}
+	for _, cidr := range trustedCIDRs {
+		if cidr.Contains(ip) {
+			return true
+		}
+	}
+	return false
 }
 
-type ginOptions struct {
-	// ErrorBody sets the json body to return to handlers like NoRoute (404) and NoMethod (405)
-	// Example: "404": { "error": "Not Found", "status": 404 }
-	ErrorBody struct {
-		Err404 interface{} `json:"404"`
-		Err405 interface{} `json:"405"`
-	} `json:"error_body"`
+func getRealClientIP(c *gin.Context, trustedCIDRs []*net.IPNet, headers []string) string {
+	for _, headerName := range headers {
+		if ip := c.GetHeader(headerName); ip != "" {
+			parts := strings.Split(ip, ",")
+			for i := len(parts) - 1; i >= 0; i-- {
+				ip := strings.TrimSpace(parts[i])
+				if ip != "" && !isTrustedProxy(ip, trustedCIDRs) {
+					return ip
+				}
+			}
+		}
+	}
+	return c.ClientIP()
 }

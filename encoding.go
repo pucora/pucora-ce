@@ -6,6 +6,8 @@ import (
 	rss "github.com/pucora/pucora-rss/v2"
 	xml "github.com/pucora/pucora-xml/v2"
 	ginxml "github.com/pucora/pucora-xml/v2/gin"
+	yaml "github.com/pucora/pucora-yaml/v2"
+	ginyaml "github.com/pucora/pucora-yaml/v2/gin"
 	"github.com/pucora/lura/v2/router/gin"
 )
 
@@ -14,7 +16,9 @@ func RegisterEncoders() {
 	xml.Register()
 	rss.Register()
 	fastjson.Register()
+	yaml.Register()
 
 	gin.RegisterRender(xml.Name, ginxml.Render)
 	gin.RegisterRender(fastjson.Name, ginfastjson.Render)
+	gin.RegisterRender(yaml.Name, ginyaml.Render)
 }

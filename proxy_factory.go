@@ -39,8 +39,42 @@ func NewProxyFactory(logger logging.Logger, backendFactory proxy.BackendFactory,
 
 	return proxy.FactoryFunc(func(cfg *config.EndpointConfig) (proxy.Proxy, error) {
 		logger.Debug(fmt.Sprintf("[ENDPOINT: %s] Building the proxy pipe", cfg.Endpoint))
+
+		if hasConditionalBackends(cfg.Backend) {
+			return newConditionalProxy(logger, cfg, backendFactory), nil
+		}
+
 		return proxyFactory.New(cfg)
 	})
+}
+
+func hasConditionalBackends(backends []*config.Backend) bool {
+	for _, backend := range backends {
+		if isConditionalBackend(backend) {
+			return true
+		}
+	}
+	return false
+}
+
+func isConditionalBackend(backend *config.Backend) bool {
+	if backend.ExtraConfig == nil {
+		return false
+	}
+	v, ok := backend.ExtraConfig["backend/conditional"]
+	if !ok || v == nil {
+		return false
+	}
+	cfg, ok := v.(map[string]interface{})
+	if !ok {
+		return false
+	}
+	strategy, _ := cfg["strategy"].(string)
+	return strategy == "header" || strategy == "policy" || strategy == "fallback"
+}
+
+func newConditionalProxy(logger logging.Logger, cfg *config.EndpointConfig, backendFactory proxy.BackendFactory) proxy.Proxy {
+	return newConditionalRouter(logger, cfg.Backend, backendFactory)
 }
 
 type proxyFactory struct{}
