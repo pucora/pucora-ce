@@ -45,7 +45,7 @@ require (
 	github.com/pucora/pucora-usage/v2 v2.0.1
 	github.com/pucora/pucora-websocket/v2 v2.0.8
 	github.com/pucora/pucora-xml/v2 v2.0.1
-	github.com/pucora/pucora-yaml/v2 v2.0.0-00010101000000-000000000000
+	github.com/pucora/pucora-yaml/v2 v2.0.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/sync v0.21.0
@@ -316,4 +316,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/pucora/pucora-yaml/v2 => ../pucora-yaml/v2
+
