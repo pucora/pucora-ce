@@ -722,6 +722,8 @@ github.com/pucora/pucora-websocket/v2 v2.0.8 h1:EdTHqeRzRVLNn19VE9N0zk2ZUj03BBzR
 github.com/pucora/pucora-websocket/v2 v2.0.8/go.mod h1:0CoplXdmEv0yBwM6YiqFzhKTzOFjAS0vf2XzMTlAn04=
 github.com/pucora/pucora-xml/v2 v2.0.1 h1:9DfjfbpJbQmoMjNx2FpaURmAplpLt+afN8SoDJGWwok=
 github.com/pucora/pucora-xml/v2 v2.0.1/go.mod h1:YK5h+UGf2i6gnQU+RsHycDycLmJEo1eBNKVaXtRauXY=
+github.com/pucora/pucora-yaml/v2 v2.0.1 h1:rB726Olzv+f3no/wuNXQHbExTIpT0ukSFd2pEWkf914=
+github.com/pucora/pucora-yaml/v2 v2.0.1/go.mod h1:sholmNSwUxN/5fkk6dc1IR0RQBBhuQhvBhKld2nb2js=
 github.com/quic-go/qpack v0.6.0 h1:g7W+BMYynC1LbYLSqRt8PBg5Tgwxn214ZZR34VIOjz8=
 github.com/quic-go/qpack v0.6.0/go.mod h1:lUpLKChi8njB4ty2bFLX2x4gzDqXwUpaO1DP9qMDZII=
 github.com/quic-go/quic-go v0.59.1 h1:0Gmua0HW1Tv7ANR7hUYwRyD0MG5OJfgvYSZasGZzBic=
