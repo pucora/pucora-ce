@@ -7,7 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-contrib/uuid v1.2.0
 	github.com/pucora/bloomfilter/v2 v2.0.1
-	github.com/pucora/lura/v2 v2.0.9
+	github.com/pucora/lura/v2 v2.0.10
 	github.com/pucora/pucora-amqp/v2 v2.0.4
 	github.com/pucora/pucora-apikeys/v2 v2.0.1
 	github.com/pucora/pucora-audit v1.0.2

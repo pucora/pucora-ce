@@ -632,8 +632,8 @@ github.com/pucora/httpcache v1.0.1 h1:ukgJqMw/vu85umpiWwtq6yCoYqytISou+W6YIua1BT
 github.com/pucora/httpcache v1.0.1/go.mod h1:/0/aqXdV3Zd4vtQ1E4BvprMyRVAnheXJbQ/vuc8r08Q=
 github.com/pucora/lru v1.0.1 h1:IQpJVRlCFdkhPfbbki6z7d5bz7XCr/vzTH+LXYSQAQQ=
 github.com/pucora/lru v1.0.1/go.mod h1:dcgYCd7NBlb+wLM5Jf7iaXGjcVGenNO+8TD2utvuO9Y=
-github.com/pucora/lura/v2 v2.0.9 h1:pPBU0rO71JeIp6k4xGwQweKHvd46+0BZRwb1Z7DZBE0=
-github.com/pucora/lura/v2 v2.0.9/go.mod h1:7LJn5CTxnfAFbvsWyk6XqORnXXZ9uI3yn79Anz5qE4g=
+github.com/pucora/lura/v2 v2.0.10 h1:JHI0H4WEvb7f4XID5CHVHQQ2nSwVeeEviXPuG91gCqk=
+github.com/pucora/lura/v2 v2.0.10/go.mod h1:33QmcVC8R/VZVomu1+A6Stmlc8J0xYLk37dOzvEq2+U=
 github.com/pucora/pucora-amqp/v2 v2.0.4 h1:pnjmO0eNhhCkjiMG3urI5F7FQeA8UbrlRSYRyyqR+yg=
 github.com/pucora/pucora-amqp/v2 v2.0.4/go.mod h1:Fevtfu5i46C3FTkhQbXriz+oaVslOMQtjzb8yF21NA4=
 github.com/pucora/pucora-apikeys/v2 v2.0.1 h1:19YGUEHAsJVm9Rw+GwKYnwI7Zf0+VKjFJgFbzINGTPg=
