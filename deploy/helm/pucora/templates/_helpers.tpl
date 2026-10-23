@@ -48,6 +48,26 @@ app.kubernetes.io/name: {{ include "pucora.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/* Gateway workloads must not select the optional Configurator pods. */}}
+{{- define "pucora.gatewaySelectorLabels" -}}
+{{ include "pucora.selectorLabels" . }}
+app.kubernetes.io/component: gateway
+{{- end }}
+
+{{/* Keep a chart-managed Prometheus listener aligned with its Service. */}}
+{{- define "pucora.configJson" -}}
+{{- $config := mustFromJson .Values.config.pucoraJson -}}
+{{- $exporters := dig "extra_config" "telemetry/opencensus" "exporters" (dict) $config -}}
+{{- if hasKey $exporters "prometheus" -}}
+{{- if .Values.metrics.enabled -}}
+{{- $_ := set (get $exporters "prometheus") "port" .Values.metrics.port -}}
+{{- else -}}
+{{- $_ := unset $exporters "prometheus" -}}
+{{- end -}}
+{{- end -}}
+{{- mustToPrettyJson $config -}}
+{{- end }}
+
 {{/*
 Create the name of the service account to use
 */}}
@@ -85,9 +105,9 @@ Secret name for pucora.json
 Whether configuration is mounted from a ConfigMap.
 */}}
 {{- define "pucora.useConfigMap" -}}
-{{- if and (eq .Values.config.mode "configmap") (or .Values.config.existingConfigMap .Values.config.pucoraJson) (ne (include "pucora.useConfiguratorConfig" .) "true") }}
+{{- if and (eq .Values.config.mode "configmap") (or .Values.config.existingConfigMap .Values.config.pucoraJson) (ne (include "pucora.useConfiguratorConfig" .) "true") -}}
 true
-{{- else }}
+{{- else -}}
 false
 {{- end }}
 {{- end }}
@@ -96,9 +116,9 @@ false
 Whether configuration is mounted from a Secret.
 */}}
 {{- define "pucora.useConfigSecret" -}}
-{{- if and (eq .Values.config.mode "secret") (or .Values.config.existingSecret .Values.config.pucoraJson) (ne (include "pucora.useConfiguratorConfig" .) "true") }}
+{{- if and (eq .Values.config.mode "secret") (or .Values.config.existingSecret .Values.config.pucoraJson) (ne (include "pucora.useConfiguratorConfig" .) "true") -}}
 true
-{{- else }}
+{{- else -}}
 false
 {{- end }}
 {{- end }}
@@ -107,9 +127,9 @@ false
 Whether configuration is mounted from ConfigMap or Secret.
 */}}
 {{- define "pucora.useConfigVolume" -}}
-{{- if or (eq (include "pucora.useConfigMap" .) "true") (eq (include "pucora.useConfigSecret" .) "true") }}
+{{- if or (eq (include "pucora.useConfigMap" .) "true") (eq (include "pucora.useConfigSecret" .) "true") -}}
 true
-{{- else }}
+{{- else -}}
 false
 {{- end }}
 {{- end }}
@@ -118,9 +138,9 @@ false
 Chart-managed config (not external ConfigMap/Secret).
 */}}
 {{- define "pucora.chartManagedConfig" -}}
-{{- if and (or (eq .Values.config.mode "configmap") (eq .Values.config.mode "secret")) (not .Values.config.existingConfigMap) (not .Values.config.existingSecret) }}
+{{- if and (or (eq .Values.config.mode "configmap") (eq .Values.config.mode "secret")) (not .Values.config.existingConfigMap) (not .Values.config.existingSecret) -}}
 true
-{{- else }}
+{{- else -}}
 false
 {{- end }}
 {{- end }}
@@ -248,9 +268,9 @@ Whether gateway config is loaded from the configurator API.
 Configurator API auth is configured.
 */}}
 {{- define "pucora.configuratorApiAuthEnabled" -}}
-{{- if or .Values.configurator.api.auth.apiKey .Values.configurator.api.auth.existingSecret }}
+{{- if or .Values.configurator.api.auth.apiKey .Values.configurator.api.auth.existingSecret -}}
 true
-{{- else }}
+{{- else -}}
 false
 {{- end }}
 {{- end }}

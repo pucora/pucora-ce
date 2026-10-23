@@ -18,5 +18,5 @@ spec:
       protocol: TCP
       name: metrics
   selector:
-    {{- include "pucora.selectorLabels" . | nindent 4 }}
+    {{- include "pucora.gatewaySelectorLabels" . | nindent 4 }}
 {{- end }}

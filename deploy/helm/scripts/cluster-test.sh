@@ -1,25 +1,8 @@
 #!/usr/bin/env bash
 # Install the Pucora Helm chart on a Kind cluster and verify health.
 set -euo pipefail
-# Ensure required CLI tools are present (kubectl, helm, kind)
-if ! command -v kubectl >/dev/null 2>&1; then
-  echo "Downloading kubectl..."
-  curl -L -o "$PWD/kubectl.exe" "https://dl.k8s.io/release/v1.30.0/bin/windows/amd64/kubectl.exe"
-  export PATH="$PWD:$PATH"
-fi
-if ! command -v helm >/dev/null 2>&1; then
-  echo "Downloading helm..."
-  curl -L -o "$PWD/helm.zip" "https://get.helm.sh/helm-v3.14.0-windows-amd64.zip"
-  powershell -Command "Expand-Archive -Path '$PWD\\helm.zip' -DestinationPath '$PWD' -Force"
-  export PATH="$PWD\\helm-v3.14.0-windows-amd64:$PATH"
-fi
-if ! command -v kind >/dev/null 2>&1; then
-  echo "Downloading kind..."
-  curl -L -o "$PWD/kind.exe" "https://github.com/kubernetes-sigs/kind/releases/download/v0.22.0/kind-windows-amd64.exe"
-  export PATH="$PWD:$PATH"
-fi
-# Ensure mock tools in script directory are found
-export PATH="$(dirname "$0"):$PATH"
+# Use installed tools on each platform; never substitute downloaded Windows binaries
+# or shadow real cluster commands with scripts from this directory.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 CHART_DIR="${ROOT_DIR}/deploy/helm/pucora"
@@ -75,6 +58,7 @@ helm upgrade --install "${RELEASE_NAME}" "${CHART_DIR}" \
   --set image.repository="${IMAGE_REPO}" \
   --set image.tag="${IMAGE_TAG}" \
   --set image.pullPolicy=Never \
+  --set fullnameOverride="${RELEASE_NAME}" \
   --set replicaCount=1 \
   --set tests.enabled=true \
   --set tests.configCheck=true \

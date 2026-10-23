@@ -7,6 +7,10 @@ metadata:
     {{- include "pucora.labels" . | nindent 4 }}
     app.kubernetes.io/component: configurator-api
 spec:
+  {{- if .Values.configurator.persistence.enabled }}
+  strategy:
+    type: Recreate
+  {{- end }}
   replicas: {{ .Values.configurator.api.replicaCount }}
   selector:
     matchLabels:
@@ -14,10 +18,13 @@ spec:
       app.kubernetes.io/component: configurator-api
   template:
     metadata:
+      annotations:
+        checksum/auth: {{ include (print $.Template.BasePath "/configurator-api-secret.yaml") . | sha256sum }}
       labels:
         {{- include "pucora.labels" . | nindent 8 }}
         app.kubernetes.io/component: configurator-api
     spec:
+      automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -51,13 +58,13 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /api/configs
+              path: /api/health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 20
           readinessProbe:
             httpGet:
-              path: /api/configs
+              path: /api/health
               port: http
             initialDelaySeconds: 3
             periodSeconds: 10

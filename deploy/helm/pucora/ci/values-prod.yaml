@@ -39,7 +39,9 @@ autoscaling:
 networkPolicy:
   enabled: true
   allowIngressController: true
+  ingressControllerNamespace: ingress-nginx
   allowMetricsScraper: true
+  metricsNamespace: monitoring
 
 serviceMonitor:
   enabled: true

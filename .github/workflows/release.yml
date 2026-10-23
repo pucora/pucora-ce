@@ -15,6 +15,7 @@ env:
 jobs:
   gate:
     name: Check release credentials
+    if: startsWith(github.event.release.tag_name || github.event.inputs.tag, 'v')
     runs-on: ubuntu-latest
     outputs:
       docker: ${{ steps.check.outputs.docker }}

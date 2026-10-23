@@ -10,6 +10,12 @@
     "config": {
       "type": "object",
       "properties": {
+        "configurator": {
+          "type": "object",
+          "properties": {
+            "configName": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$" }
+          }
+        },
         "mode": {
           "type": "string",
           "enum": ["configmap", "secret", "image", "configurator"]
@@ -28,6 +34,7 @@
           "minimum": 1,
           "maximum": 65535
         },
+        "targetPort": { "type": "integer", "minimum": 1, "maximum": 65535 },
         "nlb": {
           "type": "object",
           "properties": {
@@ -53,7 +60,17 @@
     "keda": {
       "type": "object",
       "properties": {
-        "enabled": { "type": "boolean" }
+        "enabled": { "type": "boolean" },
+        "minReplicaCount": { "type": "integer", "minimum": 0 },
+        "maxReplicaCount": { "type": "integer", "minimum": 1 },
+        "triggers": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
       }
     },
     "sidecarInjection": {

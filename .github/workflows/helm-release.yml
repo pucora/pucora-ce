@@ -1,0 +1,72 @@
+name: Release Helm chart
+
+on:
+  push:
+    tags: ['helm-v*']
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: helm-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+        with:
+          version: v3.17.2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate chart and release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          VERSION="${RELEASE_TAG#helm-v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          bash deploy/helm/scripts/verify-chart-version.sh "$VERSION"
+          python -m pip install PyYAML==6.0.3
+          python deploy/helm/scripts/test-chart.py
+          helm lint deploy/helm/pucora --strict
+      - name: Package chart and checksum
+        run: |
+          mkdir -p dist
+          helm package deploy/helm/pucora --destination dist
+          (cd dist && sha256sum "pucora-${VERSION}.tgz" > SHA256SUMS)
+      - name: Log in to GitHub Container Registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: printf '%s' "$GH_TOKEN" | helm registry login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+      - name: Publish OCI chart
+        run: helm push "dist/pucora-${VERSION}.tgz" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/charts"
+      - name: Publish chart release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cat > dist/notes.md <<EOF
+          First standalone Helm chart release for the Pucora API Gateway.
+
+          Install from the public release asset:
+          \`\`\`sh
+          helm install pucora https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}/pucora-${VERSION}.tgz
+          \`\`\`
+
+          OCI registry: \`oci://ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/charts/pucora\`, version \`${VERSION}\`.
+          Includes configuration mounts, isolated gateway selectors, Configurator authentication and probes, working Prometheus defaults, NetworkPolicy restrictions and validated autoscaling/PDB options.
+
+          Validation: 15 chart regression tests and strict Helm lint. Gateway health and Prometheus endpoints were tested locally. Kubernetes cluster rollout has not been verified.
+          EOF
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "dist/pucora-${VERSION}.tgz" dist/SHA256SUMS --clobber
+          else
+            gh release create "$RELEASE_TAG" "dist/pucora-${VERSION}.tgz" dist/SHA256SUMS --title "Pucora Helm chart ${VERSION}" --notes-file dist/notes.md --latest=false
+          fi

@@ -13,6 +13,7 @@ fullnameOverride: ""
 
 serviceAccount:
   create: true
+  automountServiceAccountToken: false
   annotations: {}
   name: ""
 
@@ -107,24 +108,17 @@ config:
           "prefix": "[PUCORA]",
           "stdout": true
         },
-        "telemetry/metrics": {
-          "collection_time": "60s",
-          "listen_address": ":8090"
+        "telemetry/opencensus": {
+          "sample_rate": 0,
+          "reporting_period": 10,
+          "enabled_layers": { "router": true, "backend": true },
+          "exporters": { "prometheus": { "port": 8090 } }
         },
         "telemetry/usage": {
           "enabled": false
         }
       },
-      "endpoints": [
-        {
-          "endpoint": "/__debug",
-          "backend": [
-            {
-              "url_pattern": "/__debug"
-            }
-          ]
-        }
-      ]
+      "endpoints": []
     }
 
 usageReporting:
@@ -137,12 +131,8 @@ opentelemetry:
   # Adds OTEL_* env vars when enabled.
 
 command: []
-args:
-  - run
-  - -c
-  - /etc/pucora/pucora.json
-  - -p
-  - "8080"
+# Empty uses run -c /etc/pucora/pucora.json -p <service.targetPort>.
+args: []
 
 extraEnv: []
 extraEnvFrom: []
@@ -164,7 +154,10 @@ sidecarInjection:
 sidecars: []
 initContainers: []
 
-resources: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
 
 probes:
   startup:
@@ -202,6 +195,7 @@ affinity: {}
 networkPolicy:
   enabled: false
   allowIngressController: true
+  # Empty namespace settings restrict ingress to the release namespace.
   ingressControllerNamespace: ""
   allowMetricsScraper: true
   metricsNamespace: ""

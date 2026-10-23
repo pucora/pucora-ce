@@ -24,3 +24,8 @@ topologySpreadConstraints:
 
 networkPolicy:
   enabled: true
+  allowIngressController: false
+  # Public NLB: replace with the client CIDRs permitted for your deployment.
+  additionalIngress:
+    - ipBlock:
+        cidr: 0.0.0.0/0

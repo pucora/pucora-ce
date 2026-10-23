@@ -16,6 +16,15 @@ Deploy the [Pucora API Gateway](https://pucora.io) on Kubernetes.
 
 ## Quick start
 
+The default configuration serves `/__health` and Prometheus `/metrics` on port
+8090, with no public backend/debug route. Supply your gateway endpoints with
+`--set-file config.pucoraJson=...`. For custom, external or image configuration,
+enable the Prometheus exporter in that configuration and match its port to
+`metrics.port`. For chart-managed configuration, the chart aligns the
+`telemetry/opencensus` Prometheus exporter port with `metrics.port` and removes
+that exporter when `metrics.enabled=false`. External/image configuration remains
+under your control; the chart can only change its Kubernetes port and Service.
+
 ```bash
 git clone https://github.com/pucora/pucora-ce.git
 cd pucora-ce
@@ -33,8 +42,17 @@ helm test my-gateway
 ### Install from OCI registry (on release)
 
 ```bash
-helm install my-gateway oci://ghcr.io/pucora/charts/pucora --version 2.2.0
+helm install my-gateway oci://ghcr.io/pucora/charts/pucora --version 2.3.2
 ```
+
+Alternatively install the standalone chart release asset:
+
+```bash
+helm install my-gateway https://github.com/pucora/pucora-ce/releases/download/helm-v2.3.2/pucora-2.3.2.tgz
+```
+
+Chart releases use `helm-v<version>` tags and the `Release Helm chart` workflow.
+They do not require Docker Hub credentials or rebuild gateway images.
 
 ## Versioning discipline
 
@@ -362,6 +380,39 @@ kubectl apply -f https://github.com/kubernetes/autoscaler/releases/latest/downlo
 ```
 
 ## Upgrade, test, rollback
+
+### Upgrading an existing release after the selector fix
+
+Gateway selectors now include `app.kubernetes.io/component: gateway` to keep
+gateway traffic, autoscaling ownership and disruption budgets separate from
+Configurator pods. Kubernetes Deployment selectors are immutable. For an older
+release, plan a maintenance window to replace its gateway Deployment before
+running `helm upgrade`, or deploy a second release and switch traffic to it.
+An ordinary in-place upgrade of that older Deployment will reject the selector
+change. No cluster resources are changed by the local chart tests.
+
+NetworkPolicy now honors `ingressControllerNamespace` and defaults empty ingress
+and metrics namespace settings to the release namespace. Set the actual controller
+and scraper namespaces when they run elsewhere. With both ingress sources disabled,
+gateway HTTP traffic is denied; `additionalIngress` supplies explicit extra peers.
+The public NLB example deliberately permits client IPv4 traffic; restrict its CIDRs
+and LoadBalancer source ranges for your environment.
+
+Gateway service-account tokens are no longer mounted by default. Set
+`serviceAccount.automountServiceAccountToken=true` if a custom integration needs
+Kubernetes API access. The default resource requests are 100m CPU and 64Mi memory;
+utilization-based HPA requires the corresponding request. HPA and KEDA cannot both
+be enabled. For a PDB using `maxUnavailable`, set `minAvailable: null`; zero values
+are supported. Persistent Configurator storage supports one API replica and uses
+the Recreate strategy to avoid simultaneous mounts during rollouts.
+
+Run the semantic chart regression suite locally:
+
+```bash
+python -m pip install PyYAML==6.0.3
+python deploy/helm/scripts/test-chart.py
+helm lint deploy/helm/pucora --strict
+```
 
 ```bash
 helm upgrade my-gateway ./deploy/helm/pucora -f my-values.yaml

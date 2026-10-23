@@ -18,7 +18,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "pucora.selectorLabels" . | nindent 6 }}
+      {{- include "pucora.gatewaySelectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -37,6 +37,7 @@ spec:
         {{- end }}
       labels:
         {{- include "pucora.labels" . | nindent 8 }}
+        app.kubernetes.io/component: gateway
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -46,6 +47,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "pucora.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
       {{- end }}
@@ -75,9 +77,9 @@ spec:
               url="{{ include "pucora.configuratorApiUrl" . }}/api/config/{{ .Values.config.configurator.configName }}/pucora.json"
               for i in $(seq 1 {{ .Values.configurator.gateway.fetchRetries }}); do
                 {{- if or .Values.config.configurator.apiKeySecret (eq (include "pucora.configuratorApiAuthEnabled" .) "true") }}
-                if curl -sf -H "X-API-Key: $(cat /secrets/api-key)" "$url" -o /config/pucora.json; then
+                if curl -sf --connect-timeout 5 --max-time 15 -H "X-API-Key: $(cat /secrets/api-key)" "$url" -o /config/pucora.json; then
                 {{- else }}
-                if curl -sf "$url" -o /config/pucora.json; then
+                if curl -sf --connect-timeout 5 --max-time 15 "$url" -o /config/pucora.json; then
                 {{- end }}
                   test -s /config/pucora.json && exit 0
                 fi
@@ -109,6 +111,13 @@ spec:
           {{- with .Values.args }}
           args:
             {{- toYaml . | nindent 12 }}
+          {{- else }}
+          args:
+            - run
+            - -c
+            - /etc/pucora/pucora.json
+            - -p
+            - {{ .Values.service.targetPort | quote }}
           {{- end }}
           ports:
             - name: http
@@ -216,7 +225,7 @@ spec:
           secret:
             secretName: {{ .Values.config.configurator.apiKeySecret | default (include "pucora.configuratorApiSecretName" .) }}
             items:
-              - key: {{ .Values.config.configurator.apiKeySecretKey | default .Values.configurator.api.auth.secretKey }}
+              - key: {{ if .Values.config.configurator.apiKeySecret }}{{ .Values.config.configurator.apiKeySecretKey }}{{ else }}{{ .Values.configurator.api.auth.secretKey }}{{ end }}
                 path: api-key
         {{- end }}
         {{- else if eq (include "pucora.useConfigMap" .) "true" }}
@@ -246,7 +255,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  {{- include "pucora.selectorLabels" . | nindent 18 }}
+                  {{- include "pucora.gatewaySelectorLabels" . | nindent 18 }}
               topologyKey: kubernetes.io/hostname
           {{- else }}
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -254,7 +263,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    {{- include "pucora.selectorLabels" . | nindent 20 }}
+                    {{- include "pucora.gatewaySelectorLabels" . | nindent 20 }}
                 topologyKey: kubernetes.io/hostname
           {{- end }}
         {{- end }}

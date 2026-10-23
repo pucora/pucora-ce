@@ -4,6 +4,9 @@ description: Helm chart for deploying the Pucora API Gateway on Kubernetes
 type: application
 version: 2.3.2
 appVersion: "2.3.2"
+annotations:
+  org.opencontainers.image.source: https://github.com/pucora/pucora-ce
+  org.opencontainers.image.description: Pucora API Gateway Helm chart
 keywords:
   - api-gateway
   - pucora

@@ -1,0 +1,40 @@
+{{/* Fail before installing resources that cannot work together. */}}
+{{- if and .Values.autoscaling.enabled .Values.keda.enabled }}
+{{- fail "autoscaling.enabled and keda.enabled are mutually exclusive" }}
+{{- end }}
+{{- if .Values.autoscaling.enabled }}
+{{- if gt (int .Values.autoscaling.minReplicas) (int .Values.autoscaling.maxReplicas) }}
+{{- fail "autoscaling.minReplicas must not exceed maxReplicas" }}
+{{- end }}
+{{- if not (or .Values.autoscaling.targetCPUUtilizationPercentage .Values.autoscaling.targetMemoryUtilizationPercentage) }}
+{{- fail "autoscaling requires a CPU or memory utilization target" }}
+{{- end }}
+{{- if and .Values.autoscaling.targetCPUUtilizationPercentage (not (dig "requests" "cpu" "" .Values.resources)) }}
+{{- fail "CPU utilization autoscaling requires resources.requests.cpu" }}
+{{- end }}
+{{- if and .Values.autoscaling.targetMemoryUtilizationPercentage (not (dig "requests" "memory" "" .Values.resources)) }}
+{{- fail "Memory utilization autoscaling requires resources.requests.memory" }}
+{{- end }}
+{{- end }}
+{{- if .Values.keda.enabled }}
+{{- if not .Values.keda.triggers }}
+{{- fail "keda.enabled requires at least one trigger" }}
+{{- end }}
+{{- if gt (int .Values.keda.minReplicaCount) (int .Values.keda.maxReplicaCount) }}
+{{- fail "keda.minReplicaCount must not exceed maxReplicaCount" }}
+{{- end }}
+{{- end }}
+{{- if .Values.podDisruptionBudget.enabled }}
+{{- if eq (ne .Values.podDisruptionBudget.minAvailable nil) (ne .Values.podDisruptionBudget.maxUnavailable nil) }}
+{{- fail "podDisruptionBudget requires exactly one of minAvailable or maxUnavailable (set the other to null)" }}
+{{- end }}
+{{- end }}
+{{- if and .Values.configurator.enabled .Values.configurator.persistence.enabled (gt (int .Values.configurator.api.replicaCount) 1) }}
+{{- fail "Configurator uses a local file store; persistent API deployments require replicaCount=1" }}
+{{- end }}
+{{- if and (or (eq .Values.config.mode "configmap") (eq .Values.config.mode "secret")) (not .Values.config.existingConfigMap) (not .Values.config.existingSecret) }}
+{{- $config := mustFromJson .Values.config.pucoraJson }}
+{{- if not (kindIs "map" $config) }}
+{{- fail "config.pucoraJson must be a JSON object" }}
+{{- end }}
+{{- end }}

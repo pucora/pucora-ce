@@ -7,5 +7,5 @@ metadata:
     {{- include "pucora.labels" . | nindent 4 }}
 data:
   pucora.json: |
-{{- .Values.config.pucoraJson | nindent 4 }}
+{{- include "pucora.configJson" . | nindent 4 }}
 {{- end }}

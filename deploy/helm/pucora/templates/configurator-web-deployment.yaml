@@ -14,10 +14,13 @@ spec:
       app.kubernetes.io/component: configurator-web
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configurator-web-configmap.yaml") . | sha256sum }}
       labels:
         {{- include "pucora.labels" . | nindent 8 }}
         app.kubernetes.io/component: configurator-web
     spec:
+      automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
